@@ -4,59 +4,43 @@ require_once "../../config.php";
 require_once "../../Funciones/logs.php";
 
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Content-Type");
 
-// 1. Verificar autenticación
 if (!isset($_SESSION["usuario"])) {
-    echo json_encode([
-        "status" => "error",
-        "message" => "No autorizado"
-    ]);
+    echo json_encode(["status" => "error", "message" => "No autorizado"]);
     exit;
 }
 
-// 2. Leer JSON
 $input = json_decode(file_get_contents("php://input"), true);
 
-if (!$input || !isset($input["nombre"])) {
-    echo json_encode([
-        "status" => "error",
-        "message" => "Nombre del contenedor requerido"
-    ]);
+if (!$input || empty($input["nombre"])) {
+    echo json_encode(["status" => "error", "message" => "Nombre inválido"]);
     exit;
 }
 
 $nombre = escapeshellcmd($input["nombre"]);
 $usuario = $_SESSION["usuario"];
 
-// 3. Parar contenedor (por si está en ejecución)
-exec("docker stop $nombre 2>&1", $outStop, $retStop);
+// 1. Parar contenedor
+exec("docker stop $nombre 2>&1");
 
-// 4. Eliminar contenedor
-exec("docker rm $nombre 2>&1", $outRm, $retRm);
+// 2. Eliminar contenedor
+exec("docker rm $nombre 2>&1");
 
-if ($retRm !== 0) {
-    echo json_encode([
-        "status" => "error",
-        "message" => "No se pudo eliminar el contenedor",
-        "docker_output" => $outRm
-    ]);
-    exit;
-}
+// 3. Eliminar volumen asociado
+$volumen = "minecraft_$nombre"; // O mariadb_$nombre según ISO
+exec("docker volume rm $volumen 2>&1");
 
-// 5. Eliminar de la BD
+// 4. Borrar de la BD
 $stmt = $conn->prepare("DELETE FROM contenedores WHERE nombre = ?");
 $stmt->bind_param("s", $nombre);
 $stmt->execute();
 $stmt->close();
 
-// 6. Registrar log
-registrarLog($conn, $usuario, "Eliminó el contenedor '$nombre'");
+// 5. Log
+registrarLog($conn, $usuario, "Eliminó servidor '$nombre' y su volumen");
 
-// 7. Respuesta JSON
+// Respuesta
 echo json_encode([
     "status" => "success",
-    "message" => "Contenedor eliminado correctamente",
-    "container" => $nombre
+    "message" => "Contenedor y volumen eliminados correctamente"
 ]);

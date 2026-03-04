@@ -70,7 +70,9 @@ if ($ret !== 0 || empty($out)) {
 ?>
 
 
-                <div class="card-contenedor" onclick="location.href='editar_contenedor.php?nombre=<?= $c['nombre'] ?>'">
+                <div class="card-contenedor iso-<?= strtolower($c['iso']) ?>" 
+     onclick="location.href='editar_contenedor.php?nombre=<?= $c['nombre'] ?>'">
+
                     <div class="card-header">
                         <h3><?= $c["nombre"] ?></h3>
                         <span class="estado <?= $estado ?>">
