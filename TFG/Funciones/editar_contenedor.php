@@ -15,7 +15,7 @@ if (!isset($_GET["nombre"])) {
 
 $nombre = $_GET["nombre"];
 
-// Datos BD
+// Obtener datos del contenedor desde la BD
 $stmt = $conn->prepare("SELECT * FROM contenedores WHERE nombre = ?");
 $stmt->bind_param("s", $nombre);
 $stmt->execute();
@@ -26,7 +26,7 @@ if (!$cont) {
     die("Contenedor no encontrado");
 }
 
-// Estado
+// Detectar estado real
 $out = [];
 $ret = 0;
 exec('docker inspect --format="{{json .State}}" "' . $nombre . '" 2>&1', $out, $ret);
@@ -39,7 +39,9 @@ if ($ret !== 0 || empty($out)) {
     $estado = (!empty($state["Running"]) && $state["Running"] === true) ? "online" : "offline";
 }
 
-// Puertos reales
+// -----------------------------
+// PUERTOS REALES
+// -----------------------------
 $outPorts = [];
 exec('docker inspect --format="{{json .NetworkSettings.Ports}}" "' . $nombre . '" 2>&1', $outPorts, $retPorts);
 $ports = [];
@@ -47,7 +49,9 @@ if ($retPorts === 0 && !empty($outPorts)) {
     $ports = json_decode($outPorts[0], true) ?: [];
 }
 
-// Stats (CPU/RAM)
+// -----------------------------
+// CPU / RAM
+// -----------------------------
 $outStats = [];
 exec('docker stats "' . $nombre . '" --no-stream --format "{{json .}}" 2>&1', $outStats, $retStats);
 $stats = [];
@@ -66,18 +70,14 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
     <title>Editar Contenedor</title>
     <link rel="stylesheet" href="css/panel.css">
     <style>
-        .btn-start { background: #22c55e; color: white; padding: 10px 16px; border: none; cursor: pointer; border-radius: 4px; }
-        .btn-stop  { background: #ef4444; color: white; padding: 10px 16px; border: none; cursor: pointer; border-radius: 4px; }
-        .btn-edit  { background: #facc15; color: black; padding: 10px 16px; border: none; cursor: pointer; border-radius: 4px; }
-        .btn-delete { background: #b91c1c; color: white; padding: 10px 16px; border: none; cursor: pointer; border-radius: 4px; }
-        .btn-restart { background: #3b82f6; color: white; padding: 10px 16px; border: none; cursor: pointer; border-radius: 4px; }
-        .edit-container { display: flex; flex-wrap: wrap; gap: 30px; margin-top: 20px; }
-        .edit-block { margin-bottom: 20px; min-width: 220px; }
+        .btn-start { background: #22c55e; color: white; padding: 10px; border: none; cursor: pointer; }
+        .btn-stop  { background: #ef4444; color: white; padding: 10px; border: none; cursor: pointer; }
+        .btn-edit  { background: #facc15; color: black; padding: 10px; border: none; cursor: pointer; }
+        .btn-delete { background: #b91c1c; color: white; padding: 10px; border: none; cursor: pointer; }
+        .edit-container { display: flex; gap: 30px; margin-top: 20px; }
+        .edit-block { margin-bottom: 20px; }
         .input-edit { width: 100%; padding: 8px; margin-top: 5px; }
-        .stats-box, .ports-box { margin-top: 25px; padding: 15px; border-radius: 6px; background: #111827; color: #e5e7eb; }
-        .stats-box h3, .ports-box h3 { margin-top: 0; }
-        .badge-online { color: #22c55e; font-weight: bold; }
-        .badge-offline { color: #ef4444; font-weight: bold; }
+        .stats-box, .ports-box { margin-top: 25px; padding: 15px; background: #f3f4f6; border-radius: 8px; }
     </style>
 </head>
 <body>
@@ -99,14 +99,7 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
 
 <header class="header">
     <div id="menu-btn" class="menu-btn">☰</div>
-    <h1>
-        Contenedor: <?= htmlspecialchars($nombre) ?>
-        <?php if ($estado === "online"): ?>
-            <span class="badge-online">🟢 Online</span>
-        <?php else: ?>
-            <span class="badge-offline">🔴 Offline</span>
-        <?php endif; ?>
-    </h1>
+    <h1>Editar Contenedor: <?= htmlspecialchars($nombre) ?></h1>
 </header>
 
 <main class="contenido">
@@ -115,25 +108,24 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
 
     <div class="edit-block">
         <h3>Nombre del contenedor</h3>
-        <input type="text" id="nuevoNombre" class="input-edit" value="<?= htmlspecialchars($cont['nombre']) ?>">
+        <input type="text" id="nuevoNombre" class="input-edit" value="<?= $cont['nombre'] ?>">
     </div>
 
     <div class="edit-block">
         <h3>Versión</h3>
-        <input type="text" id="nuevaVersion" class="input-edit" value="<?= htmlspecialchars($cont['version']) ?>">
+        <input type="text" id="nuevaVersion" class="input-edit" value="<?= $cont['version'] ?>">
     </div>
 
     <div class="edit-block">
-        <h3>Puerto (host)</h3>
+        <h3>Puerto</h3>
         <input type="text" id="nuevoPuerto" class="input-edit" placeholder="Ej: 3307">
     </div>
 
 </div>
 
-<div style="margin-top: 20px; display:flex; gap:10px; flex-wrap:wrap;">
+<div style="margin-top: 20px;">
     <?php if ($estado === "online"): ?>
         <button class="btn-stop" onclick="accion('stop')">Apagar</button>
-        <button class="btn-restart" onclick="accion('restart')">Reiniciar</button>
     <?php else: ?>
         <button class="btn-start" onclick="accion('start')">Iniciar</button>
     <?php endif; ?>
@@ -142,6 +134,7 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
     <button class="btn-delete" onclick="accion('delete')">Eliminar</button>
 </div>
 
+<!-- CPU / RAM -->
 <div class="stats-box">
     <h3>Uso de recursos</h3>
     <?php if (!empty($stats)): ?>
@@ -153,6 +146,7 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
     <?php endif; ?>
 </div>
 
+<!-- PUERTOS -->
 <div class="ports-box">
     <h3>Puertos reales</h3>
     <?php if (!empty($ports)): ?>
@@ -184,22 +178,29 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
 </div>
 
 <script>
+// -----------------------------
+// SIDEBAR FUNCIONAL
+// -----------------------------
 const menuBtn = document.getElementById("menu-btn");
 const sidebar = document.getElementById("sidebar");
 
-menuBtn.onclick = () => {
+menuBtn.onclick = (e) => {
+    e.stopPropagation();
     sidebar.classList.toggle("sidebar-open");
 };
 
-document.addEventListener("click", (e) => {
-    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-        sidebar.classList.remove("sidebar-open");
-    }
+sidebar.onclick = (e) => {
+    e.stopPropagation();
+};
+
+document.addEventListener("click", () => {
+    sidebar.classList.remove("sidebar-open");
 });
 
+// -----------------------------
+// ACCIONES DEL CONTENEDOR
+// -----------------------------
 function accion(tipo) {
-    if (tipo === "delete" && !confirm("¿Seguro que quieres eliminar este contenedor?")) return;
-
     fetch("Funciones/acciones_contenedor.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -213,10 +214,6 @@ function accion(tipo) {
         alert(res.message);
         if (tipo === "delete") location.href = "panel.php";
         else location.reload();
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error al ejecutar la acción");
     });
 }
 
@@ -235,10 +232,6 @@ function guardarCambios() {
     .then(res => {
         alert(res.message);
         if (res.status === "success") location.href = "panel.php";
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error al guardar cambios");
     });
 }
 </script>

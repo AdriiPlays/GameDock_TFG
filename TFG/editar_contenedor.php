@@ -33,9 +33,30 @@ exec('docker inspect --format="{{json .State}}" "' . $nombre . '" 2>&1', $out, $
 
 if ($ret !== 0 || empty($out)) {
     $estado = "offline";
+    $state = [];
 } else {
     $state = json_decode($out[0], true);
     $estado = (!empty($state["Running"]) && $state["Running"] === true) ? "online" : "offline";
+}
+
+// -----------------------------
+// PUERTOS REALES
+// -----------------------------
+$outPorts = [];
+exec('docker inspect --format="{{json .NetworkSettings.Ports}}" "' . $nombre . '" 2>&1', $outPorts, $retPorts);
+$ports = [];
+if ($retPorts === 0 && !empty($outPorts)) {
+    $ports = json_decode($outPorts[0], true) ?: [];
+}
+
+// -----------------------------
+// CPU / RAM
+// -----------------------------
+$outStats = [];
+exec('docker stats "' . $nombre . '" --no-stream --format "{{json .}}" 2>&1', $outStats, $retStats);
+$stats = [];
+if ($retStats === 0 && !empty($outStats)) {
+    $stats = json_decode($outStats[0], true) ?: [];
 }
 
 $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== "" 
@@ -56,6 +77,7 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
         .edit-container { display: flex; gap: 30px; margin-top: 20px; }
         .edit-block { margin-bottom: 20px; }
         .input-edit { width: 100%; padding: 8px; margin-top: 5px; }
+        .stats-box, .ports-box { margin-top: 25px; padding: 15px; background: #f3f4f6; border-radius: 8px; }
     </style>
 </head>
 <body>
@@ -112,6 +134,41 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
     <button class="btn-delete" onclick="accion('delete')">Eliminar</button>
 </div>
 
+<!-- CPU / RAM -->
+<div class="stats-box">
+    <h3>Uso de recursos</h3>
+    <?php if (!empty($stats)): ?>
+        <p><strong>CPU:</strong> <?= htmlspecialchars($stats["CPUPerc"] ?? "N/A") ?></p>
+        <p><strong>Memoria:</strong> <?= htmlspecialchars($stats["MemUsage"] ?? "N/A") ?></p>
+        <p><strong>Mem %:</strong> <?= htmlspecialchars($stats["MemPerc"] ?? "N/A") ?></p>
+    <?php else: ?>
+        <p>No hay estadísticas disponibles (el contenedor puede estar apagado).</p>
+    <?php endif; ?>
+</div>
+
+<!-- PUERTOS -->
+<div class="ports-box">
+    <h3>Puertos reales</h3>
+    <?php if (!empty($ports)): ?>
+        <ul>
+            <?php foreach ($ports as $containerPort => $bindings): ?>
+                <?php if (is_array($bindings)): ?>
+                    <?php foreach ($bindings as $bind): ?>
+                        <li>
+                            <strong><?= htmlspecialchars($bind["HostIp"]) ?>:<?= htmlspecialchars($bind["HostPort"]) ?></strong>
+                            → <?= htmlspecialchars($containerPort) ?>
+                        </li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li><?= htmlspecialchars($containerPort) ?> (no mapeado al host)</li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p>Este contenedor no tiene puertos mapeados o no se pudieron leer.</p>
+    <?php endif; ?>
+</div>
+
 </main>
 
 <footer class="footer">
@@ -121,6 +178,28 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
 </div>
 
 <script>
+// -----------------------------
+// SIDEBAR FUNCIONAL
+// -----------------------------
+const menuBtn = document.getElementById("menu-btn");
+const sidebar = document.getElementById("sidebar");
+
+menuBtn.onclick = (e) => {
+    e.stopPropagation();
+    sidebar.classList.toggle("sidebar-open");
+};
+
+sidebar.onclick = (e) => {
+    e.stopPropagation();
+};
+
+document.addEventListener("click", () => {
+    sidebar.classList.remove("sidebar-open");
+});
+
+// -----------------------------
+// ACCIONES DEL CONTENEDOR
+// -----------------------------
 function accion(tipo) {
     fetch("Funciones/acciones_contenedor.php", {
         method: "POST",
