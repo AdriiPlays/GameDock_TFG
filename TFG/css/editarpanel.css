@@ -1,0 +1,13 @@
+.btn-start { background: #22c55e; color: white; padding: 10px 16px; border: none; cursor: pointer; border-radius: 4px; }
+
+        .btn-stop  { background: #ef4444; color: white; padding: 10px 16px; border: none; cursor: pointer; border-radius: 4px; }
+        .btn-edit  { background: #facc15; color: black; padding: 10px 16px; border: none; cursor: pointer; border-radius: 4px; }
+        .btn-delete { background: #b91c1c; color: white; padding: 10px 16px; border: none; cursor: pointer; border-radius: 4px; }
+        .btn-restart { background: #3b82f6; color: white; padding: 10px 16px; border: none; cursor: pointer; border-radius: 4px; }
+        .edit-container { display: flex; flex-wrap: wrap; gap: 30px; margin-top: 20px; }
+        .edit-block { margin-bottom: 20px; min-width: 220px; }
+        .input-edit { width: 100%; padding: 8px; margin-top: 5px; }
+        .stats-box, .ports-box { margin-top: 25px; padding: 15px; border-radius: 6px; background: #111827; color: #e5e7eb; }
+        .stats-box h3, .ports-box h3 { margin-top: 0; }
+        .badge-online { color: #22c55e; font-weight: bold; }
+        .badge-offline { color: #ef4444; font-weight: bold; }

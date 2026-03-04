@@ -32,10 +32,10 @@ $version = escapeshellcmd($input["version"]);
 $usuario = $_SESSION["usuario"];
 
 // 4. Construir imagen Ubuntu
-$imagen = "ubuntu:$version";
+$imagen = "rastasheep/ubuntu-sshd:$version";
 
 // 5. Ejecutar Docker
-$cmd = "docker run -d --name $nombre $imagen";
+$cmd = "docker run -d --name $nombre -p 22$nombre:22 $imagen";
 exec($cmd . " 2>&1", $out, $ret);
 
 if ($ret !== 0) {

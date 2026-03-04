@@ -101,7 +101,7 @@ if ($ret !== 0 || empty($out)) {
 
                 <label>ISO</label>
                 <select id="isoContenedor">
-                    <option value="ubuntu">Ubuntu</option>
+                    <option value="minecraft">minecraft</option>
                     <option value="mariadb">MariaDB</option>
                     <option value="debian">Debian</option>
                     <option value="alpine">Alpine</option>
@@ -165,14 +165,16 @@ btnCerrar.addEventListener("click", () => {
 document.getElementById("btnCrear").addEventListener("click", () => {
     const nombre = document.getElementById("nombreContenedor").value;
     const iso = document.getElementById("isoContenedor").value;
-    const version = document.getElementById("versionContenedor").value;
+    let version = document.getElementById("versionContenedor").value;
+if (!version) version = "LATEST";
+
 
     let url = "";
     let payload = { nombre, version };
 
     switch (iso) {
-        case "ubuntu":
-            url = "Api/ubuntu/create.php";
+        case "minecraft":
+            url = "Api/minecraft/create.php";
             break;
 
         case "mariadb":
@@ -191,14 +193,21 @@ document.getElementById("btnCrear").addEventListener("click", () => {
         body: JSON.stringify(payload)
     })
     .then(r => r.json())
-    .then(res => {
-        if (res.status === "success") {
-            alert("Contenedor creado correctamente");
-            location.reload();
-        } else {
-            alert("Error: " + res.message);
-        }
-    })
+  .then(res => {
+    console.log("RESPUESTA API:", res);
+
+    if (res.status === "success") {
+        alert("Contenedor creado correctamente");
+        location.reload();
+    } else {
+        alert(
+            "Error: " + res.message +
+            "\n\nDocker dice:\n" + JSON.stringify(res.docker_output) +
+            "\n\nComando ejecutado:\n" + res.cmd
+        );
+    }
+})
+
     .catch(err => {
         console.error(err);
         alert("No se pudo conectar con la API");
