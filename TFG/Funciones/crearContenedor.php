@@ -1,7 +1,5 @@
 <?php
 
-// NO ESTA EN USO ESTA FUNCION!!!!!
-
 
 session_start();
 require_once "../config.php";
