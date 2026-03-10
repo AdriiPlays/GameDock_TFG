@@ -26,7 +26,9 @@ if (!$cont) {
     die("Contenedor no encontrado");
 }
 
-// Detectar estado real
+$esMinecraft = ($cont["iso"] === "minecraft");
+
+// Estado real
 $out = [];
 $ret = 0;
 exec('docker inspect --format="{{json .State}}" "' . $nombre . '" 2>&1', $out, $ret);
@@ -39,9 +41,7 @@ if ($ret !== 0 || empty($out)) {
     $estado = (!empty($state["Running"]) && $state["Running"] === true) ? "online" : "offline";
 }
 
-// -----------------------------
-// PUERTOS REALES
-// -----------------------------
+// Puertos
 $outPorts = [];
 exec('docker inspect --format="{{json .NetworkSettings.Ports}}" "' . $nombre . '" 2>&1', $outPorts, $retPorts);
 $ports = [];
@@ -49,9 +49,7 @@ if ($retPorts === 0 && !empty($outPorts)) {
     $ports = json_decode($outPorts[0], true) ?: [];
 }
 
-// -----------------------------
-// CPU / RAM
-// -----------------------------
+// Stats
 $outStats = [];
 exec('docker stats "' . $nombre . '" --no-stream --format "{{json .}}" 2>&1', $outStats, $retStats);
 $stats = [];
@@ -74,8 +72,8 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
         .btn-stop  { background: #ef4444; color: white; padding: 10px; border: none; cursor: pointer; }
         .btn-edit  { background: #facc15; color: black; padding: 10px; border: none; cursor: pointer; }
         .btn-delete { background: #b91c1c; color: white; padding: 10px; border: none; cursor: pointer; }
-        .edit-container { display: flex; gap: 30px; margin-top: 20px; }
-        .edit-block { margin-bottom: 20px; }
+        .edit-container { display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap; }
+        .edit-block { margin-bottom: 20px; min-width: 220px; }
         .input-edit { width: 100%; padding: 8px; margin-top: 5px; }
         .stats-box, .ports-box { margin-top: 25px; padding: 15px; background: #f3f4f6; border-radius: 8px; }
     </style>
@@ -118,10 +116,14 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
 
     <div class="edit-block">
         <h3>Puerto</h3>
-        <input type="text" id="nuevoPuerto" class="input-edit" placeholder="Ej: 3307">
+        <input type="text" id="nuevoPuerto" class="input-edit" placeholder="Ej: 25565">
     </div>
 
 </div>
+
+<?php if ($esMinecraft): ?>
+    <?php include "componentes/editor_minecraft.php"; ?>
+<?php endif; ?>
 
 <div style="margin-top: 20px;">
     <?php if ($estado === "online"): ?>
@@ -134,7 +136,6 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
     <button class="btn-delete" onclick="accion('delete')">Eliminar</button>
 </div>
 
-<!-- CPU / RAM -->
 <div class="stats-box">
     <h3>Uso de recursos</h3>
     <?php if (!empty($stats)): ?>
@@ -146,7 +147,6 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
     <?php endif; ?>
 </div>
 
-<!-- PUERTOS -->
 <div class="ports-box">
     <h3>Puertos reales</h3>
     <?php if (!empty($ports)): ?>
@@ -178,28 +178,26 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
 </div>
 
 <script>
-// -----------------------------
-// SIDEBAR FUNCIONAL
-// -----------------------------
+// SIDEBAR (menú arriba)
 const menuBtn = document.getElementById("menu-btn");
 const sidebar = document.getElementById("sidebar");
 
-menuBtn.onclick = (e) => {
-    e.stopPropagation();
-    sidebar.classList.toggle("sidebar-open");
-};
+if (menuBtn && sidebar) {
+    menuBtn.onclick = (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle("sidebar-open");
+    };
 
-sidebar.onclick = (e) => {
-    e.stopPropagation();
-};
+    sidebar.onclick = (e) => {
+        e.stopPropagation();
+    };
 
-document.addEventListener("click", () => {
-    sidebar.classList.remove("sidebar-open");
-});
+    document.addEventListener("click", () => {
+        sidebar.classList.remove("sidebar-open");
+    });
+}
 
-// -----------------------------
-// ACCIONES DEL CONTENEDOR
-// -----------------------------
+// Acciones contenedor
 function accion(tipo) {
     fetch("Funciones/acciones_contenedor.php", {
         method: "POST",
@@ -218,14 +216,21 @@ function accion(tipo) {
 }
 
 function guardarCambios() {
-    fetch("Funciones/editar_contenedor.php", {
+    let api = "Funciones/editar_contenedor.php";
+
+    <?php if ($esMinecraft): ?>
+        api = "Api/minecraft/edit.php";
+    <?php endif; ?>
+
+    fetch(api, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             nombreActual: "<?= $nombre ?>",
             nuevoNombre: document.getElementById("nuevoNombre").value,
             nuevaVersion: document.getElementById("nuevaVersion").value,
-            nuevoPuerto: document.getElementById("nuevoPuerto").value
+            nuevoPuerto: document.getElementById("nuevoPuerto").value,
+            tipo: document.getElementById("tipoServidor")?.value
         })
     })
     .then(r => r.json())
@@ -234,7 +239,14 @@ function guardarCambios() {
         if (res.status === "success") location.href = "panel.php";
     });
 }
+
+// Exponer nombre para scripts específicos (Minecraft)
+window.nombreContenedor = "<?= $nombre ?>";
 </script>
+
+<?php if ($esMinecraft): ?>
+    <script src="js/minecraft_editor.js"></script>
+<?php endif; ?>
 
 </body>
 </html>
