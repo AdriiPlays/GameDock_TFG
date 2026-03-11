@@ -28,13 +28,12 @@ CREATE TABLE IF NOT EXISTS `contenedores` (
   `estado` enum('online','offline') DEFAULT 'offline',
   `fecha_creado` datetime DEFAULT current_timestamp(),
   `puerto` int(11) NOT NULL,
+  `tipo` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla tfg.contenedores: ~1 rows (aproximadamente)
-INSERT INTO `contenedores` (`id`, `nombre`, `iso`, `version`, `estado`, `fecha_creado`, `puerto`) VALUES
-	(20, 'pruebaaaaaa', 'minecraft', 'LATEST', 'online', '2026-03-04 08:24:45', 25578);
+-- Volcando datos para la tabla tfg.contenedores: ~0 rows (aproximadamente)
 
 -- Volcando estructura para tabla tfg.logs
 CREATE TABLE IF NOT EXISTS `logs` (
@@ -43,9 +42,9 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `accion` text DEFAULT NULL,
   `fecha` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla tfg.logs: ~79 rows (aproximadamente)
+-- Volcando datos para la tabla tfg.logs: ~128 rows (aproximadamente)
 INSERT INTO `logs` (`id`, `usuario`, `accion`, `fecha`) VALUES
 	(1, 'pepe', 'Cerró sesión', '2026-02-20 12:55:00'),
 	(2, 'pepe', 'Inició sesión', '2026-02-20 12:56:22'),
@@ -125,7 +124,74 @@ INSERT INTO `logs` (`id`, `usuario`, `accion`, `fecha`) VALUES
 	(76, 'pepe', 'Eliminó el contenedor \'faffaf\'', '2026-03-04 08:27:40'),
 	(77, 'pepe', 'Eliminó el contenedor \'sdfsfafa\'', '2026-03-04 08:27:45'),
 	(78, 'pepe', 'Eliminó el contenedor \'asdasdad\'', '2026-03-04 08:27:51'),
-	(79, 'pepe', 'Eliminó el contenedor \'prueba\'', '2026-03-04 08:27:54');
+	(79, 'pepe', 'Eliminó el contenedor \'prueba\'', '2026-03-04 08:27:54'),
+	(80, 'pepe', 'Creó servidor Minecraft \'ADRIAN\'', '2026-03-04 14:01:47'),
+	(81, 'pepe', 'Eliminó servidor \'ADRIAN\' y su volumen', '2026-03-04 14:03:43'),
+	(82, 'pepe', 'Inició sesión', '2026-03-05 11:02:19'),
+	(83, 'pepe', 'Inició sesión', '2026-03-09 13:16:04'),
+	(84, 'pepe', 'Contenedor eliminado: pruebaaaaaa', '2026-03-09 13:26:29'),
+	(85, 'pepe', 'Creó servidor Minecraft \'nuevo\'', '2026-03-09 13:26:39'),
+	(86, 'pepe', 'Creó servidor Minecraft \'sdfsfafa\'', '2026-03-09 13:43:24'),
+	(87, 'pepe', 'Contenedor eliminado: nuevo', '2026-03-09 13:43:46'),
+	(88, 'pepe', 'Contenedor eliminado: nuevo', '2026-03-09 13:43:47'),
+	(89, 'pepe', 'Contenedor eliminado: nuevo', '2026-03-09 13:43:47'),
+	(90, 'pepe', 'Contenedor eliminado: nuevo', '2026-03-09 13:43:47'),
+	(91, 'pepe', 'Contenedor detenido: sdfsfafa', '2026-03-09 13:59:00'),
+	(92, 'pepe', 'Contenedor iniciado: sdfsfafa', '2026-03-09 13:59:04'),
+	(93, 'pepe', 'Contenedor iniciado: prueba', '2026-03-09 14:12:52'),
+	(94, 'pepe', 'Eliminó servidor \'prueba\' y su volumen', '2026-03-09 14:13:03'),
+	(95, 'pepe', 'Creó servidor Minecraft \'nuevo\'', '2026-03-09 14:13:11'),
+	(96, 'pepe', 'Contenedor iniciado: pepe', '2026-03-09 14:13:27'),
+	(97, 'pepe', 'Eliminó servidor \'pepe\' y su volumen', '2026-03-09 14:14:47'),
+	(98, 'pepe', 'Creó servidor Minecraft \'asdasdad\'', '2026-03-09 14:14:55'),
+	(99, 'pepe', 'Contenedor detenido: 887678', '2026-03-09 14:17:10'),
+	(100, 'pepe', 'Contenedor detenido: 887678', '2026-03-09 14:17:10'),
+	(101, 'pepe', 'Contenedor iniciado: 887678', '2026-03-09 14:17:17'),
+	(102, 'pepe', 'Eliminó servidor \'887678\' y su volumen', '2026-03-09 14:19:31'),
+	(103, 'pepe', 'Inició sesión', '2026-03-10 07:45:50'),
+	(104, 'pepe', 'Inició sesión', '2026-03-10 08:27:49'),
+	(105, NULL, 'Creó el servidor Minecraft \'prueba\'', '2026-03-10 09:39:32'),
+	(106, NULL, 'Detuvo el servidor \'prueba\'', '2026-03-10 09:40:27'),
+	(107, NULL, 'Inició el servidor \'prueba\'', '2026-03-10 09:41:05'),
+	(108, NULL, 'Reinició el servidor \'prueba\'', '2026-03-10 09:41:14'),
+	(109, NULL, 'Detuvo el servidor \'prueba\'', '2026-03-10 09:44:58'),
+	(110, NULL, 'Creó el servidor Minecraft \'pruebaa\'', '2026-03-10 09:47:08'),
+	(111, 'pepe', 'Detuvo el servidor \'pruebaa\'', '2026-03-10 09:47:35'),
+	(112, 'pepe', 'Inició el servidor \'pruebaa\'', '2026-03-10 09:48:34'),
+	(113, 'pepe', 'Reinició el servidor \'pruebaa\'', '2026-03-10 09:48:52'),
+	(114, 'pepe', 'Reinició el servidor \'pruebaa\'', '2026-03-10 09:49:05'),
+	(115, 'pepe', 'Detuvo el servidor \'pruebaa\'', '2026-03-10 09:50:06'),
+	(116, 'pepe', 'Inició el servidor \'pruebaa\'', '2026-03-10 09:50:10'),
+	(117, 'pepe', 'Reinició el servidor \'pruebaa\'', '2026-03-10 09:50:24'),
+	(118, 'pepe', 'Reinició el servidor \'pruebaa\'', '2026-03-10 09:50:35'),
+	(119, NULL, 'Creó el servidor Minecraft \'PRUEBA23323\'', '2026-03-10 09:51:48'),
+	(120, 'pepe', 'Creó el servidor Minecraft \'dadafas\'', '2026-03-10 09:54:54'),
+	(121, 'pepe', 'Eliminó el servidor \'dadafas\'', '2026-03-10 09:55:13'),
+	(122, 'pepe', 'Creó el servidor Minecraft \'prueba\'', '2026-03-10 09:56:08'),
+	(123, 'pepe', 'Detuvo el servidor \'prueba\'', '2026-03-10 09:57:57'),
+	(124, 'pepe', 'Eliminó completamente el servidor \'prueba\' (contenedor + volumen + BD)', '2026-03-10 10:06:00'),
+	(125, 'pepe', 'Creó el servidor Minecraft \'prueba\'', '2026-03-10 10:08:12'),
+	(126, 'pepe', 'Detuvo el servidor \'prueba\'', '2026-03-10 10:08:27'),
+	(127, 'pepe', 'Eliminó completamente el servidor \'prueba\' (contenedor + volumen + BD)', '2026-03-10 10:08:30'),
+	(128, 'pepe', 'Creó el servidor Minecraft \'prueba\'', '2026-03-10 10:10:38'),
+	(129, 'pepe', 'Eliminó el servidor \'prueba\'', '2026-03-10 10:10:43'),
+	(130, 'pepe', 'Cerró sesión', '2026-03-10 10:29:18'),
+	(131, 'pepe', 'Inició sesión', '2026-03-10 10:29:26'),
+	(132, 'pepe', 'Creó el servidor Minecraft \'prueba\'', '2026-03-10 11:53:59'),
+	(133, 'pepe', 'Creó el servidor Minecraft \'yutu\'', '2026-03-10 11:55:05');
+
+-- Volcando estructura para tabla tfg.minecraft
+CREATE TABLE IF NOT EXISTS `minecraft` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `version` varchar(50) NOT NULL,
+  `tipo` varchar(20) NOT NULL,
+  `puerto` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `minecraft_ibfk_1` FOREIGN KEY (`id`) REFERENCES `contenedores` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla tfg.minecraft: ~0 rows (aproximadamente)
 
 -- Volcando estructura para tabla tfg.usuarios
 CREATE TABLE IF NOT EXISTS `usuarios` (
