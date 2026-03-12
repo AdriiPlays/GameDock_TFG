@@ -86,6 +86,8 @@ Próximamente:
    ```bash
    git clone https://github.com/AdriiPlays/GameDock_TFG.git
 
+   ---
+
  ## 🚀 Roadmap
  
  [ ] Nuvos contenedores
@@ -104,6 +106,9 @@ Próximamente:
 
 [x] Sistema de permisos por usuario
 
+---
+
 ##📜 Licencia
+
 Este proyecto está bajo la licencia MIT.
 Puedes usarlo, modificarlo y adaptarlo libremente.
