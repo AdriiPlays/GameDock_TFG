@@ -168,7 +168,7 @@ $usuarios = $conn->query("SELECT DISTINCT usuario FROM logs");
 </main>
 
 <footer class="footer">
-    Docker — Todos los derechos reservados © <?= date("Y") ?>
+    GameDock — Todos los derechos reservados © <?= date("Y") ?>
 </footer>
 
 </div>

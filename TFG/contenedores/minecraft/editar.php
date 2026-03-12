@@ -150,12 +150,42 @@ $imagenPerfil = !empty($_SESSION["imagen"])
 
 <h2>Configuración avanzada</h2>
 
+<button class="btn-start" onclick="abrirConsola()">Abrir consola</button>
+<div id="consolaBox" style="
+    display:none;
+    background:#000;
+    color:#0f0;
+    padding:10px;
+    height:400px;
+    overflow-y:auto;
+    font-family: monospace;
+    border-radius:8px;
+    margin-top:20px;
+"></div>
+<div style="margin-top:10px; display:none;" id="cmdBox">
+    <input id="cmdInput" type="text" placeholder="Escribe un comando..." 
+        style="width:80%; padding:8px; font-family:monospace;">
+    <button onclick="enviarComando()" 
+        style="padding:8px 15px; background:#3b82f6; color:white; border:none; border-radius:5px;">
+        Enviar
+    </button>
+</div>
+
+
+
 <button class="btn-start" onclick="location.href='server_properties/editor.php?nombre=<?= $nombre ?>'">
     Editar server.properties
 </button>
-
+   <hr>
+<h2>FTP</h2>
+  <button class="btn-start" onclick="location.href='/TFG/contenedores/minecraft/filemanager/index.php?nombre=<?= $nombre ?>'">
+    📁 Abrir gestor de archivos
+</button>
 
     </div>
+
+  
+
 
 </main>
 
@@ -225,6 +255,58 @@ function guardarCambios() {
         }
     });
 }
+
+let consolaInterval = null;
+
+function abrirConsola() {
+    const consola = document.getElementById("consolaBox");
+    const cmdBox = document.getElementById("cmdBox");
+
+    consola.style.display = "block";
+    cmdBox.style.display = "block";
+
+    consola.innerHTML = "Cargando logs...\n";
+
+    if (consolaInterval) clearInterval(consolaInterval);
+
+    consolaInterval = setInterval(() => {
+        fetch("/TFG/contenedores/minecraft/api/console.php?nombre=<?= $nombre ?>")
+            .then(r => r.json())
+            .then(res => {
+                if (res.status === "success") {
+                    consola.innerText = res.logs;
+                    consola.scrollTop = consola.scrollHeight;
+                }
+            });
+    }, 1000);
+}
+
+function enviarComando() {
+    const cmd = document.getElementById("cmdInput").value.trim();
+    if (!cmd) return;
+
+    fetch("/TFG/contenedores/minecraft/api/command.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            nombre: "<?= $nombre ?>",
+            cmd: cmd
+        })
+    })
+    .then(r => r.json())
+    .then(res => {
+        if (res.status === "success") {
+            alert("Comando ejecutado");
+        } else {
+            alert("Error: " + res.message);
+        }
+    });
+
+    document.getElementById("cmdInput").value = "";
+}
+
+
+
 </script>
 
 </body>
