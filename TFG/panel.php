@@ -119,7 +119,7 @@ if (!empty($_SESSION["imagen"])) {
 </main>
 
 <footer class="footer">
-    Docker — Todos los derechos reservados © <?= date("Y") ?>
+    GameDock — Todos los derechos reservados © <?= date("Y") ?>
 </footer>
 
 </div>
