@@ -34,6 +34,7 @@ if (!empty($_SESSION["imagen"])) {
         <a href="panel_logs.php" class="menu-item">📜 Logs</a>
         <a href="panel.php" class="menu-item">📦 Instancias</a>
         <a href="crear_usuario.php" class="menu-item">👤 Añadir usuarios</a>
+        <a href="panel_update.php" class="menu-item">🔄 Actualizaciones</a>
         <a href="logout.php" class="menu-item logout">🚪 Cerrar sesión</a>
     </nav>
 </div>
