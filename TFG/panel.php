@@ -1,17 +1,14 @@
 <?php
-require_once "config.php";
-session_start();
-
-if (!isset($_SESSION["usuario"])) {
-    header("Location: login.php");
-    exit;
-}
+require_once __DIR__ . "/Funciones/Sesion.php";
 
 $tituloPagina = "Panel de Control";
 
 // Obtener contenedores
 $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado DESC");
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

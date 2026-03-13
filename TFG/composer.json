@@ -1,0 +1,18 @@
+{
+    "name": "dewenir/tfg",
+    "description": "Un panel moderno, rápido y modular para administrar contenedores Docker, servidores de juegos y archivos internos desde una interfaz web intuitiva.",
+    "autoload": {
+        "psr-4": {
+            "Dewenir\\Tfg\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "AdriiPlays",
+            "email": "adriiplaysmurojimenez@gmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^7.0"
+    }
+}
