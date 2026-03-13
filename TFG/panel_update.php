@@ -7,20 +7,26 @@ if (!isset($_SESSION["usuario"])) {
     exit;
 }
 
+$tituloPagina = "Sistema de Actualizaciones";
+
 $versionLocal = trim(file_get_contents("version.txt"));
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Actualizaciones</title>
+<title><?= $tituloPagina ?></title>
 <link rel="stylesheet" href="css/panel.css">
 </head>
 <body>
 
+<?php include "php/menu.php"; ?>
+
 <div class="main-content">
+
 <header class="header">
-    <h1>🔄 Sistema de Actualizaciones</h1>
+    <div id="menu-btn" class="menu-btn">☰</div>
+    <h1><?= $tituloPagina ?></h1>
 </header>
 
 <main class="contenido">
@@ -33,7 +39,13 @@ $versionLocal = trim(file_get_contents("version.txt"));
 
 </main>
 
+<footer class="footer">
+    GameDock — Todos los derechos reservados © <?= date("Y") ?>
+</footer>
+
 </div>
+
+<script src="JS/panel.js"></script>
 
 <script>
 document.getElementById("btnCheck").onclick = () => {

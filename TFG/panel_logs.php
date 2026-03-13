@@ -7,6 +7,8 @@ if (!isset($_SESSION["usuario"])) {
     exit;
 }
 
+$tituloPagina = "Logs del Sistema";
+
 $usuario = $_SESSION["usuario"];
 
 $stmt = $conn->prepare("SELECT imagen FROM usuarios WHERE usuario = ?");
@@ -22,9 +24,9 @@ $porPagina = 6;
 $pagina = isset($_GET["pagina"]) ? (int)$_GET["pagina"] : 1;
 $inicio = ($pagina - 1) * $porPagina;
 
-$buscar = isset($_GET["buscar"]) ? $_GET["buscar"] : "";
-$filtroFecha = isset($_GET["fecha"]) ? $_GET["fecha"] : "";
-$filtroUsuario = isset($_GET["usuario_filtro"]) ? $_GET["usuario_filtro"] : "";
+$buscar = $_GET["buscar"] ?? "";
+$filtroFecha = $_GET["fecha"] ?? "";
+$filtroUsuario = $_GET["usuario_filtro"] ?? "";
 
 $where = "WHERE 1=1";
 
@@ -53,56 +55,19 @@ $usuarios = $conn->query("SELECT DISTINCT usuario FROM logs");
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Panel de Usuario</title>
+    <title><?= $tituloPagina ?></title>
     <link rel="stylesheet" href="css/panel.css">
     <link rel="stylesheet" href="css/logs.css">
-
-<style>
-.btn-pag {
-    background: #4a90e2;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-    border: none;
-}
-.btn-pag:hover { background: #357ABD; }
-.btn-pag:disabled { background: #999; cursor: not-allowed; }
-
-.filtros {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-.filtros input, .filtros select {
-    padding: 6px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-</style>
-
 </head>
 <body>
 
-<div id="sidebar" class="sidebar">
-    <nav class="sidebar-menu">
-        <div id="editUserBox" class="menu-item user-item">
-            <img src="<?= $imagenPerfil ?>" class="avatar-small" alt="Foto">
-            <span><?= htmlspecialchars($_SESSION["usuario"]) ?></span>
-        </div>
-        <a href="panel_logs.php" class="menu-item">📜 Logs</a>
-        <a href="panel.php" class="menu-item">📦 Instancias</a>
-        <a href="crear_usuario.php" class="menu-item">👤 Añadir usuarios</a>
-        <a href="logout.php" class="menu-item logout">🚪 Cerrar sesión</a>
-    </nav>
-</div>
+<?php include "php/menu.php"; ?>
 
 <div class="main-content" id="main">
+
 <header class="header">
     <div id="menu-btn" class="menu-btn">☰</div>
-    <h1>Logs del Sistema</h1>
+    <h1><?= $tituloPagina ?></h1>
 </header>
 
 <main class="contenido">
@@ -173,22 +138,7 @@ $usuarios = $conn->query("SELECT DISTINCT usuario FROM logs");
 
 </div>
 
-<script>
-const menuBtn = document.getElementById("menu-btn");
-const sidebar = document.getElementById("sidebar");
-menuBtn.onclick = () => sidebar.classList.toggle("sidebar-open");
-document.addEventListener("click", (e) => {
-    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-        sidebar.classList.remove("sidebar-open");
-    }
-});
-document.getElementById("editUserBox").addEventListener("click", function(e) {
-    const tag = e.target.tagName.toLowerCase();
-    if (tag !== "input" && tag !== "button" && tag !== "label") {
-        window.location.href = "usuario.php";
-    }
-});
-</script>
+<script src="JS/panel.js"></script>
 
 </body>
 </html>

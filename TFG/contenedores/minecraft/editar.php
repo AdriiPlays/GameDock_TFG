@@ -47,62 +47,28 @@ if ($ret !== 0 || empty($out)) {
     $estado = (!empty($state["Running"]) && $state["Running"] === true) ? "online" : "offline";
 }
 
-$imagenPerfil = !empty($_SESSION["imagen"])
-    ? "/TFG/uploads/" . $_SESSION["imagen"]
-    : "/TFG/uploads/default.png";
+$tituloPagina = "Editar Servidor Minecraft: " . htmlspecialchars($nombre);
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Servidor Minecraft</title>
-<link rel="stylesheet" href="../../css/panel.css">
+    <title><?= $tituloPagina ?></title>
 
-    <style>
-        .form-box {
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            max-width: 700px;
-            margin: 30px auto;
-            box-shadow: 0 0 10px #0002;
-        }
-        .input-edit {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-        }
-        .btn-save { background: #22c55e; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 6px; }
-        .btn-stop { background: #ef4444; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 6px; }
-        .btn-start { background: #3b82f6; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 6px; }
-        .btn-delete { background: #b91c1c; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 6px; }
-    </style>
+    <link rel="stylesheet" href="/TFG/css/panel.css">
+    <link rel="stylesheet" href="/TFG/css/minecraft.css">
+
+  
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<div id="sidebar" class="sidebar">
-    <nav class="sidebar-menu">
-        <div id="editUserBox" class="menu-item user-item">
-            <img src="<?= $imagenPerfil ?>" class="avatar-small" alt="Foto">
-            <span><?= htmlspecialchars($_SESSION["usuario"]) ?></span>
-        </div>
+<?php include __DIR__ . "/../../php/menu.php"; ?>
 
-        <a href="/TFG/panel.php" class="menu-item">📦 Instancias</a>
-<a href="/TFG/panel_logs.php" class="menu-item">📜 Logs</a>
-<a href="/TFG/crear_usuario.php" class="menu-item">👤 Añadir usuarios</a>
-<a href="/TFG/logout.php" class="menu-item logout">🚪 Cerrar sesión</a>
-
-    </nav>
-</div>
-
-<!-- MAIN -->
 <div class="main-content" id="main">
 
 <header class="header">
     <div id="menu-btn" class="menu-btn">☰</div>
-    <h1>Editar Servidor Minecraft: <?= htmlspecialchars($nombre) ?></h1>
+    <h1><?= $tituloPagina ?></h1>
 </header>
 
 <main class="contenido">
@@ -135,78 +101,67 @@ $imagenPerfil = !empty($_SESSION["imagen"])
 
         <h2>Control del servidor</h2>
 
-        
-
         <?php if ($estado === "online"): ?>
-    <button class="btn-stop" onclick="accion('stop')">Detener</button>
-    <button class="btn-start" onclick="accion('restart')">Reiniciar</button>
-<?php else: ?>
-    <button class="btn-start" onclick="accion('start')">Iniciar</button>
-<?php endif; ?>
+            <button class="btn-stop" onclick="accion('stop')">Detener</button>
+            <button class="btn-start" onclick="accion('restart')">Reiniciar</button>
+        <?php else: ?>
+            <button class="btn-start" onclick="accion('start')">Iniciar</button>
+        <?php endif; ?>
 
         <button class="btn-delete" onclick="accion('delete')">Eliminar servidor</button>
 
         <hr>
 
-<h2>Configuración avanzada</h2>
+        <h2>Configuración avanzada</h2>
 
-<button class="btn-start" onclick="abrirConsola()">Abrir consola</button>
-<div id="consolaBox" style="
-    display:none;
-    background:#000;
-    color:#0f0;
-    padding:10px;
-    height:400px;
-    overflow-y:auto;
-    font-family: monospace;
-    border-radius:8px;
-    margin-top:20px;
-"></div>
-<div style="margin-top:10px; display:none;" id="cmdBox">
-    <input id="cmdInput" type="text" placeholder="Escribe un comando..." 
-        style="width:80%; padding:8px; font-family:monospace;">
-    <button onclick="enviarComando()" 
-        style="padding:8px 15px; background:#3b82f6; color:white; border:none; border-radius:5px;">
-        Enviar
-    </button>
-</div>
+        <button class="btn-start" onclick="abrirConsola()">Abrir consola</button>
 
+        <div id="consolaBox" style="
+            display:none;
+            background:#000;
+            color:#0f0;
+            padding:10px;
+            height:400px;
+            overflow-y:auto;
+            font-family: monospace;
+            border-radius:8px;
+            margin-top:20px;
+        "></div>
 
+        <div style="margin-top:10px; display:none;" id="cmdBox">
+            <input id="cmdInput" type="text" placeholder="Escribe un comando..." 
+                style="width:80%; padding:8px; font-family:monospace;">
+            <button onclick="enviarComando()" 
+                style="padding:8px 15px; background:#3b82f6; color:white; border:none; border-radius:5px;">
+                Enviar
+            </button>
+        </div>
 
-<button class="btn-start" onclick="location.href='server_properties/editor.php?nombre=<?= $nombre ?>'">
-    Editar server.properties
-</button>
-   <hr>
-<h2>FTP</h2>
-  <button class="btn-start" onclick="location.href='/TFG/contenedores/minecraft/filemanager/index.php?nombre=<?= $nombre ?>'">
-    📁 Abrir gestor de archivos
-</button>
+        <button class="btn-start" onclick="location.href='server_properties/editor.php?nombre=<?= $nombre ?>'">
+            Editar server.properties
+        </button>
+
+        <hr>
+
+        <h2>FTP</h2>
+        <button class="btn-start" onclick="location.href='/TFG/contenedores/minecraft/filemanager/index.php?nombre=<?= $nombre ?>'">
+            📁 Abrir gestor de archivos
+        </button>
 
     </div>
 
-  
-
-
 </main>
+
+<footer class="footer">
+    GameDock — Todos los derechos reservados © <?= date("Y") ?>
+</footer>
 
 </div>
 
-<!-- JS SIDEBAR -->
+<script src="/TFG/JS/panel.js"></script>
+
 <script>
-const menuBtn = document.getElementById("menu-btn");
-const sidebar = document.getElementById("sidebar");
-
-menuBtn.onclick = () => sidebar.classList.toggle("sidebar-open");
-
-document.addEventListener("click", (e) => {
-    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-        sidebar.classList.remove("sidebar-open");
-    }
-});
-</script>
-
-<!-- JS ACCIONES -->
-<script>
+// ACCIONES DEL SERVIDOR
 function accion(tipo) {
     fetch("/TFG/contenedores/minecraft/api/actions.php", {
         method: "POST",
@@ -218,20 +173,12 @@ function accion(tipo) {
         alert(res.message);
 
         if (tipo === "delete" && res.status === "success") {
-            // Redirigir al panel
             location.href = "/TFG/panel.php";
         } else {
-            // Para start, stop, restart
             location.reload();
         }
-    })
-    .catch(err => {
-        console.error(err);
-        alert("No se pudo conectar con la API");
     });
 }
-
-
 
 function guardarCambios() {
     fetch("api/edit.php", {
@@ -251,11 +198,11 @@ function guardarCambios() {
         alert(res.message);
         if (res.status === "success") {
             location.href = "/TFG/panel.php";
-
         }
     });
 }
 
+// CONSOLA
 let consolaInterval = null;
 
 function abrirConsola() {
@@ -295,18 +242,11 @@ function enviarComando() {
     })
     .then(r => r.json())
     .then(res => {
-        if (res.status === "success") {
-            alert("Comando ejecutado");
-        } else {
-            alert("Error: " + res.message);
-        }
+        alert(res.status === "success" ? "Comando ejecutado" : "Error: " + res.message);
     });
 
     document.getElementById("cmdInput").value = "";
 }
-
-
-
 </script>
 
 </body>
