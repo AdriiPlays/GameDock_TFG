@@ -7,47 +7,31 @@ if (!isset($_SESSION["usuario"])) {
     exit;
 }
 
-$contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado DESC");
+$tituloPagina = "Panel de Control";
 
-$imagenPerfil = "uploads/default.png";
-if (!empty($_SESSION["imagen"])) {
-    $imagenPerfil = "uploads/" . $_SESSION["imagen"];
-}
+// Obtener contenedores
+$contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado DESC");
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Panel de Usuario</title>
+    <title><?= $tituloPagina ?></title>
     <link rel="stylesheet" href="css/panel.css">
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<div id="sidebar" class="sidebar">
-    <nav class="sidebar-menu">
-        <div id="editUserBox" class="menu-item user-item">
-            <img src="<?= $imagenPerfil ?>" class="avatar-small" alt="Foto">
-            <span><?= htmlspecialchars($_SESSION["usuario"]) ?></span>
-        </div>
+<?php include "php/menu.php"; ?>
 
-        <a href="panel_logs.php" class="menu-item">📜 Logs</a>
-        <a href="panel.php" class="menu-item">📦 Instancias</a>
-        <a href="crear_usuario.php" class="menu-item">👤 Añadir usuarios</a>
-        <a href="panel_update.php" class="menu-item">🔄 Actualizaciones</a>
-        <a href="logout.php" class="menu-item logout">🚪 Cerrar sesión</a>
-    </nav>
-</div>
-
-<!-- MAIN -->
 <div class="main-content" id="main">
 
 <header class="header">
     <div id="menu-btn" class="menu-btn">☰</div>
-    <h1>Panel de Control</h1>
+    <h1><?= $tituloPagina ?></h1>
 </header>
 
 <main class="contenido">
+
 
     <div class="contenedores-wrapper">
 
@@ -125,34 +109,10 @@ if (!empty($_SESSION["imagen"])) {
 
 </div>
 
-<!-- JS SIDEBAR -->
+<script src="JS/panel.js"></script>
+
 <script>
-const menuBtn = document.getElementById("menu-btn");
-const sidebar = document.getElementById("sidebar");
-
-menuBtn.onclick = () => {
-    sidebar.classList.toggle("sidebar-open");
-};
-
-document.addEventListener("click", (e) => {
-    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-        sidebar.classList.remove("sidebar-open");
-    }
-});
-</script>
-
-<!-- JS PERFIL -->
-<script>
-document.getElementById("editUserBox").addEventListener("click", function(e) {
-    const tag = e.target.tagName.toLowerCase();
-    if (!["input", "button", "label"].includes(tag)) {
-        window.location.href = "usuario.php";
-    }
-});
-</script>
-
-<!-- JS MODAL CREAR -->
-<script>
+// JS exclusivo de esta página (crear contenedor + eliminar)
 const modal = document.getElementById("modalCrear");
 document.getElementById("btnCrearContenedor").onclick = () => modal.classList.add("show");
 document.getElementById("btnCerrar").onclick = () => modal.classList.remove("show");
@@ -161,10 +121,7 @@ document.getElementById("btnIrCrear").onclick = () => {
     const tipo = document.getElementById("tipoServidor").value;
     window.location.href = "contenedores/" + tipo + "/crear.php";
 };
-</script>
 
-<!-- JS ELIMINAR -->
-<script>
 function eliminarContenedor(nombre, iso) {
     if (!confirm("¿Seguro que quieres eliminar el contenedor " + nombre + "?")) return;
 

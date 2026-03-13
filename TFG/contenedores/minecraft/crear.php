@@ -14,43 +14,9 @@ $imagenPerfil = !empty($_SESSION["imagen"])
 <head>
     <meta charset="UTF-8">
     <title>Crear Servidor Minecraft</title>
-    <link rel="stylesheet" href="../../css/panel.css">
-    <style>
-        .form-box {
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            max-width: 600px;
-            margin: 30px auto;
-            box-shadow: 0 0 10px #0002;
-        }
-        .form-box h2 {
-            margin-bottom: 20px;
-        }
-        .input-edit {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-        }
-        .btn-save {
-            background: #22c55e;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 6px;
-        }
-        .btn-cancel {
-            background: #b91c1c;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 6px;
-            margin-left: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="/TFG/css/panel.css">
+    <link rel="stylesheet" href="/TFG/css/minecraft.css">
+  
 </head>
 <body>
 

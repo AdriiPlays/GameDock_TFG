@@ -17,41 +17,11 @@ $nombre = $_GET["nombre"];
     <meta charset="UTF-8">
     <title>Editar server.properties</title>
 
-    <!-- RUTA ABSOLUTA PARA QUE SIEMPRE FUNCIONE -->
-    <link rel="stylesheet" href="/TFG/css/panel.css">
 
-    <style>
-        .editor-box {
-            max-width: 900px;
-            margin: 30px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #0002;
-        }
-        .linea {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-        .linea label {
-            width: 250px;
-            font-weight: bold;
-        }
-        .linea input {
-            flex: 1;
-            padding: 6px;
-        }
-        .btn-save {
-            background: #22c55e;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 6px;
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="/TFG/css/panel.css">
+    <link rel="stylesheet" href="/TFG/css/minecraft.css">
+
+    
 </head>
 <body>
 
@@ -62,6 +32,9 @@ $nombre = $_GET["nombre"];
 </header>
 
 <main class="contenido">
+        <button class="btn-volver" onclick="location.href='/TFG/contenedores/minecraft/editar.php?nombre=<?= $nombre ?>'">
+        ⬅️ Volver al servidor
+    </button>
 
     <div class="editor-box">
         <div id="editor"></div>
