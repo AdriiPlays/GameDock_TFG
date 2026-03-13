@@ -8,7 +8,6 @@ if (!isset($_SESSION["usuario"])) {
 }
 
 $tituloPagina = "Sistema de Actualizaciones";
-
 $versionLocal = trim(file_get_contents("version.txt"));
 ?>
 <!DOCTYPE html>
@@ -34,15 +33,11 @@ $versionLocal = trim(file_get_contents("version.txt"));
 
     <h2>Versión instalada: <?= $versionLocal ?></h2>
 
-    <button id="btnCheck" class="btn-save">🔍 Buscar actualizaciones</button>
-    <div id="progress-container" class="progress-container" style="display:none;">
-    <div id="progress-bar" class="progress-bar"></div>
-    <p id="progress-status" class="progress-status">Preparando…</p>
-    <span id="progress-text" class="progress-text">0%</span>
-</div>
+    <div class="update-actions">
+        <button id="btnCheck" class="btn-save">🔍 Buscar actualizaciones</button>
+    </div>
 
-
-    <div id="resultado" style="margin-top:20px; font-size:18px;"></div>
+    <div id="resultado" class="resultado"></div>
 
 </main>
 
@@ -51,6 +46,22 @@ $versionLocal = trim(file_get_contents("version.txt"));
 </footer>
 
 </div>
+
+<!-- MODAL DE ACTUALIZACIÓN -->
+<div id="updateModal" class="update-modal">
+    <div class="update-box">
+        <h2 id="modal-title">Preparando…</h2>
+
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+            <span id="progress-text" class="progress-text">0%</span>
+        </div>
+
+        <p id="progress-status" class="progress-status">Iniciando…</p>
+    </div>
+</div>
+
+<audio id="update-sound" src="sounds/update_complete.mp3" preload="auto"></audio>
 
 <script src="JS/panel.js"></script>
 
@@ -62,14 +73,14 @@ document.getElementById("btnCheck").onclick = () => {
             const box = document.getElementById("resultado");
 
             if (res.estado === "actualizado") {
-                box.innerHTML = "✔️ Tu panel está actualizado";
+                box.innerHTML = "<p class='ok'>✔️ Tu panel está actualizado</p>";
             } else if (res.estado === "disponible") {
                 box.innerHTML = `
-                    <p>🚀 Nueva versión disponible: <b>${res.version}</b></p>
-                    <button onclick="actualizar()" class="btn-save">Actualizar ahora</button>
+                    <p class='new-version'>🚀 Nueva versión disponible: <b>${res.version}</b></p>
+                    <button onclick="actualizar()" class="btn-update">Actualizar ahora</button>
                 `;
             } else {
-                box.innerHTML = "❌ Error: " + res.mensaje;
+                box.innerHTML = "<p class='error'>❌ Error: " + res.mensaje + "</p>";
             }
         });
 };
@@ -77,28 +88,41 @@ document.getElementById("btnCheck").onclick = () => {
 function actualizar() {
     if (!confirm("¿Seguro que quieres actualizar el panel?")) return;
 
+    const modal = document.getElementById("updateModal");
     const bar = document.getElementById("progress-bar");
     const text = document.getElementById("progress-text");
-    const container = document.getElementById("progress-container");
     const status = document.getElementById("progress-status");
+    const title = document.getElementById("modal-title");
     const sound = document.getElementById("update-sound");
 
-    // Mostrar barra
-    container.style.display = "block";
+    modal.style.display = "flex";
+
     bar.style.width = "0%";
     text.innerText = "0%";
-    status.innerText = "Descargando…";
+    status.innerText = "Preparando…";
+    title.innerText = "Preparando…";
 
     let progreso = 0;
 
-    // Cambios de texto según el progreso
     function actualizarTexto(p) {
-        if (p < 30) status.innerText = "Descargando…";
-        else if (p < 70) status.innerText = "Instalando…";
-        else if (p < 100) status.innerText = "Finalizando…";
+        if (p < 20) {
+            title.innerText = "Preparando…";
+            status.innerText = "Preparando archivos…";
+        }
+        else if (p < 50) {
+            title.innerText = "Descargando…";
+            status.innerText = "Descargando actualización…";
+        }
+        else if (p < 80) {
+            title.innerText = "Instalando…";
+            status.innerText = "Instalando componentes…";
+        }
+        else if (p < 100) {
+            title.innerText = "Finalizando…";
+            status.innerText = "Aplicando cambios…";
+        }
     }
 
-    // Simulación de progreso realista
     const intervalo = setInterval(() => {
         progreso += Math.floor(Math.random() * 10) + 5;
 
@@ -113,26 +137,25 @@ function actualizar() {
 
     }, 300);
 
-    // Llamada real a la API
     fetch("api/do_update.php")
         .then(r => r.json())
         .then(res => {
 
-            // Forzar barra al 100%
             bar.style.width = "100%";
             text.innerText = "100%";
-            status.innerText = "Completado ✔";
+            title.innerText = "Completado ✔";
+            status.innerText = "Actualización finalizada";
 
-            // Reproducir sonido
             sound.play();
 
             setTimeout(() => {
+                modal.style.display = "none";
                 alert(res.mensaje);
                 location.reload();
-            }, 800);
+            }, 1200);
         });
 }
 </script>
-<audio id="update-sound" src="sounds/update_complete.mp3" preload="auto"></audio>
+
 </body>
 </html>
