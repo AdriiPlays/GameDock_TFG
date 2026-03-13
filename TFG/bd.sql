@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla tfg.logs: ~165 rows (aproximadamente)
+-- Volcando datos para la tabla tfg.logs: ~170 rows (aproximadamente)
 INSERT INTO `logs` (`id`, `usuario`, `accion`, `fecha`) VALUES
 	(1, 'pepe', 'Cerró sesión', '2026-02-20 12:55:00'),
 	(2, 'pepe', 'Inició sesión', '2026-02-20 12:56:22'),
@@ -246,14 +246,16 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `token_verificacion` varchar(255) DEFAULT NULL,
   `token_reset` varchar(255) DEFAULT NULL,
   `token_expira` datetime DEFAULT NULL,
+  `ultimo_reset` datetime DEFAULT NULL,
+  `intentos_reset` int(11) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `usuario` (`usuario`),
   UNIQUE KEY `correo` (`correo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla tfg.usuarios: ~0 rows (aproximadamente)
-INSERT INTO `usuarios` (`id`, `usuario`, `password`, `correo`, `imagen`, `admin`, `verificado`, `token_verificacion`, `token_reset`, `token_expira`) VALUES
-	(12, 'admuro', '$2y$10$jvHILHWHYal7nojBrV9zEeFLC6P6gUxL.bXhRT5GVbFHI5rLRYL0q', 'amuroj02@gmail.com', NULL, 1, 1, NULL, NULL, NULL);
+-- Volcando datos para la tabla tfg.usuarios: ~1 rows (aproximadamente)
+INSERT INTO `usuarios` (`id`, `usuario`, `password`, `correo`, `imagen`, `admin`, `verificado`, `token_verificacion`, `token_reset`, `token_expira`, `ultimo_reset`, `intentos_reset`) VALUES
+	(12, 'admuro', '$2y$10$7RyLMT4FqhlkGYl.jMHWle2tASspMdjppuq/yFMB7uWHciSB91sMy', 'amuroj02@gmail.com', NULL, 1, 1, NULL, NULL, NULL, '2026-03-13 11:46:17', 2);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
