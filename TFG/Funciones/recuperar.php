@@ -6,8 +6,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 function enviarRecuperacion($conn, $correo) {
 
-    //Comprobar si existe el correo
-    $stmt = $conn->prepare("SELECT usuario FROM usuarios WHERE correo = ?");
+    // 1. Comprobar si existe el correo
+    $stmt = $conn->prepare("SELECT id, usuario, ultimo_reset, intentos_reset FROM usuarios WHERE correo = ?");
     $stmt->bind_param("s", $correo);
     $stmt->execute();
     $stmt->store_result();
@@ -16,20 +16,52 @@ function enviarRecuperacion($conn, $correo) {
         return "No existe ninguna cuenta con ese correo.";
     }
 
-    $stmt->bind_result($usuario);
+    $stmt->bind_result($id, $usuario, $ultimoReset, $intentos);
     $stmt->fetch();
     $stmt->close();
 
-    // 2. Generar token y expiración
+    // 2. Control de límite de peticiones
+    $ahora = time();
+
+    if ($ultimoReset !== null) {
+        $ultimo = strtotime($ultimoReset);
+
+        // Si han pasado menos de 60 minutos
+        if ($ahora - $ultimo < 3600) {
+
+            if ($intentos >= 2) {
+                return "Has solicitado demasiados enlaces. Inténtalo de nuevo en 1 hora.";
+            }
+
+            // Aumentar intentos
+            $intentos++;
+        } else {
+            // Ha pasado más de 1 hora → reiniciar contador
+            $intentos = 1;
+        }
+    } else {
+        // Primera vez
+        $intentos = 1;
+    }
+
+    // Guardar nuevo intento y hora
+    $nuevoReset = date("Y-m-d H:i:s", $ahora);
+
+    $updateIntentos = $conn->prepare("UPDATE usuarios SET ultimo_reset = ?, intentos_reset = ? WHERE id = ?");
+    $updateIntentos->bind_param("sii", $nuevoReset, $intentos, $id);
+    $updateIntentos->execute();
+    $updateIntentos->close();
+
+    // 3. Generar token y expiración
     $token = bin2hex(random_bytes(32));
     $expira = date("Y-m-d H:i:s", time() + 3600); // 1 hora
 
-    $update = $conn->prepare("UPDATE usuarios SET token_reset = ?, token_expira = ? WHERE correo = ?");
-    $update->bind_param("sss", $token, $expira, $correo);
+    $update = $conn->prepare("UPDATE usuarios SET token_reset = ?, token_expira = ? WHERE id = ?");
+    $update->bind_param("ssi", $token, $expira, $id);
     $update->execute();
     $update->close();
 
-    //URL de recuperación
+    // URL de recuperación
     $url = "http://localhost/TFG/php/reset.php?token=" . $token;
 
     // 4. Enviar email
@@ -44,7 +76,7 @@ function enviarRecuperacion($conn, $correo) {
         $mail->SMTPSecure = "tls";
         $mail->Port = 587;
 
-        $mail->setFrom("TU_CORREO@gmail.com", "GameDock");
+        $mail->setFrom("amuroj02@gmail.com", "GameDock");
         $mail->addAddress($correo);
 
         $mail->isHTML(true);
