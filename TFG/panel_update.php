@@ -17,6 +17,7 @@ $versionLocal = trim(file_get_contents("version.txt"));
 <meta charset="UTF-8">
 <title><?= $tituloPagina ?></title>
 <link rel="stylesheet" href="css/panel.css">
+<link rel="stylesheet" href="css/update.css">
 </head>
 <body>
 
@@ -34,6 +35,12 @@ $versionLocal = trim(file_get_contents("version.txt"));
     <h2>Versión instalada: <?= $versionLocal ?></h2>
 
     <button id="btnCheck" class="btn-save">🔍 Buscar actualizaciones</button>
+    <div id="progress-container" class="progress-container" style="display:none;">
+    <div id="progress-bar" class="progress-bar"></div>
+    <p id="progress-status" class="progress-status">Preparando…</p>
+    <span id="progress-text" class="progress-text">0%</span>
+</div>
+
 
     <div id="resultado" style="margin-top:20px; font-size:18px;"></div>
 
@@ -70,14 +77,62 @@ document.getElementById("btnCheck").onclick = () => {
 function actualizar() {
     if (!confirm("¿Seguro que quieres actualizar el panel?")) return;
 
+    const bar = document.getElementById("progress-bar");
+    const text = document.getElementById("progress-text");
+    const container = document.getElementById("progress-container");
+    const status = document.getElementById("progress-status");
+    const sound = document.getElementById("update-sound");
+
+    // Mostrar barra
+    container.style.display = "block";
+    bar.style.width = "0%";
+    text.innerText = "0%";
+    status.innerText = "Descargando…";
+
+    let progreso = 0;
+
+    // Cambios de texto según el progreso
+    function actualizarTexto(p) {
+        if (p < 30) status.innerText = "Descargando…";
+        else if (p < 70) status.innerText = "Instalando…";
+        else if (p < 100) status.innerText = "Finalizando…";
+    }
+
+    // Simulación de progreso realista
+    const intervalo = setInterval(() => {
+        progreso += Math.floor(Math.random() * 10) + 5;
+
+        if (progreso >= 100) {
+            progreso = 100;
+            clearInterval(intervalo);
+        }
+
+        bar.style.width = progreso + "%";
+        text.innerText = progreso + "%";
+        actualizarTexto(progreso);
+
+    }, 300);
+
+    // Llamada real a la API
     fetch("api/do_update.php")
         .then(r => r.json())
         .then(res => {
-            alert(res.mensaje);
-            location.reload();
+
+            // Forzar barra al 100%
+            bar.style.width = "100%";
+            text.innerText = "100%";
+            status.innerText = "Completado ✔";
+
+            // Reproducir sonido
+            sound.play();
+
+            setTimeout(() => {
+                alert(res.mensaje);
+                location.reload();
+            }, 800);
         });
 }
 </script>
-
+<audio id="update-sound" src="sounds/update_complete.mp3" preload="auto"></audio>
 </body>
 </html>
