@@ -15,7 +15,7 @@ if (!$servidor || !$ruta) {
 // Nombre del archivo
 $nombreArchivo = basename($ruta);
 
-// Archivo temporal donde Docker copiará el archivo
+// Archivo temporal
 $tmp = sys_get_temp_dir() . "/" . uniqid("dl_") . "_" . $nombreArchivo;
 
 // Copiar desde el contenedor al host

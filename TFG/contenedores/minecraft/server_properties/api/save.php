@@ -33,7 +33,7 @@ if ($ret !== 0) {
     exit;
 }
 
-// 🔥 SOLUCIÓN DEFINITIVA: FORZAR PERMISOS CORRECTOS
+// FORZAR PERMISOS 
 exec("docker run --rm -v mc_" . escapeshellcmd($nombre) . ":/data alpine sh -c \"chmod 666 /data/server.properties\"");
 
 // Respuesta final

@@ -6,7 +6,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 function enviarRecuperacion($conn, $correo) {
 
-    // 1. Comprobar si existe el correo
+    // Comprobar si existe el correo
     $stmt = $conn->prepare("SELECT id, usuario, ultimo_reset, intentos_reset FROM usuarios WHERE correo = ?");
     $stmt->bind_param("s", $correo);
     $stmt->execute();
@@ -20,7 +20,7 @@ function enviarRecuperacion($conn, $correo) {
     $stmt->fetch();
     $stmt->close();
 
-    // 2. Control de límite de peticiones
+    // Límite de peticiones
     $ahora = time();
 
     if ($ultimoReset !== null) {
@@ -36,7 +36,7 @@ function enviarRecuperacion($conn, $correo) {
             // Aumentar intentos
             $intentos++;
         } else {
-            // Ha pasado más de 1 hora → reiniciar contador
+            // Ha pasado más de 1 hora | reiniciar contador
             $intentos = 1;
         }
     } else {
@@ -52,7 +52,7 @@ function enviarRecuperacion($conn, $correo) {
     $updateIntentos->execute();
     $updateIntentos->close();
 
-    // 3. Generar token y expiración
+    // Generar token y expiración
     $token = bin2hex(random_bytes(32));
     $expira = date("Y-m-d H:i:s", time() + 3600); // 1 hora
 
@@ -64,7 +64,7 @@ function enviarRecuperacion($conn, $correo) {
     // URL de recuperación
     $url = "http://localhost/TFG/php/reset.php?token=" . $token;
 
-    // 4. Enviar email
+    // Enviar email
     $mail = new PHPMailer(true);
 
     try {

@@ -1,5 +1,5 @@
 <?php
-ini_set("session.cookie_lifetime", 0); // destruir al cerrar navegador
+ini_set("session.cookie_lifetime", 0); // borrar al cerrar el navegador
 ini_set("session.gc_maxlifetime", 0);
 
 

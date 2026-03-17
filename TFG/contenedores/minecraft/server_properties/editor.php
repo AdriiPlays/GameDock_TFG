@@ -95,7 +95,7 @@ function guardar() {
     .then(res => {
         alert("Cambios guardados.\n\nEs necesario reiniciar el servidor para aplicar los cambios.");
 
-        // Redirigir al panel de listado
+        // Redirigir al panel
         window.location.href = "/TFG/panel.php";
     });
 }

@@ -22,7 +22,7 @@ if (!str_starts_with($ruta, "/data")) {
     $ruta = "/data" . $ruta;
 }
 
-// Comando para borrar (rm -rf)
+// Comando para borrar 
 $comando = "docker exec " . escapeshellarg($servidor) . " rm -rf " . escapeshellarg($ruta);
 exec($comando, $salida, $codigo);
 

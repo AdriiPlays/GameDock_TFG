@@ -16,7 +16,7 @@ if (!$nombre || !$cmd) {
     exit;
 }
 
-// Seguridad básica: evitar comandos peligrosos
+// evitar comandos peligrosos
 $prohibidos = ["rm ", "docker", "shutdown", "reboot", "poweroff"];
 
 foreach ($prohibidos as $p) {

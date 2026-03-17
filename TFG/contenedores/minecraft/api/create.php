@@ -24,9 +24,9 @@ if (!$nombre || !$version || !$tipo || !$puerto) {
     exit;
 }
 
-// -----------------------------
-// 1. INSERTAR EN TABLA contenedores
-// -----------------------------
+
+// INSERTAR EN TABLA contenedores
+
 $stmt = $conn->prepare("
     INSERT INTO contenedores (nombre, iso, version, puerto)
     VALUES (?, 'minecraft', ?, ?)
@@ -41,9 +41,9 @@ if (!$stmt->execute()) {
 $idContenedor = $stmt->insert_id;
 $stmt->close();
 
-// -----------------------------
-// 2. INSERTAR EN TABLA minecraft
-// -----------------------------
+
+// INSERTAR EN TABLA minecraft
+
 $stmt2 = $conn->prepare("
     INSERT INTO minecraft (id, nombre, version, tipo, puerto)
     VALUES (?, ?, ?, ?, ?)
@@ -57,9 +57,9 @@ if (!$stmt2->execute()) {
 
 $stmt2->close();
 
-// -----------------------------
-// 3. SELECCIONAR JAVA AUTOMÁTICAMENTE
-// -----------------------------
+
+// SELECCIONAR  VERSION DE JAVA AUTOMÁTICAMENTE (SOLUCIONAR ERRORES DE VERSIONES EN CONTENEDORES)
+
 function seleccionarJava($version) {
     $v = floatval(substr($version, 0, 4));
 
@@ -76,13 +76,13 @@ function seleccionarJava($version) {
 
 $java = seleccionarJava($version);
 
-// -----------------------------
-// 4. CREAR CONTENEDOR DOCKER
-// -----------------------------
+
+// CREAR CONTENEDOR DOCKER
+
 
 $imagen = "itzg/minecraft-server:$java";
 
-// IMPORTANTE: la imagen va justo después de docker run
+
 $cmd = sprintf(
     'docker run -d --name %s -p %d:25565 -e EULA=TRUE -e VERSION=%s -e TYPE=%s -v mc_%s:/data %s 2>&1',
     escapeshellcmd($nombre),
@@ -102,7 +102,7 @@ $ret = 0;
 exec($cmd, $out, $ret);
 
 if ($ret !== 0) {
-    // Si falla Docker → borrar BD
+    // Si falla Docker, borrar BD
     $conn->query("DELETE FROM minecraft WHERE id = $idContenedor");
     $conn->query("DELETE FROM contenedores WHERE id = $idContenedor");
 
@@ -115,9 +115,9 @@ if ($ret !== 0) {
     exit;
 }
 
-// -----------------------------
-// 5. RESPUESTA FINAL
-// -----------------------------
+
+// RESPUESTA FINAL / LOGS
+
 registrarLog($conn, $_SESSION["usuario"], "Creó el servidor Minecraft '{$nombre}'");
 
 echo json_encode([

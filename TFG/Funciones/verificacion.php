@@ -6,7 +6,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 function enviarVerificacion($conn, $usuario, $correo) {
 
-    // Generar token seguro
+    // Generar token 
     $token = bin2hex(random_bytes(32));
 
     // Guardarlo en la BD

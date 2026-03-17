@@ -4,10 +4,10 @@ header("Content-Type: application/json");
 // Versión local
 $versionLocal = trim(file_get_contents("../version.txt"));
 
-// URL RAW del version.txt en tu GitHub
+// URL RAW de la versión
 $url = "https://raw.githubusercontent.com/AdriiPlays/GameDock_TFG/main/TFG/version.txt";
 
-// Obtener versión remota
+// Obtener versión 
 $versionGitHub = @trim(file_get_contents($url));
 
 if (!$versionGitHub) {

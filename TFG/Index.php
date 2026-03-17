@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($stmt->num_rows === 1) {
 
-            // AHORA SÍ: 5 variables porque el SELECT tiene 5 columnas
+            
             $stmt->bind_result($idBD, $hashBD, $imagenBD, $adminBD, $verificadoBD);
             $stmt->fetch();
 

@@ -18,9 +18,9 @@ if (!$nombre) {
     exit;
 }
 
-// -----------------------------
-// 1. OBTENER ID DEL CONTENEDOR
-// -----------------------------
+
+// OBTENER ID DEL CONTENEDOR
+
 $stmt = $conn->prepare("SELECT id FROM contenedores WHERE nombre = ?");
 
 $stmt->bind_param("s", $nombre);
@@ -35,48 +35,47 @@ if (!$res) {
 
 $id = $res["id"];
 
-// -----------------------------
-// 2. ELIMINAR CONTENEDOR DOCKER
-// -----------------------------
+
+// ELIMINAR CONTENEDOR DOCKER
+
 $out = [];
 $ret = 0;
 
 exec("docker rm -f " . escapeshellcmd($nombre) . " 2>&1", $out, $ret);
 
-// No detenemos el proceso si falla, porque puede que ya no exista
-// Solo lo registramos
+
 $dockerDeleteInfo = $out;
 
-// -----------------------------
-// 3. ELIMINAR VOLUMEN mc_nombre
-// -----------------------------
+
+// ELIMINAR VOLUMEN mc_nombre
+
 $outVol = [];
 $retVol = 0;
 
 $volName = "mc_" . $nombre;
 
 exec("docker volume rm " . escapeshellcmd($volName) . " 2>&1", $outVol, $retVol);
-// Igual que antes: si falla, no detenemos el proceso
 
-// -----------------------------
-// 4. ELIMINAR BD: minecraft
-// -----------------------------
+
+
+// ELIMINAR BD: minecraft
+
 $stmt2 = $conn->prepare("DELETE FROM minecraft WHERE id = ?");
 $stmt2->bind_param("i", $id);
 $stmt2->execute();
 $stmt2->close();
 
-// -----------------------------
-// 5. ELIMINAR BD: contenedores
-// -----------------------------
+
+// ELIMINAR BD: contenedores
+
 $stmt3 = $conn->prepare("DELETE FROM contenedores WHERE id = ?");
 $stmt3->bind_param("i", $id);
 $stmt3->execute();
 $stmt3->close();
 
-// -----------------------------
-// 6. RESPUESTA FINAL
-// -----------------------------
+
+// RESPUESTA FINAL
+
 echo json_encode([
     "status" => "success",
     "message" => "Servidor Minecraft eliminado correctamente",
