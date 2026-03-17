@@ -23,9 +23,9 @@ if (!$id || !$nombreActual || !$nuevoNombre || !$nuevaVersion || !$nuevoTipo || 
     exit;
 }
 
-// -----------------------------
-// 1. ACTUALIZAR TABLA contenedores
-// -----------------------------
+
+// ACTUALIZAR TABLA contenedores
+
 $stmt = $conn->prepare("
     UPDATE contenedores
     SET nombre = ?, version = ?, puerto = ?
@@ -39,9 +39,9 @@ if (!$stmt->execute()) {
 }
 $stmt->close();
 
-// -----------------------------
-// 2. ACTUALIZAR TABLA minecraft
-// -----------------------------
+
+// ACTUALIZAR TABLA minecraft
+
 $stmt2 = $conn->prepare("
     UPDATE minecraft
     SET nombre = ?, version = ?, tipo = ?, puerto = ?
@@ -55,9 +55,9 @@ if (!$stmt2->execute()) {
 }
 $stmt2->close();
 
-// -----------------------------
-// 3. RENOMBRAR CONTENEDOR EN DOCKER (si cambia el nombre)
-// -----------------------------
+
+// RENOMBRAR CONTENEDOR EN DOCKER (si cambia el nombre del mismo) | (si no da muchos problemas :/)
+
 if ($nombreActual !== $nuevoNombre) {
 
     $cmdRename = sprintf(
@@ -81,9 +81,9 @@ if ($nombreActual !== $nuevoNombre) {
     }
 }
 
-// -----------------------------
-// 4. RESPUESTA FINAL
-// -----------------------------
+
+// RESPUESTA FINAL
+
 echo json_encode([
     "status" => "success",
     "message" => "Servidor Minecraft actualizado correctamente"

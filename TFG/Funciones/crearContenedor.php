@@ -1,6 +1,6 @@
 <?php
 
-
+//NO ESTA EN USO, POSIBLMENTE SE BORRE ESTE ARCHIVO
 session_start();
 require_once "../config.php";
 require_once "logs.php";
@@ -15,7 +15,7 @@ $iso     = escapeshellarg($_POST["iso"]);
 $version = escapeshellarg($_POST["version"]);
 $usuario = $_SESSION["usuario"];
 
-// Construir imagen completa: ubuntu:latest, ubuntu:22.04, etc.
+// Construir imagen ubuntu
 $imagen = "$iso:$version";
 
 // Comando Docker

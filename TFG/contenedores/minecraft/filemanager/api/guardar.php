@@ -15,7 +15,6 @@ if (!$servidor || !$ruta || $contenido === null) {
     exit;
 }
 
-// Normalizar ruta
 if (!str_starts_with($ruta, "/")) $ruta = "/" . $ruta;
 if (!str_starts_with($ruta, "/data")) $ruta = "/data" . $ruta;
 

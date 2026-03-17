@@ -39,9 +39,9 @@ if ($ret !== 0 || empty($out)) {
     $estado = (!empty($state["Running"]) && $state["Running"] === true) ? "online" : "offline";
 }
 
-// -----------------------------
+
 // PUERTOS REALES
-// -----------------------------
+
 $outPorts = [];
 exec('docker inspect --format="{{json .NetworkSettings.Ports}}" "' . $nombre . '" 2>&1', $outPorts, $retPorts);
 $ports = [];
@@ -49,9 +49,9 @@ if ($retPorts === 0 && !empty($outPorts)) {
     $ports = json_decode($outPorts[0], true) ?: [];
 }
 
-// -----------------------------
+
 // CPU / RAM
-// -----------------------------
+
 $outStats = [];
 exec('docker stats "' . $nombre . '" --no-stream --format "{{json .}}" 2>&1', $outStats, $retStats);
 $stats = [];
@@ -178,9 +178,9 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
 </div>
 
 <script>
-// -----------------------------
+
 // SIDEBAR FUNCIONAL
-// -----------------------------
+
 const menuBtn = document.getElementById("menu-btn");
 const sidebar = document.getElementById("sidebar");
 
@@ -197,9 +197,9 @@ document.addEventListener("click", () => {
     sidebar.classList.remove("sidebar-open");
 });
 
-// -----------------------------
+
 // ACCIONES DEL CONTENEDOR
-// -----------------------------
+
 function accion(tipo) {
     fetch("Funciones/acciones_contenedor.php", {
         method: "POST",

@@ -13,7 +13,7 @@ if (!isset($_GET["nombre"])) {
 
 $nombre = $_GET["nombre"];
 
-// Obtener datos del contenedor general
+// Obtener datos del contenedor 
 $stmt = $conn->prepare("SELECT * FROM contenedores WHERE nombre = ?");
 $stmt->bind_param("s", $nombre);
 $stmt->execute();
@@ -35,7 +35,7 @@ if (!$mc) {
     die("Datos de Minecraft no encontrados.");
 }
 
-// Estado real del contenedor
+// Estado del contenedor
 $out = [];
 $ret = 0;
 exec('docker inspect --format="{{json .State}}" "' . $nombre . '" 2>&1', $out, $ret);

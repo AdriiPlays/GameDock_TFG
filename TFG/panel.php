@@ -109,7 +109,7 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
 <script src="JS/panel.js"></script>
 
 <script>
-// JS exclusivo de esta página (crear contenedor + eliminar)
+// JS (crear contenedor + eliminar)
 const modal = document.getElementById("modalCrear");
 document.getElementById("btnCrearContenedor").onclick = () => modal.classList.add("show");
 document.getElementById("btnCerrar").onclick = () => modal.classList.remove("show");

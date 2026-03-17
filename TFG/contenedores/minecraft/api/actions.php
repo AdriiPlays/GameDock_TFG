@@ -1,6 +1,6 @@
 <?php
 header("Content-Type: application/json");
-session_start(); // NECESARIO PARA USAR $_SESSION
+session_start(); 
 
 require_once __DIR__ . "/../../../config.php";
 require_once __DIR__ . "/../../../Funciones/logs.php";
@@ -25,9 +25,9 @@ if (!$tipo || !$nombre) {
 $out = [];
 $ret = 0;
 
-// -----------------------------
-// RESTART (fuera del switch)
-// -----------------------------
+
+// RESTART 
+
 if ($tipo === "restart") {
 
     exec("docker restart " . escapeshellcmd($nombre) . " 2>&1", $out, $ret);
@@ -51,9 +51,9 @@ if ($tipo === "restart") {
 }
 
 
-// -----------------------------
-// SWITCH DE ACCIONES
-// -----------------------------
+
+// ACCIONES
+
 switch ($tipo) {
 
     case "start":
@@ -93,7 +93,7 @@ switch ($tipo) {
 
 case "delete":
 
-    // 1. Eliminar contenedor Docker
+    // Eliminar contenedor Docker
     exec("docker rm -f " . escapeshellcmd($nombre) . " 2>&1", $out, $ret);
 
     if ($ret !== 0) {
@@ -105,33 +105,33 @@ case "delete":
         exit;
     }
 
-    // 2. Eliminar volumen Docker asociado
+    // Eliminar volumen Docker 
     $volumen = "mc_" . $nombre;
     exec("docker volume rm " . escapeshellcmd($volumen) . " 2>&1", $outVol, $retVol);
 
-    // No hacemos exit si falla, porque puede no existir
+    
     if ($retVol === 0) {
         $volumenEliminado = true;
     } else {
         $volumenEliminado = false;
     }
 
-    // 3. Eliminar de la tabla minecraft
+    // Eliminar de la tabla minecraft
     $stmt = $conn->prepare("DELETE FROM minecraft WHERE id = (SELECT id FROM contenedores WHERE nombre = ?)");
     $stmt->bind_param("s", $nombre);
     $stmt->execute();
     $stmt->close();
 
-    // 4. Eliminar de la tabla contenedores
+    // Eliminar de la tabla contenedores
     $stmt2 = $conn->prepare("DELETE FROM contenedores WHERE nombre = ?");
     $stmt2->bind_param("s", $nombre);
     $stmt2->execute();
     $stmt2->close();
 
-    // 5. Registrar log
+    // Registrar log
     registrarLog($conn, $_SESSION["usuario"], "Eliminó el servidor Minecraft '{$nombre}'");
 
-    // 6. Respuesta final
+    // Respuesta final
     echo json_encode([
         "status" => "success",
         "message" => "Servidor eliminado completamente",

@@ -17,24 +17,24 @@ try {
     if (!is_dir($tmpDir)) mkdir($tmpDir);
 
     // Detectar sistema operativo
-    $os = strtoupper(substr(PHP_OS, 0, 3)); // WIN / LIN / DAR
+    $os = strtoupper(substr(PHP_OS, 0, 3)); 
 
-    // 🔥 DESCOMPRIMIR SEGÚN EL SISTEMA OPERATIVO
+    // DESCOMPRIMIR SEGÚN EL SISTEMA OPERATIVO
     if ($os === "WIN") {
-        // WINDOWS → PowerShell
+        // WINDOWS | PowerShell
         $cmd = 'powershell -command "Expand-Archive -Path ' . escapeshellarg($tmpZip) . ' -DestinationPath ' . escapeshellarg($tmpDir) . ' -Force"';
         shell_exec($cmd);
     } else {
-        // LINUX → unzip o tar
+        // LINUX | unzip o tar
         $output = shell_exec("unzip -o " . escapeshellarg($tmpZip) . " -d " . escapeshellarg($tmpDir) . " 2>&1");
 
         if (strpos($output, "command not found") !== false) {
-            // Fallback → tar
+            
             shell_exec("tar -xf " . escapeshellarg($tmpZip) . " -C " . escapeshellarg($tmpDir));
         }
     }
 
-    // Carpeta principal del ZIP (GameDock_TFG-main)
+    // Carpeta principal del ZIP 
     $rootFolder = glob($tmpDir . "/*")[0];
 
     // Carpeta TFG dentro del ZIP
