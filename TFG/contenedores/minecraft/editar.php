@@ -13,7 +13,7 @@ if (!isset($_GET["nombre"])) {
 
 $nombre = $_GET["nombre"];
 
-// Obtener datos del contenedor 
+// Obtener datos del contenedor general
 $stmt = $conn->prepare("SELECT * FROM contenedores WHERE nombre = ?");
 $stmt->bind_param("s", $nombre);
 $stmt->execute();
@@ -35,7 +35,7 @@ if (!$mc) {
     die("Datos de Minecraft no encontrados.");
 }
 
-// Estado del contenedor
+// Estado real del contenedor
 $out = [];
 $ret = 0;
 exec('docker inspect --format="{{json .State}}" "' . $nombre . '" 2>&1', $out, $ret);
@@ -57,8 +57,7 @@ $tituloPagina = "Editar Servidor Minecraft: " . htmlspecialchars($nombre);
 
     <link rel="stylesheet" href="/TFG/css/panel.css">
     <link rel="stylesheet" href="/TFG/css/minecraft.css">
-
-  
+    <link rel="stylesheet" href="/TFG/css/mc.css">
 </head>
 <body>
 
@@ -73,31 +72,36 @@ $tituloPagina = "Editar Servidor Minecraft: " . htmlspecialchars($nombre);
 
 <main class="contenido">
 
-    <div class="form-box">
+    <!-- NAV DE SECCIONES -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('editar')">⚙️ Información</button>
+        <button class="tab-btn" onclick="openTab('control')">🖥️ Control</button>
+        <button class="tab-btn" onclick="openTab('avanzado')">🧪 Avanzado</button>
+        <button class="tab-btn" onclick="openTab('ftp')">📁 FTP</button>
+    </div>
 
-        <h2>Configuración</h2>
+    <!-- SECCIÓN EDITAR -->
+    <div id="editar" class="tab-content active">
+
+        <h2>Configuración del servidor</h2>
 
         <label>Nombre</label>
         <input type="text" id="nuevoNombre" class="input-edit" value="<?= $cont['nombre'] ?>">
 
         <label>Versión</label>
-        <input type="text" id="nuevaVersion" class="input-edit" value="<?= $mc['version'] ?>">
+        <input type="text" id="nuevaVersion" class="input-edit" value="<?= $mc['version'] ?>" readonly>
 
         <label>Tipo</label>
-        <select id="nuevoTipo" class="input-edit">
-            <option value="VANILLA" <?= $mc['tipo']=="VANILLA"?"selected":"" ?>>Vanilla</option>
-            <option value="FORGE" <?= $mc['tipo']=="FORGE"?"selected":"" ?>>Forge</option>
-            <option value="FABRIC" <?= $mc['tipo']=="FABRIC"?"selected":"" ?>>Fabric</option>
-            <option value="PAPER" <?= $mc['tipo']=="PAPER"?"selected":"" ?>>Paper</option>
-            <option value="PURPUR" <?= $mc['tipo']=="PURPUR"?"selected":"" ?>>Purpur</option>
-        </select>
+        <input type="text" id="nuevoTipo" class="input-edit" value="<?= $mc['tipo'] ?>" readonly>
 
         <label>Puerto</label>
         <input type="number" id="nuevoPuerto" class="input-edit" value="<?= $mc['puerto'] ?>">
 
         <button class="btn-save" onclick="guardarCambios()">Guardar cambios</button>
+    </div>
 
-        <hr>
+    <!-- SECCIÓN CONTROL -->
+    <div id="control" class="tab-content">
 
         <h2>Control del servidor</h2>
 
@@ -109,45 +113,37 @@ $tituloPagina = "Editar Servidor Minecraft: " . htmlspecialchars($nombre);
         <?php endif; ?>
 
         <button class="btn-delete" onclick="accion('delete')">Eliminar servidor</button>
+    </div>
 
-        <hr>
+    <!-- SECCIÓN AVANZADO -->
+    <div id="avanzado" class="tab-content">
 
         <h2>Configuración avanzada</h2>
 
         <button class="btn-start" onclick="abrirConsola()">Abrir consola</button>
+        <button class="btn-stop" onclick="cerrarConsola()">Cerrar consola</button>
 
-        <div id="consolaBox" style="
-            display:none;
-            background:#000;
-            color:#0f0;
-            padding:10px;
-            height:400px;
-            overflow-y:auto;
-            font-family: monospace;
-            border-radius:8px;
-            margin-top:20px;
-        "></div>
 
-        <div style="margin-top:10px; display:none;" id="cmdBox">
-            <input id="cmdInput" type="text" placeholder="Escribe un comando..." 
-                style="width:80%; padding:8px; font-family:monospace;">
-            <button onclick="enviarComando()" 
-                style="padding:8px 15px; background:#3b82f6; color:white; border:none; border-radius:5px;">
-                Enviar
-            </button>
+        <div id="consolaBox" class="consola"></div>
+
+        <div id="cmdBox" class="cmd-box">
+            <input id="cmdInput" type="text" placeholder="Escribe un comando...">
+            <button onclick="enviarComando()">Enviar</button>
         </div>
 
         <button class="btn-start" onclick="location.href='server_properties/editor.php?nombre=<?= $nombre ?>'">
             Editar server.properties
         </button>
+    </div>
 
-        <hr>
+    <!-- SECCIÓN FTP -->
+    <div id="ftp" class="tab-content">
 
-        <h2>FTP</h2>
+        <h2>Gestor de archivos</h2>
+
         <button class="btn-start" onclick="location.href='/TFG/contenedores/minecraft/filemanager/index.php?nombre=<?= $nombre ?>'">
             📁 Abrir gestor de archivos
         </button>
-
     </div>
 
 </main>
@@ -161,6 +157,15 @@ $tituloPagina = "Editar Servidor Minecraft: " . htmlspecialchars($nombre);
 <script src="/TFG/JS/panel.js"></script>
 
 <script>
+// CAMBIO DE TABS
+function openTab(tab) {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+    document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add("active");
+    document.getElementById(tab).classList.add("active");
+}
+
 // ACCIONES DEL SERVIDOR
 function accion(tipo) {
     fetch("/TFG/contenedores/minecraft/api/actions.php", {
@@ -171,7 +176,6 @@ function accion(tipo) {
     .then(r => r.json())
     .then(res => {
         alert(res.message);
-
         if (tipo === "delete" && res.status === "success") {
             location.href = "/TFG/panel.php";
         } else {
@@ -180,6 +184,7 @@ function accion(tipo) {
     });
 }
 
+// GUARDAR CAMBIOS
 function guardarCambios() {
     fetch("api/edit.php", {
         method: "POST",
@@ -190,7 +195,8 @@ function guardarCambios() {
             nuevoNombre: document.getElementById("nuevoNombre").value,
             nuevaVersion: document.getElementById("nuevaVersion").value,
             nuevoTipo: document.getElementById("nuevoTipo").value,
-            nuevoPuerto: document.getElementById("nuevoPuerto").value
+            nuevoPuerto: document.getElementById("nuevoPuerto").value,
+            puertoActual: <?= $mc['puerto'] ?>
         })
     })
     .then(r => r.json())
@@ -210,7 +216,7 @@ function abrirConsola() {
     const cmdBox = document.getElementById("cmdBox");
 
     consola.style.display = "block";
-    cmdBox.style.display = "block";
+    cmdBox.style.display = "flex";
 
     consola.innerHTML = "Cargando logs...\n";
 
@@ -227,6 +233,20 @@ function abrirConsola() {
             });
     }, 1000);
 }
+
+function cerrarConsola() {
+    const consola = document.getElementById("consolaBox");
+    const cmdBox = document.getElementById("cmdBox");
+
+    consola.style.display = "none";
+    cmdBox.style.display = "none";
+
+    if (consolaInterval) {
+        clearInterval(consolaInterval);
+        consolaInterval = null;
+    }
+}
+
 
 function enviarComando() {
     const cmd = document.getElementById("cmdInput").value.trim();

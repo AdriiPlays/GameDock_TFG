@@ -1,4 +1,6 @@
 
+        
+        
         .logs-wrapper {
             width: 90%;
             margin: 0 auto;
@@ -59,9 +61,9 @@
         .log-delete { background:#fee2e2; color:#991b1b; font-weight:bold; }
         .log-edit   { background:#fef9c3; color:#854d0e; font-weight:bold; }
         .log-info   { color:#334155; }
-
         .log-login  { background:#d1fae5; color:#065f46; font-weight:bold; }
         .log-logout { background:#fee2e2; color:#991b1b; font-weight:bold; }
+        .log-restart { background:#fffcc7; color:#d57712; font-weight:bold; }
 
         .paginacion {
             margin-top: 20px;

@@ -100,13 +100,34 @@ $usuarios = $conn->query("SELECT DISTINCT usuario FROM logs");
 
         <?php while ($row = $logs->fetch_assoc()): ?>
         <?php
-            $accion = strtolower($row["accion"]);
-            $clase = "log-info";
-            if (str_contains($accion, "creó") || str_contains($accion, "crear")) $clase = "log-create";
-            if (str_contains($accion, "eliminó") || str_contains($accion, "borrar")) $clase = "log-delete";
-            if (str_contains($accion, "editó") || str_contains($accion, "editar")) $clase = "log-edit";
-            if (str_contains($accion, "inició sesión")) $clase = "log-login";
-            if (str_contains($accion, "cerró sesión")) $clase = "log-logout";
+           $accion = strtolower($row["accion"]);
+$clase = "log-info";
+
+if (str_contains($accion, "creó") || str_contains($accion, "crear")) {
+    $clase = "log-create";
+}
+elseif (str_contains($accion, "eliminó") || str_contains($accion, "borrar")) {
+    $clase = "log-delete";
+}
+elseif (str_contains($accion, "editó") || str_contains($accion, "editar")) {
+    $clase = "log-edit";
+}
+elseif (str_contains($accion, "inició sesión")) {
+    $clase = "log-login";
+}
+elseif (str_contains($accion, "cerró sesión")) {
+    $clase = "log-logout";
+}
+elseif (str_contains($accion, "reinició")) {
+    $clase = "log-restart";
+}
+elseif (str_contains($accion, "detuvo")) {
+    $clase = "log-delete";
+}
+elseif (str_contains($accion, "inició")) {
+    $clase = "log-create";
+}
+
         ?>
         <tr>
             <td><?= $row["fecha"] ?></td>
