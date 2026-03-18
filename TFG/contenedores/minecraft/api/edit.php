@@ -2,29 +2,16 @@
 header("Content-Type: application/json");
 require_once __DIR__ . "/../../../config.php";
 
-// Leer JSON
-$raw = file_get_contents("php://input");
-$data = json_decode($raw, true);
+$data = json_decode(file_get_contents("php://input"), true);
 
-if (!$data) {
-    echo json_encode(["status" => "error", "message" => "JSON inválido"]);
-    exit;
-}
+$id            = $data["id"];
+$nombreActual  = $data["nombreActual"];
+$nuevoNombre   = $data["nuevoNombre"];
+$nuevaVersion  = $data["nuevaVersion"];
+$nuevoTipo     = $data["nuevoTipo"];
+$nuevoPuerto   = $data["nuevoPuerto"];
+$puertoActual  = $data["puertoActual"];
 
-$id            = $data["id"] ?? null;
-$nombreActual  = $data["nombreActual"] ?? null;
-$nuevoNombre   = $data["nuevoNombre"] ?? null;
-$nuevaVersion  = $data["nuevaVersion"] ?? null;
-$nuevoTipo     = $data["nuevoTipo"] ?? null;
-$nuevoPuerto   = $data["nuevoPuerto"] ?? null;
-
-if (!$id || !$nombreActual || !$nuevoNombre || !$nuevaVersion || !$nuevoTipo || !$nuevoPuerto) {
-    echo json_encode(["status" => "error", "message" => "Faltan datos"]);
-    exit;
-}
-
-
-// ACTUALIZAR TABLA contenedores
 
 $stmt = $conn->prepare("
     UPDATE contenedores
@@ -32,15 +19,9 @@ $stmt = $conn->prepare("
     WHERE id = ?
 ");
 $stmt->bind_param("ssii", $nuevoNombre, $nuevaVersion, $nuevoPuerto, $id);
-
-if (!$stmt->execute()) {
-    echo json_encode(["status" => "error", "message" => "Error al actualizar contenedores"]);
-    exit;
-}
+$stmt->execute();
 $stmt->close();
 
-
-// ACTUALIZAR TABLA minecraft
 
 $stmt2 = $conn->prepare("
     UPDATE minecraft
@@ -48,41 +29,47 @@ $stmt2 = $conn->prepare("
     WHERE id = ?
 ");
 $stmt2->bind_param("sssii", $nuevoNombre, $nuevaVersion, $nuevoTipo, $nuevoPuerto, $id);
-
-if (!$stmt2->execute()) {
-    echo json_encode(["status" => "error", "message" => "Error al actualizar tabla minecraft"]);
-    exit;
-}
+$stmt2->execute();
 $stmt2->close();
 
 
-// RENOMBRAR CONTENEDOR EN DOCKER (si cambia el nombre del mismo) | (si no da muchos problemas :/)
-
 if ($nombreActual !== $nuevoNombre) {
+    exec("docker rename $nombreActual $nuevoNombre");
+}
 
-    $cmdRename = sprintf(
-        'docker rename %s %s 2>&1',
-        escapeshellcmd($nombreActual),
-        escapeshellcmd($nuevoNombre)
-    );
 
-    $outRename = [];
-    $retRename = 0;
-    exec($cmdRename, $outRename, $retRename);
+if ($nuevoPuerto != $puertoActual) {
 
-    if ($retRename !== 0) {
+    // Parar contenedor
+    exec("docker stop $nuevoNombre");
+
+    // Eliminar contenedor
+    exec("docker rm $nuevoNombre");
+
+    // Crear contenedor nuevo
+ $cmdRun = sprintf(
+    'docker run -d --name %s -p %d:25565 -v /TFG/servers/%s:/data -e EULA=TRUE -e VERSION=%s -e TYPE=%s itzg/minecraft-server',
+    escapeshellcmd($nuevoNombre),
+    $nuevoPuerto,
+    escapeshellcmd($nuevoNombre),
+    escapeshellcmd($nuevaVersion),
+    escapeshellcmd($nuevoTipo)
+);
+
+
+    exec($cmdRun, $outRun, $retRun);
+
+    if ($retRun !== 0) {
         echo json_encode([
             "status" => "error",
-            "message" => "No se pudo renombrar el contenedor en Docker",
-            "docker_output" => $outRename,
-            "cmd" => $cmdRename
+            "message" => "Error al recrear el contenedor con el nuevo puerto",
+            "docker_output" => $outRun,
+            "cmd" => $cmdRun
         ]);
         exit;
     }
 }
 
-
-// RESPUESTA FINAL
 
 echo json_encode([
     "status" => "success",
