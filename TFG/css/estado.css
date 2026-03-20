@@ -26,22 +26,80 @@
     border-radius: 6px;
 }
 
+/* ============================
+   TARJETAS DE ESTADO (más pequeñas)
+============================ */
 .cuadricula-estado {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* MÁS PEQUEÑAS */
+    gap: 18px;
 }
 
 .tarjeta-estado {
     background: #fff;
-    padding: 20px;
+    padding: 15px; /* MÁS COMPACTO */
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .valor-porcentaje {
-    font-size: 22px;
+    font-size: 20px; /* un poco más pequeño */
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: #333;
+}
+
+/* ============================
+   TARJETA DEL SISTEMA (arriba)
+============================ */
+.tarjeta-sistema {
+    width: 100%;
+    background: linear-gradient(135deg, #ffffff, #f3f7ff);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    border: 1px solid #e3e9f5;
+    animation: fadeIn 0.4s ease;
+    margin-bottom: 25px; /* ESPACIO HACIA ABAJO */
+}
+
+.sistema-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.icono-so {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+}
+
+.sistema-header h3 {
+    font-size: 22px;
+    margin: 0;
+    color: #2c3e50;
+}
+
+.sistema-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px 25px;
+    margin-top: 10px;
+}
+
+.sistema-info p {
+    margin: 0;
+    font-size: 15px;
+    color: #34495e;
+}
+
+.sistema-info strong {
+    color: #2c3e50;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

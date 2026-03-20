@@ -11,45 +11,60 @@ $tituloPagina = "Logs del Sistema";
 
 $usuario = $_SESSION["usuario"];
 
-$stmt = $conn->prepare("SELECT imagen FROM usuarios WHERE usuario = ?");
+// Obtener imagen y rol admin
+$stmt = $conn->prepare("SELECT imagen, admin FROM usuarios WHERE usuario = ?");
 $stmt->bind_param("s", $usuario);
 $stmt->execute();
-$stmt->bind_result($imagenActual);
+$stmt->bind_result($imagenActual, $esAdmin);
 $stmt->fetch();
 $stmt->close();
 
 $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.png";
 
+// PAGINACIÓN
 $porPagina = 6;
 $pagina = isset($_GET["pagina"]) ? (int)$_GET["pagina"] : 1;
 $inicio = ($pagina - 1) * $porPagina;
 
+// FILTROS
 $buscar = $_GET["buscar"] ?? "";
 $filtroFecha = $_GET["fecha"] ?? "";
 $filtroUsuario = $_GET["usuario_filtro"] ?? "";
 
+// Construcción del WHERE
 $where = "WHERE 1=1";
 
+// Si NO es admin → solo ve sus logs
+if ($esAdmin != 1) {
+    $where .= " AND usuario = '$usuario'";
+}
+
+// Filtro de búsqueda
 if ($buscar !== "") {
     $b = "%$buscar%";
     $where .= " AND (usuario LIKE '$b' OR accion LIKE '$b')";
 }
 
+// Filtro de fecha
 if ($filtroFecha !== "") {
     $where .= " AND fecha LIKE '$filtroFecha%'";
 }
 
-if ($filtroUsuario !== "") {
+// Filtro de usuario (solo admins)
+if ($esAdmin == 1 && $filtroUsuario !== "") {
     $where .= " AND usuario = '$filtroUsuario'";
 }
 
+// Total de registros
 $total = $conn->query("SELECT COUNT(*) AS total FROM logs $where")->fetch_assoc()["total"];
 $totalPaginas = ceil($total / $porPagina);
 
+// Obtener logs
 $query = "SELECT * FROM logs $where ORDER BY fecha DESC LIMIT $inicio, $porPagina";
 $logs = $conn->query($query);
 
-$usuarios = $conn->query("SELECT DISTINCT usuario FROM logs");
+// Obtener lista de usuarios (solo admins)
+$usuarios = $esAdmin == 1 ? $conn->query("SELECT DISTINCT usuario FROM logs") : null;
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -79,6 +94,8 @@ $usuarios = $conn->query("SELECT DISTINCT usuario FROM logs");
         <input type="text" name="buscar" placeholder="Buscar..." value="<?= $buscar ?>">
         <input type="date" name="fecha" value="<?= $filtroFecha ?>">
 
+        <!-- Selector de usuario SOLO para admins -->
+        <?php if ($esAdmin == 1): ?>
         <select name="usuario_filtro">
             <option value="">Todos los usuarios</option>
             <?php while ($u = $usuarios->fetch_assoc()): ?>
@@ -87,6 +104,7 @@ $usuarios = $conn->query("SELECT DISTINCT usuario FROM logs");
                 </option>
             <?php endwhile; ?>
         </select>
+        <?php endif; ?>
 
         <button class="btn-pag">Filtrar</button>
     </form>
@@ -101,33 +119,16 @@ $usuarios = $conn->query("SELECT DISTINCT usuario FROM logs");
         <?php while ($row = $logs->fetch_assoc()): ?>
         <?php
            $accion = strtolower($row["accion"]);
-$clase = "log-info";
+           $clase = "log-info";
 
-if (str_contains($accion, "creó") || str_contains($accion, "crear")) {
-    $clase = "log-create";
-}
-elseif (str_contains($accion, "eliminó") || str_contains($accion, "borrar")) {
-    $clase = "log-delete";
-}
-elseif (str_contains($accion, "editó") || str_contains($accion, "editar")) {
-    $clase = "log-edit";
-}
-elseif (str_contains($accion, "inició sesión")) {
-    $clase = "log-login";
-}
-elseif (str_contains($accion, "cerró sesión")) {
-    $clase = "log-logout";
-}
-elseif (str_contains($accion, "reinició")) {
-    $clase = "log-restart";
-}
-elseif (str_contains($accion, "detuvo")) {
-    $clase = "log-delete";
-}
-elseif (str_contains($accion, "inició")) {
-    $clase = "log-create";
-}
-
+           if (str_contains($accion, "creó") || str_contains($accion, "crear")) $clase = "log-create";
+           elseif (str_contains($accion, "eliminó") || str_contains($accion, "borrar")) $clase = "log-delete";
+           elseif (str_contains($accion, "editó") || str_contains($accion, "editar")) $clase = "log-edit";
+           elseif (str_contains($accion, "inició sesión")) $clase = "log-login";
+           elseif (str_contains($accion, "cerró sesión")) $clase = "log-logout";
+           elseif (str_contains($accion, "reinició")) $clase = "log-restart";
+           elseif (str_contains($accion, "detuvo")) $clase = "log-delete";
+           elseif (str_contains($accion, "inició")) $clase = "log-create";
         ?>
         <tr>
             <td><?= $row["fecha"] ?></td>

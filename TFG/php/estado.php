@@ -44,6 +44,25 @@ $tituloPagina = "Estado del Servidor";
 
 <h2>📊 Estado del Servidor</h2>
 
+<!-- TARJETA DEL SISTEMA ARRIBA -->
+<div class="tarjeta-sistema">
+    <div class="sistema-header">
+        <img id="iconoSO" class="icono-so" src="" alt="SO">
+        <h3>Información del Sistema</h3>
+    </div>
+
+    <div class="sistema-info">
+        <p><strong>Sistema Operativo:</strong> <span id="soNombre"></span></p>
+        <p><strong>Kernel:</strong> <span id="soKernel"></span></p>
+        <p><strong>Arquitectura:</strong> <span id="soArq"></span></p>
+        <p><strong>CPU:</strong> <span id="soCpu"></span></p>
+        <p><strong>RAM Total:</strong> <span id="soRam"></span></p>
+        <p><strong>Disco Total:</strong> <span id="soDisco"></span></p>
+        <p><strong>IP del Servidor:</strong> <span id="soIp"></span></p>
+    </div>
+</div>
+
+<!-- TARJETAS DE ESTADO DEBAJO -->
 <div class="cuadricula-estado">
 
     <div class="tarjeta-estado">
@@ -92,6 +111,8 @@ $tituloPagina = "Estado del Servidor";
 
 </main>
 
+
+
 <script>
 // Crear gráficas
 function crearGrafica(id, etiqueta, color) {
@@ -124,11 +145,42 @@ let tempGpuChart = crearGrafica("tempGpuChart", "Temp GPU", "purple");
 let diskChart = crearGrafica("diskChart", "Disco %", "brown");
 let netChart = crearGrafica("netChart", "Red KB/s", "teal");
 
-setInterval(() => {
+function detectarIconoSO(nombre) {
+    nombre = nombre.toLowerCase();
+
+    if (nombre.includes("ubuntu")) return "/TFG/img/os/ubuntu.png";
+    if (nombre.includes("debian")) return "/TFG/img/os/debian.png";
+    if (nombre.includes("arch")) return "/TFG/img/os/arch.png";
+    if (nombre.includes("centos")) return "/TFG/img/os/centos.png";
+    if (nombre.includes("fedora")) return "/TFG/img/os/fedora.png";
+    if (nombre.includes("windows")) return "/TFG/img/os/windows.png";
+
+    return "/TFG/img/os/linux.png";
+}
+
+
+function cargarInfoSistema() {
     fetch("../api/estado.php")
         .then(r => r.json())
         .then(data => {
 
+            
+            // Información del sistema operativo
+           
+            document.getElementById("soNombre").innerText = data.sistema.so;
+            document.getElementById("soKernel").innerText = data.sistema.kernel;
+            document.getElementById("soArq").innerText = data.sistema.arquitectura;
+            document.getElementById("soCpu").innerText = data.sistema.cpu;
+            document.getElementById("soRam").innerText = data.sistema.ram_total;
+            document.getElementById("soDisco").innerText = data.sistema.disco_total;
+            document.getElementById("soIp").innerText = data.sistema.ip;
+
+            // Icono automático
+            document.getElementById("iconoSO").src = detectarIconoSO(data.sistema.so);
+
+          
+            // Gráficas 
+         
             function actualizarGrafica(chart, valor) {
                 chart.data.labels.push("");
                 chart.data.datasets[0].data.push(valor);
@@ -149,6 +201,7 @@ setInterval(() => {
             actualizarGrafica(diskChart, data.disco.porcentaje);
             actualizarGrafica(netChart, data.red.total);
 
+          
             document.getElementById("ramValor").innerText = data.ram.porcentaje + "%";
             document.getElementById("cpuValor").innerText = data.cpu.porcentaje + "%";
             document.getElementById("gpuValor").innerText = (data.gpu.porcentaje || 0) + "%";
@@ -157,8 +210,15 @@ setInterval(() => {
             document.getElementById("discoValor").innerText = data.disco.porcentaje + "%";
             document.getElementById("redValor").innerText = data.red.total + " KB/s";
         });
-}, 2000);
+}
+
+
+setInterval(cargarInfoSistema, 2000);
+
+
+cargarInfoSistema();
 </script>
+
 <script src="/TFG/JS/panel.js"></script>
 </body>
 </html>

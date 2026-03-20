@@ -366,13 +366,22 @@ body {
     color: #1e293b;
 }
 
-
+/* ESTO CAMBIA EL COLOR BLANCO FEO DEL TEXTO */
 .card-version {
-    margin: 0;
-    font-size: 15px;
-    color: #475569;
+    color: #ffffff;
+    font-weight: 900;
+    text-shadow: 0 0 8px rgba(0,0,0,0.6);
 }
 
+.card-header h3 {
+    color: #ffffff;                 
+    font-weight: 900;               
+    font-size: 22px;                
+    margin: 0;
+    text-shadow: 0 0 8px rgba(0,0,0,0.7); 
+}
+
+/* ESTO CAMBIA EL COLOR BLANCO FEO DEL TEXTO */
 
 .contenedores-lista {
     display: flex;
@@ -426,4 +435,11 @@ body {
 
 .iso-mariadb { background: linear-gradient(135deg, #1E88E5, #0D47A1); color: white; }
 
-.iso-minecraft { background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; }
+/*.iso-minecraft { background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; } */
+.iso-minecraft {
+    background-image: url("/TFG/img/mc.jpg"); 
+    background-size: cover;        
+    background-position: center;   
+    background-repeat: no-repeat;  
+    color: white;
+}
