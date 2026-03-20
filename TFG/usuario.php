@@ -30,18 +30,7 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
 <body>
 
 
-<div id="sidebar" class="sidebar">
-    <nav class="sidebar-menu">
-        <div class="menu-item user-item">
-            <img src="<?= $imagenPerfil ?>" class="avatar-small" alt="Foto">
-            <span><?= htmlspecialchars($usuario) ?></span>
-        </div>
-        <a href="panel_logs.php" class="menu-item">📜 Logs</a>
-        <a href="panel.php" class="menu-item">📦 Instancias</a>
-        <a href="crear_usuario.php" class="menu-item">👤 Añadir usuarios</a>
-        <a href="logout.php" class="menu-item logout">🚪 Cerrar sesión</a>
-    </nav>
-</div>
+<?php include "php/menu.php"; ?>
 
 <div class="main-content" id="main">
 
@@ -49,6 +38,7 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
     <div id="menu-btn" class="menu-btn">☰</div>
     <h1>Editar Usuario</h1>
 </header>
+
 
 <main class="contenido">
 
@@ -100,7 +90,7 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
 </footer>
 
 </div>
-
+<script src="JS/panel.js"></script>
 <script>
 const menuBtn = document.getElementById("menu-btn");
 const sidebar = document.getElementById("sidebar");

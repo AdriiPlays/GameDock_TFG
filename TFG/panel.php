@@ -68,6 +68,7 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
 
                     <p class="card-version">ISO: <?= $c["iso"] ?></p>
                     <p class="card-version">Versión: <?= $c["version"] ?></p>
+                    <p class="card-version">Puerto: <?= $c["puerto"] ?></p>
 
                     <button class="btn-delete"
                             onclick="event.stopPropagation(); eliminarContenedor('<?= $c['nombre'] ?>', '<?= $c['iso'] ?>')">
