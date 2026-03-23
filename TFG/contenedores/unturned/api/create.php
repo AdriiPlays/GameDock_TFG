@@ -67,6 +67,8 @@ if (!$stmt2->execute()) {
 
 $stmt2->close();
 
+
+
 /* ============================
    CREAR CONTENEDOR DOCKER
    ============================ */
@@ -75,9 +77,10 @@ $cmd = sprintf(
     'docker run -d --name %s ' .
     '-p %d:27015/udp -p %d:27015/tcp ' .
     '-v unturned_%s:/home/steam/unturned ' .
-    'admuro/unturned:latest ' .
-    './Unturned_Headless.x86_64 -nographics -batchmode +secureserver "%s" +port %d 2>&1',
-    
+    '-e SERVER_NAME="%s" ' .
+    '-e SERVER_PORT=%d ' .
+    'admuro/unturned:latest 2>&1',
+
     escapeshellcmd($nombre),
     $puerto,
     $puerto,
@@ -85,6 +88,7 @@ $cmd = sprintf(
     escapeshellcmd($nombre),
     $puerto
 );
+
 shell_exec($cmd . " > /dev/null 2>&1 &");
 
 

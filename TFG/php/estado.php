@@ -149,10 +149,6 @@ function detectarIconoSO(nombre) {
     nombre = nombre.toLowerCase();
 
     if (nombre.includes("ubuntu")) return "/TFG/img/os/ubuntu.png";
-    if (nombre.includes("debian")) return "/TFG/img/os/debian.png";
-    if (nombre.includes("arch")) return "/TFG/img/os/arch.png";
-    if (nombre.includes("centos")) return "/TFG/img/os/centos.png";
-    if (nombre.includes("fedora")) return "/TFG/img/os/fedora.png";
     if (nombre.includes("windows")) return "/TFG/img/os/windows.png";
 
     return "/TFG/img/os/linux.png";

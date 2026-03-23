@@ -1,40 +1,21 @@
 <?php
 header("Content-Type: application/json");
-session_start();
 
-if (!isset($_SESSION["usuario"])) {
-    echo json_encode(["estado" => "error", "mensaje" => "No autorizado"]);
-    exit;
-}
-
-$servidor = $_POST["servidor"] ?? null;
+$contenedor = $_POST["servidor"] ?? null;
 $ruta = $_POST["ruta"] ?? null;
 
-if (!$servidor || !isset($_FILES["archivo"])) {
-    echo json_encode(["estado" => "error", "mensaje" => "Faltan datos"]);
+if (!$contenedor || !$ruta || !isset($_FILES["archivo"])) {
+    echo json_encode(["estado" => "error", "mensaje" => "Parámetros inválidos"]);
     exit;
 }
 
-// Si no se especifica ruta, usar la raíz del servidor Unturned
-if (!$ruta) {
-    $ruta = "/home/steam/unturned/Servers/$servidor";
-}
+$tmp = $_FILES["archivo"]["tmp_name"];
+$destino = rtrim($ruta, "/") . "/" . basename($_FILES["archivo"]["name"]);
 
-$archivoTmp = $_FILES["archivo"]["tmp_name"];
-$nombreArchivo = basename($_FILES["archivo"]["name"]);
+$cmd = "docker cp " . escapeshellarg($tmp) . " " . escapeshellarg("$contenedor:$destino");
+exec($cmd, $out, $code);
 
-// Ruta destino dentro del contenedor
-$rutaDestino = rtrim($ruta, "/") . "/" . $nombreArchivo;
-
-// Comando docker cp
-$comando = "docker cp " . escapeshellarg($archivoTmp) . " " .
-           escapeshellarg($servidor . ":" . $rutaDestino);
-
-exec($comando, $salida, $codigo);
-
-if ($codigo !== 0) {
-    echo json_encode(["estado" => "error", "mensaje" => "Error al subir el archivo"]);
-    exit;
-}
-
-echo json_encode(["estado" => "exito", "mensaje" => "Archivo subido correctamente"]);
+echo json_encode([
+    "estado" => $code === 0 ? "exito" : "error",
+    "mensaje" => $code === 0 ? "Archivo subido" : "No se pudo subir"
+]);
