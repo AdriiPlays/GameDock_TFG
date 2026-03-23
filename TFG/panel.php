@@ -89,7 +89,7 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
             <label>Selecciona el tipo de servidor</label>
             <select id="tipoServidor" class="input-edit">
                 <option value="minecraft">Minecraft</option>
-                <option value="mariadb">MariaDB</option>
+                <option value="unturned">Unturned</option>
                 <option value="debian">Debian</option>
                 <option value="alpine">Alpine</option>
             </select>
