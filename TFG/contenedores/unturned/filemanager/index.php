@@ -1,26 +1,22 @@
 <?php
 session_start();
 
-$servidor = $_GET["nombre"] ?? null;
+$contenedor = $_GET["nombre"] ?? null;
 $ruta = $_GET["ruta"] ?? null;
 
-if (!$servidor) {
+if (!$contenedor) {
     die("No se especificó el servidor.");
 }
 
-/*
-    Ruta base REAL de Unturned:
+// Carpeta fija del servidor interno
+$serverFolder = "DockerServer";
 
-    /home/steam/unturned/Servers/<ServerName>
-
-    Si no se especifica ruta, usamos la raíz del servidor.
-*/
-
+// Si no hay ruta → usar la carpeta fija
 if (!$ruta) {
-    $ruta = "/home/steam/unturned/Servers/$servidor";
+    $ruta = "/home/steam/unturned/Servers/$serverFolder";
 }
 
-$tituloPagina = "Gestor de archivos - " . htmlspecialchars($servidor);
+$tituloPagina = "Gestor de archivos - " . htmlspecialchars($contenedor);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -45,13 +41,12 @@ $tituloPagina = "Gestor de archivos - " . htmlspecialchars($servidor);
 
 <main class="contenido">
 
-<button class="btn-volver" onclick="location.href='/TFG/contenedores/unturned/editar.php?nombre=<?= $servidor ?>'">
+<button class="btn-volver" onclick="location.href='/TFG/contenedores/unturned/editar.php?nombre=<?= $contenedor ?>'">
     ⬅️ Volver al servidor
 </button>
 
 <h3>Ruta actual: <?= htmlspecialchars($ruta) ?></h3>
 
-<!-- SUBIR ARCHIVOS -->
 <form id="formSubir" enctype="multipart/form-data" method="POST" style="margin-bottom:20px;">
     <input type="file" name="archivo" required>
     <button type="submit">⬆️ Subir archivo</button>
@@ -72,7 +67,7 @@ $tituloPagina = "Gestor de archivos - " . htmlspecialchars($servidor);
 
 <script>
 function cargarArchivos() {
-    fetch("api/listar.php?servidor=<?= $servidor ?>&ruta=<?= urlencode($ruta) ?>")
+    fetch("api/listar.php?servidor=<?= $contenedor ?>&ruta=<?= urlencode($ruta) ?>")
         .then(r => r.json())
         .then(res => {
             if (res.estado !== "exito") {
@@ -82,29 +77,29 @@ function cargarArchivos() {
 
             let html = "";
 
-            // Botón para volver atrás
-            if ("<?= $ruta ?>" !== "/home/steam/unturned/Servers/<?= $servidor ?>") {
+            if ("<?= $ruta ?>" !== "/home/steam/unturned/Servers/DockerServer") {
                 let rutaActual = "<?= $ruta ?>";
                 let partes = rutaActual.split("/");
                 partes.pop();
                 let rutaPadre = partes.join("/");
-                if (rutaPadre === "") rutaPadre = "/home/steam/unturned/Servers/<?= $servidor ?>";
+                if (rutaPadre === "") rutaPadre = "/home/steam/unturned/Servers/DockerServer";
 
                 html += `<div class="archivo carpeta" onclick="abrir('${rutaPadre}', true)">⬅️ Volver</div>`;
             }
 
             res.archivos.forEach(a => {
                 html += `
-                <div class="archivo ${a.es_carpeta ? 'carpeta' : ''}">
-                    <span onclick="abrir('${a.ruta}', ${a.es_carpeta})">
-                        ${a.es_carpeta ? "📁" : "📄"} ${a.nombre}
-                    </span>
+<div class="archivo ${a.es_carpeta ? 'carpeta' : ''}">
+    <span onclick="abrir('${a.ruta}', ${a.es_carpeta})">
+        ${a.es_carpeta ? "📁" : "📄"} ${a.nombre}
+    </span>
 
-                    <button onclick="borrar('${a.ruta}')" style="float:right; margin-left:5px;">🗑️</button>
+    <button onclick="borrar('${a.ruta}')" style="float:right; margin-left:5px;">🗑️</button>
 
-                    ${!a.es_carpeta ? `<button onclick="editar('${a.ruta}')" style="float:right; margin-right:5px;">✏️</button>` : ""}
-                    ${!a.es_carpeta ? `<button onclick="descargar('${a.ruta}')" style="float:right;">⬇️</button>` : ""}
-                </div>`;
+    ${!a.es_carpeta ? `<button onclick="editar('${a.ruta}')" style="float:right; margin-right:5px;">✏️</button>` : ""}
+    ${!a.es_carpeta ? `<button onclick="descargar('${a.ruta}')" style="float:right;">⬇️</button>` : ""}
+</div>`;
+
             });
 
             document.getElementById("contenedor").innerHTML = html;
@@ -113,21 +108,21 @@ function cargarArchivos() {
 
 function abrir(ruta, esCarpeta) {
     if (esCarpeta) {
-        location.href = "index.php?nombre=<?= $servidor ?>&ruta=" + encodeURIComponent(ruta);
+        location.href = "index.php?nombre=<?= $contenedor ?>&ruta=" + encodeURIComponent(ruta);
     } else {
         editar(ruta);
     }
 }
 
 function descargar(ruta) {
-    window.location.href = "api/descargar.php?servidor=<?= $servidor ?>&ruta=" + encodeURIComponent(ruta);
+    window.location.href = "api/descargar.php?servidor=<?= $contenedor ?>&ruta=" + encodeURIComponent(ruta);
 }
 
 function borrar(ruta) {
     if (!confirm("¿Seguro que quieres borrar este archivo o carpeta?")) return;
 
     let formData = new FormData();
-    formData.append("servidor", "<?= $servidor ?>");
+    formData.append("servidor", "<?= $contenedor ?>");
     formData.append("ruta", ruta);
 
     fetch("api/borrar.php", {
@@ -146,7 +141,7 @@ function crearCarpeta() {
     if (!nombre) return;
 
     let formData = new FormData();
-    formData.append("servidor", "<?= $servidor ?>");
+    formData.append("servidor", "<?= $contenedor ?>");
     formData.append("ruta", "<?= $ruta ?>");
     formData.append("nombre", nombre);
 
@@ -162,7 +157,7 @@ function crearCarpeta() {
 }
 
 function editar(ruta) {
-    fetch("api/leer.php?servidor=<?= $servidor ?>&ruta=" + encodeURIComponent(ruta))
+    fetch("api/leer.php?servidor=<?= $contenedor ?>&ruta=" + encodeURIComponent(ruta))
         .then(r => r.json())
         .then(res => {
             if (res.estado !== "exito") return alert("Error al abrir archivo");
@@ -187,7 +182,7 @@ function guardar(ruta) {
     let contenido = document.getElementById("editor").value;
 
     let formData = new FormData();
-    formData.append("servidor", "<?= $servidor ?>");
+    formData.append("servidor", "<?= $contenedor ?>");
     formData.append("ruta", ruta);
     formData.append("contenido", contenido);
 
@@ -206,7 +201,7 @@ document.getElementById("formSubir").addEventListener("submit", async function(e
     e.preventDefault();
 
     let formData = new FormData(this);
-    formData.append("servidor", "<?= $servidor ?>");
+    formData.append("servidor", "<?= $contenedor ?>");
     formData.append("ruta", "<?= $ruta ?>");
 
     let res = await fetch("api/subir.php", {

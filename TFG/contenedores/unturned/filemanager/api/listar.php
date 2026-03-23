@@ -1,49 +1,34 @@
 <?php
-
 header("Content-Type: application/json");
-session_start();
 
-$servidor = $_GET["servidor"] ?? null;
+$contenedor = $_GET["servidor"] ?? null;
 $ruta = $_GET["ruta"] ?? null;
 
-if (!$servidor) {
-    echo json_encode(["estado" => "error", "mensaje" => "No se especificó el servidor"]);
+if (!$contenedor || !$ruta) {
+    echo json_encode(["estado" => "error", "mensaje" => "Parámetros inválidos"]);
     exit;
 }
 
-// Ruta base real de Unturned
-if (!$ruta) {
-    $ruta = "/home/steam/unturned/Servers/$servidor";
-}
+$cmd = "docker exec " . escapeshellarg($contenedor) . " ls -1p " . escapeshellarg($ruta);
+exec($cmd, $salida, $code);
 
-// Ejecutar ls dentro del contenedor
-$comando = "docker exec " . escapeshellarg($servidor) . " ls -1p " . escapeshellarg($ruta);
-exec($comando, $salida, $codigo);
-
-if ($codigo !== 0) {
-    echo json_encode(["estado" => "error", "mensaje" => "No se pudo listar la carpeta"]);
+if ($code !== 0) {
+    echo json_encode(["estado" => "error", "mensaje" => "No se pudo listar"]);
     exit;
 }
 
 $archivos = [];
 
-foreach ($salida as $nombre) {
-    if ($nombre === "." || $nombre === "..") continue;
-
-    $esCarpeta = str_ends_with($nombre, "/");
-
-    // Construir ruta interna correcta
-    $rutaCompleta = rtrim($ruta, "/") . "/" . rtrim($nombre, "/");
+foreach ($salida as $item) {
+    $item = trim($item);
+    $esCarpeta = str_ends_with($item, "/");
+    $rutaCompleta = rtrim($ruta, "/") . "/" . rtrim($item, "/");
 
     $archivos[] = [
-        "nombre" => rtrim($nombre, "/"),
+        "nombre" => rtrim($item, "/"),
         "ruta" => $rutaCompleta,
-        "es_carpeta" => $esCarpeta,
-        "tamano" => null
+        "es_carpeta" => $esCarpeta
     ];
 }
 
-echo json_encode([
-    "estado" => "exito",
-    "archivos" => $archivos
-]);
+echo json_encode(["estado" => "exito", "archivos" => $archivos]);

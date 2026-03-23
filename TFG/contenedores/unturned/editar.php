@@ -145,6 +145,8 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
             <button class="btn-start" onclick="accion('start')">Iniciar</button>
         <?php endif; ?>
 
+    <button class="btn-update" onclick="accion('update')">Actualizar servidor</button>
+
         <button class="btn-delete" onclick="accion('delete')">Eliminar servidor</button>
     </div>
 
@@ -164,9 +166,7 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
             <button onclick="enviarComando()">Enviar</button>
         </div>
 
-        <button class="btn-start" onclick="location.href='server_properties/editor.php?nombre=<?= $nombre ?>'">
-            Editar server.properties
-        </button>
+    
     </div>
 
     <!-- SECCIÓN FTP -->

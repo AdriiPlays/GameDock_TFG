@@ -1,38 +1,21 @@
 <?php
-session_start();
+header("Content-Type: application/json");
 
-if (!isset($_SESSION["usuario"])) {
-    echo json_encode(["estado" => "error", "mensaje" => "No autorizado"]);
-    exit;
-}
-
-$servidor = $_POST["servidor"] ?? null;
+$contenedor = $_POST["servidor"] ?? null;
 $ruta = $_POST["ruta"] ?? null;
 $nombre = $_POST["nombre"] ?? null;
 
-if (!$servidor || !$ruta || !$nombre) {
-    echo json_encode(["estado" => "error", "mensaje" => "Faltan parámetros"]);
+if (!$contenedor || !$ruta || !$nombre) {
+    echo json_encode(["estado" => "error", "mensaje" => "Parámetros inválidos"]);
     exit;
 }
 
-// Normalizar ruta
-if (!str_starts_with($ruta, "/")) {
-    $ruta = "/" . $ruta;
-}
+$nuevaRuta = rtrim($ruta, "/") . "/" . $nombre;
 
-// NO forzar /data → Unturned NO usa esa ruta
-// Usamos la ruta tal cual viene del FileManager
+$cmd = "docker exec " . escapeshellarg($contenedor) . " mkdir -p " . escapeshellarg($nuevaRuta);
+exec($cmd, $out, $code);
 
-// Ruta final donde se creará la carpeta
-$rutaNueva = rtrim($ruta, "/") . "/" . $nombre;
-
-// Crear carpeta dentro del contenedor
-$comando = "docker exec " . escapeshellarg($servidor) . " mkdir -p " . escapeshellarg($rutaNueva);
-exec($comando, $salida, $codigo);
-
-if ($codigo !== 0) {
-    echo json_encode(["estado" => "error", "mensaje" => "No se pudo crear la carpeta"]);
-    exit;
-}
-
-echo json_encode(["estado" => "exito", "mensaje" => "Carpeta creada correctamente"]);
+echo json_encode([
+    "estado" => $code === 0 ? "exito" : "error",
+    "mensaje" => $code === 0 ? "Carpeta creada" : "No se pudo crear"
+]);

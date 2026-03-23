@@ -28,43 +28,7 @@ $listaVersiones = [
     <link rel="stylesheet" href="/TFG/css/panel.css">
     <link rel="stylesheet" href="/TFG/css/minecraft.css"> 
 </head>
-<style>
 
-#loadingOverlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-#loadingOverlay.active {
-    display: flex;
-}
-
-.spinner {
-    border: 6px solid #f3f3f3;
-    border-top: 6px solid #3498db;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
-    margin-bottom: 20px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-</style>
 <body>
 
 <!-- SIDEBAR -->
@@ -96,7 +60,7 @@ $listaVersiones = [
         <h2>Configuración del servidor</h2>
 
         <label>Nombre del servidor</label>
-        <input type="text" id="nombre" class="input-edit" placeholder="Ej: unturned01">
+        <input type="text" id="nombre" oninput="this.value = this.value.replace(/[^a-zA-Z0-9_\-]/g, '-')" class="input-edit" placeholder="Ej: unturned01">
 
         <label>Versión</label>
         <select id="version" class="input-edit">

@@ -45,10 +45,10 @@ $stmt->execute();
 $stmt->close();
 
 // ===============================
-// 2. ACTUALIZAR TABLA minecraft
+// 2. ACTUALIZAR TABLA unturned
 // ===============================
 $stmt2 = $conn->prepare("
-    UPDATE minecraft
+    UPDATE unturned
     SET nombre = ?, version = ?, tipo = ?, puerto = ?, ram = ?
     WHERE id = ?
 ");
@@ -76,6 +76,8 @@ if ($nuevaRAM !== null && intval($nuevaRAM) !== intval($ramActual)) {
     $requiereRecrear = true;
 }
 
+
+
 // ===============================
 // 5. RECREAR CONTENEDOR SI ES NECESARIO
 // ===============================
@@ -90,7 +92,7 @@ if ($requiereRecrear) {
     // Construir comando docker run
     // Crear contenedor Unturned
     $cmdRun = sprintf(
-        'docker run -d --name %s -p %d:27015/udp -p %d:27015/tcp -e STEAMCMD_APPID=304930 -e SERVER_NAME=%s -e SERVER_PORT=%d -v unturned_%s:/home/steam/unturned cm2network/unturned 2>&1',
+        'docker run -d --name %s -p %d:27015/udp -p %d:27015/tcp -e STEAMCMD_APPID=304930 -e SERVER_NAME=%s -e SERVER_PORT=%d -v unturned_%s:/home/steam/unturned admuro/unturned 2>&1',
         escapeshellcmd($nuevoNombre),
         $nuevoPuerto,
         $nuevoPuerto,
@@ -119,5 +121,5 @@ if ($requiereRecrear) {
 // ===============================
 echo json_encode([
     "status" => "success",
-    "message" => "Servidor Minecraft actualizado correctamente"
+    "message" => "Servidor Unturned actualizado correctamente"
 ]);

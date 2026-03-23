@@ -5,10 +5,10 @@ if (!isset($_SESSION["usuario"])) {
     die("No autorizado");
 }
 
-$servidor = $_GET["servidor"] ?? null;
+$contenedor = $_GET["servidor"] ?? null;
 $ruta = $_GET["ruta"] ?? null;
 
-if (!$servidor || !$ruta) {
+if (!$contenedor || !$ruta) {
     die("Faltan parámetros");
 }
 
@@ -19,15 +19,15 @@ $nombreArchivo = basename($ruta);
 $tmp = sys_get_temp_dir() . "/" . uniqid("dl_") . "_" . $nombreArchivo;
 
 // Copiar desde el contenedor al host
-$comando = "docker cp " . escapeshellarg($servidor . ":" . $ruta) . " " . escapeshellarg($tmp);
-exec($comando, $salida, $codigo);
+$cmd = "docker cp " . escapeshellarg("$contenedor:$ruta") . " " . escapeshellarg($tmp);
+exec($cmd, $out, $code);
 
-if ($codigo !== 0 || !file_exists($tmp)) {
+if ($code !== 0 || !file_exists($tmp)) {
     die("Error al extraer el archivo del contenedor");
 }
 
 // Enviar archivo al navegador
-header("Content-Disposition: attachment; filename=\"$nombreArchivo\"");
+header("Content-Disposition: attachment; filename=\"" . $nombreArchivo . "\"");
 header("Content-Type: application/octet-stream");
 header("Content-Length: " . filesize($tmp));
 
