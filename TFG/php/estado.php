@@ -44,7 +44,7 @@ $tituloPagina = "Estado del Servidor";
 
 <h2>📊 Estado del Servidor</h2>
 
-<!-- TARJETA DEL SISTEMA ARRIBA -->
+
 <div class="tarjeta-sistema">
     <div class="sistema-header">
         <img id="iconoSO" class="icono-so" src="" alt="SO">
