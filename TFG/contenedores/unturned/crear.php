@@ -116,7 +116,8 @@ document.getElementById("btnCrear").addEventListener("click", () => {
         return;
     }
 
-
+    // MOSTRAR LOADER
+    mostrarLoader();
 
     fetch("api/create.php", {
         method: "POST",
@@ -126,7 +127,8 @@ document.getElementById("btnCrear").addEventListener("click", () => {
     .then(r => r.json())
     .then(res => {
 
-     
+        // OCULTAR LOADER
+        ocultarLoader();
 
         if (res.status === "success") {
             alert("Servidor de Unturned creado correctamente");
@@ -136,17 +138,17 @@ document.getElementById("btnCrear").addEventListener("click", () => {
         }
     })
     .catch(err => {
+
+        // OCULTAR LOADER
+        ocultarLoader();
+
         console.error(err);
-
-
-
         alert("No se pudo conectar con la API");
     });
 });
-
-
-
 </script>
+
+<?php include __DIR__ . "/../../Funciones/carga.php"; ?>
 
 
 

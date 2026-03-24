@@ -89,13 +89,19 @@ document.getElementById("btnCrear").addEventListener("click", () => {
         return;
     }
 
+    // MOSTRAR LOADER
+    mostrarLoader();
+
     fetch("api/create.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, puerto })
+        body: JSON.stringify({ nombre, puerto }) // ← CORREGIDO
     })
     .then(r => r.json())
     .then(res => {
+
+        // OCULTAR LOADER
+        ocultarLoader();
 
         if (res.status === "success") {
             alert("Contenedor Python creado correctamente");
@@ -105,11 +111,17 @@ document.getElementById("btnCrear").addEventListener("click", () => {
         }
     })
     .catch(err => {
+
+        // OCULTAR LOADER
+        ocultarLoader();
+
         console.error(err);
         alert("No se pudo conectar con la API");
     });
 });
 </script>
 
+
+<?php include __DIR__ . "/../../Funciones/carga.php"; ?>
 </body>
 </html>
