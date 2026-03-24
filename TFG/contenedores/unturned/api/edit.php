@@ -13,9 +13,9 @@ $nuevoPuerto   = $data["nuevoPuerto"];
 $puertoActual  = $data["puertoActual"];
 $nuevaRAM      = $data["nuevaRAM"] ?? null;
 
-// ===============================
+
 // OBTENER RAM ACTUAL DE LA BD
-// ===============================
+
 $stmtRAM = $conn->prepare("SELECT ram FROM minecraft WHERE id = ?");
 $stmtRAM->bind_param("i", $id);
 $stmtRAM->execute();
@@ -24,17 +24,17 @@ $stmtRAM->close();
 
 $ramActual = intval($resRAM["ram"]);
 
-// ===============================
+
 // CONVERTIR RAM A FORMATO ITZG
-// ===============================
+
 $ramG = null;
 if ($nuevaRAM !== null) {
     $ramG = round($nuevaRAM / 1024, 2) . "G";
 }
 
-// ===============================
-// 1. ACTUALIZAR TABLA contenedores
-// ===============================
+
+// ACTUALIZAR TABLA contenedores
+
 $stmt = $conn->prepare("
     UPDATE contenedores
     SET nombre = ?, version = ?, puerto = ?
@@ -44,9 +44,9 @@ $stmt->bind_param("ssii", $nuevoNombre, $nuevaVersion, $nuevoPuerto, $id);
 $stmt->execute();
 $stmt->close();
 
-// ===============================
-// 2. ACTUALIZAR TABLA unturned
-// ===============================
+
+// ACTUALIZAR TABLA unturned
+
 $stmt2 = $conn->prepare("
     UPDATE unturned
     SET nombre = ?, version = ?, tipo = ?, puerto = ?, ram = ?
@@ -56,16 +56,15 @@ $stmt2->bind_param("sssisi", $nuevoNombre, $nuevaVersion, $nuevoTipo, $nuevoPuer
 $stmt2->execute();
 $stmt2->close();
 
-// ===============================
-// 3. RENOMBRAR CONTENEDOR SI CAMBIA NOMBRE
-// ===============================
+
+// RENOMBRAR CONTENEDOR
+
 if ($nombreActual !== $nuevoNombre) {
     exec("docker rename $nombreActual $nuevoNombre");
 }
 
-// ===============================
-// 4. DETERMINAR SI HAY QUE RECREAR
-// ===============================
+
+
 $requiereRecrear = false;
 
 if ($nuevoPuerto != $puertoActual) {
@@ -78,9 +77,9 @@ if ($nuevaRAM !== null && intval($nuevaRAM) !== intval($ramActual)) {
 
 
 
-// ===============================
-// 5. RECREAR CONTENEDOR SI ES NECESARIO
-// ===============================
+
+// RECREAR CONTENEDOR
+
 if ($requiereRecrear) {
 
     // Parar contenedor
@@ -89,7 +88,7 @@ if ($requiereRecrear) {
     // Eliminar contenedor
     exec("docker rm $nuevoNombre");
 
-    // Construir comando docker run
+    
     // Crear contenedor Unturned
     $cmdRun = sprintf(
         'docker run -d --name %s -p %d:27015/udp -p %d:27015/tcp -e STEAMCMD_APPID=304930 -e SERVER_NAME=%s -e SERVER_PORT=%d -v unturned_%s:/home/steam/unturned admuro/unturned 2>&1',
@@ -116,9 +115,9 @@ if ($requiereRecrear) {
     }
 }
 
-// ===============================
-// 6. RESPUESTA FINAL
-// ===============================
+
+// RESPUESTA JSON
+
 echo json_encode([
     "status" => "success",
     "message" => "Servidor Unturned actualizado correctamente"

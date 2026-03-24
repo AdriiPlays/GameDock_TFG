@@ -47,7 +47,7 @@ $imagenPerfil = !empty($_SESSION["imagen"])
 </head>
 <body>
 
-<!-- SIDEBAR -->
+
 <div id="sidebar" class="sidebar">
     <nav class="sidebar-menu">
         <div id="editUserBox" class="menu-item user-item">
@@ -62,7 +62,7 @@ $imagenPerfil = !empty($_SESSION["imagen"])
     </nav>
 </div>
 
-<!-- MAIN -->
+
 <div class="main-content" id="main">
 
 <header class="header">
@@ -105,7 +105,7 @@ $imagenPerfil = !empty($_SESSION["imagen"])
 
 </div>
 
-<!-- JS MENU LATERAL -->
+
 <script>
 const menuBtn = document.getElementById("menu-btn");
 const sidebar = document.getElementById("sidebar");
@@ -119,7 +119,7 @@ document.addEventListener("click", (e) => {
 });
 </script>
 
-<!-- JS CREAR SERVIDOR -->
+
 <script>
 document.getElementById("btnCrear").addEventListener("click", () => {
 

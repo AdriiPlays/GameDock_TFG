@@ -9,21 +9,13 @@ $imagenPerfil = !empty($_SESSION["imagen"])
     ? "../../uploads/" . $_SESSION["imagen"]
     : "../../uploads/default.png";
 
-// VERSIONES UNTURNED
-
-
-$listaVersiones = [
-    "3.24.0.0", "3.23.11.0", "3.23.10.0", "3.23.9.0", "3.23.8.0",
-    "3.23.7.0", "3.23.6.0", "3.23.5.0", "3.23.4.0", "3.23.3.0",
-    "3.23.2.0", "3.23.1.0", "3.23.0.0",
-    "3.22.0.0", "3.21.0.0", "3.20.0.0"
-];
+$tituloPagina = "Crear Contenedor Python";
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Crear Servidor Unturned</title>
+    <title><?= $tituloPagina ?></title>
     <link rel="stylesheet" href="/TFG/css/panel.css">
     <link rel="stylesheet" href="/TFG/css/minecraft.css"> 
 </head>
@@ -49,35 +41,21 @@ $listaVersiones = [
 
 <header class="header">
     <div id="menu-btn" class="menu-btn">☰</div>
-    <h1>Crear Servidor Unturned</h1>
+    <h1><?= $tituloPagina ?></h1>
 </header>
 
 <main class="contenido">
 
     <div class="form-box">
-        <h2>Configuración del servidor</h2>
+        <h2>Configuración del contenedor Python</h2>
 
-        <label>Nombre del servidor</label>
-        <input type="text" id="nombre" oninput="this.value = this.value.replace(/[^a-zA-Z0-9_\-]/g, '-')" class="input-edit" placeholder="Ej: unturned01">
-
-        <label>Versión</label>
-        <select id="version" class="input-edit">
-            <?php foreach ($listaVersiones as $v): ?>
-                <option value="<?= $v ?>"><?= $v ?></option>
-            <?php endforeach; ?>
-        </select>
-
-        <label>Tipo</label>
-        <select id="tipo" class="input-edit">
-            <option value="VANILLA">Vanilla</option>
-            <option value="ROCKETMOD">RocketMod</option>
-            <option value="OPENMOD">OpenMod</option>
-        </select>
+        <label>Nombre del contenedor</label>
+        <input type="text" id="nombre" oninput="this.value = this.value.replace(/[^a-zA-Z0-9_\-]/g, '-')" class="input-edit" placeholder="Ej: python01">
 
         <label>Puerto</label>
-        <input type="number" id="puerto" class="input-edit" placeholder="27015">
+        <input type="number" id="puerto" class="input-edit" placeholder="8000">
 
-        <button id="btnCrear" class="btn-save">Crear servidor</button>
+        <button id="btnCrear" class="btn-save">Crear contenedor</button>
         <button onclick="location.href='../../panel.php'" class="btn-cancel">Cancelar</button>
     </div>
 
@@ -97,39 +75,30 @@ document.addEventListener("click", (e) => {
         sidebar.classList.remove("sidebar-open");
     }
 });
-
 </script>
-
-
 
 
 <script>
 document.getElementById("btnCrear").addEventListener("click", () => {
 
     const nombre = document.getElementById("nombre").value.trim();
-    const version = document.getElementById("version").value.trim();
-    const tipo = document.getElementById("tipo").value;
     const puerto = document.getElementById("puerto").value.trim();
 
-    if (!nombre || !version || !puerto) {
+    if (!nombre || !puerto) {
         alert("Rellena todos los campos.");
         return;
     }
 
-
-
     fetch("api/create.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, version, tipo, puerto })
+        body: JSON.stringify({ nombre, puerto })
     })
     .then(r => r.json())
     .then(res => {
 
-     
-
         if (res.status === "success") {
-            alert("Servidor de Unturned creado correctamente");
+            alert("Contenedor Python creado correctamente");
             location.href = "../../panel.php";
         } else {
             alert("Error: " + res.message + "\n\n" + (res.docker_output || ""));
@@ -137,20 +106,10 @@ document.getElementById("btnCrear").addEventListener("click", () => {
     })
     .catch(err => {
         console.error(err);
-
-
-
         alert("No se pudo conectar con la API");
     });
 });
-
-
-
 </script>
-
-
-
-
 
 </body>
 </html>

@@ -7,7 +7,7 @@ if (!isset($_SESSION["usuario"])) {
     exit;
 }
 
-$tituloPagina = "Sistema de Actualizaciones";
+$tituloPagina = "Actualizar Panel";
 $versionLocal = trim(file_get_contents("version.txt"));
 ?>
 <!DOCTYPE html>

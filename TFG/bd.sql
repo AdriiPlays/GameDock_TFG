@@ -31,9 +31,11 @@ CREATE TABLE IF NOT EXISTS `contenedores` (
   `tipo` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla tfg.contenedores: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla tfg.contenedores: ~1 rows (aproximadamente)
+INSERT INTO `contenedores` (`id`, `nombre`, `iso`, `version`, `estado`, `fecha_creado`, `puerto`, `tipo`) VALUES
+	(57, 'survival01', 'minecraft', '1.12', 'offline', '2026-03-12 08:05:40', 25565, NULL);
 
 -- Volcando estructura para tabla tfg.logs
 CREATE TABLE IF NOT EXISTS `logs` (
@@ -42,9 +44,9 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `accion` text DEFAULT NULL,
   `fecha` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=270 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla tfg.logs: ~269 rows (aproximadamente)
+-- Volcando datos para la tabla tfg.logs: ~170 rows (aproximadamente)
 INSERT INTO `logs` (`id`, `usuario`, `accion`, `fecha`) VALUES
 	(1, 'pepe', 'Cerró sesión', '2026-02-20 12:55:00'),
 	(2, 'pepe', 'Inició sesión', '2026-02-20 12:56:22'),
@@ -215,106 +217,7 @@ INSERT INTO `logs` (`id`, `usuario`, `accion`, `fecha`) VALUES
 	(167, 'admuro', 'Inició sesión', '2026-03-13 11:27:43'),
 	(168, 'admuro', 'Inició sesión', '2026-03-13 11:27:48'),
 	(169, 'admuro', 'Cerró sesión', '2026-03-13 11:28:10'),
-	(170, 'admuro', 'Inició sesión', '2026-03-13 11:29:15'),
-	(171, 'admuro', 'Inició sesión', '2026-03-13 12:05:49'),
-	(172, 'admuro', 'Inició sesión', '2026-03-13 12:05:53'),
-	(173, 'admuro', 'Inició sesión', '2026-03-13 12:33:58'),
-	(174, 'admuro', 'Inició sesión', '2026-03-13 12:34:02'),
-	(175, 'admuro', 'Inició sesión', '2026-03-13 12:48:34'),
-	(176, 'admuro', 'Inició sesión', '2026-03-17 08:52:32'),
-	(177, 'admuro', 'Inició sesión', '2026-03-17 13:52:25'),
-	(178, 'admuro', 'Inició sesión', '2026-03-17 13:52:29'),
-	(179, 'admuro', 'Eliminó el servidor Minecraft \'survival01\'', '2026-03-17 13:53:11'),
-	(180, 'admuro', 'Creó el servidor Minecraft \'prueba\'', '2026-03-17 13:53:50'),
-	(181, 'admuro', 'Inició sesión', '2026-03-18 11:12:30'),
-	(182, 'admuro', 'Inició el servidor Minecraft \'prueba\'', '2026-03-18 11:13:25'),
-	(183, 'admuro', 'Detuvo el servidor Minecraft \'prueba\'', '2026-03-18 11:14:05'),
-	(184, 'admuro', 'Creó el servidor Minecraft \'prueba\'', '2026-03-18 11:27:44'),
-	(185, 'admuro', 'Detuvo el servidor Minecraft \'prueba\'', '2026-03-18 11:32:10'),
-	(186, 'admuro', 'Inició el servidor Minecraft \'prueba\'', '2026-03-18 11:32:14'),
-	(187, 'admuro', 'Eliminó el servidor Minecraft \'prueba\'', '2026-03-18 11:33:24'),
-	(188, 'admuro', 'Creó el servidor Minecraft \'prueba\'', '2026-03-18 11:33:38'),
-	(189, 'admuro', 'Reinició el servidor Minecraft \'prueba\'', '2026-03-18 11:34:40'),
-	(190, 'admuro', 'Reinició el servidor Minecraft \'prueba\'', '2026-03-18 11:34:51'),
-	(191, 'admuro', 'Reinició el servidor Minecraft \'pepe\'', '2026-03-18 11:44:27'),
-	(192, 'admuro', 'Inició sesión', '2026-03-18 11:46:03'),
-	(193, 'admuro', 'Creó el servidor Minecraft \'prueba\'', '2026-03-18 11:53:30'),
-	(194, 'admuro', 'Eliminó el servidor Minecraft \'prueba\'', '2026-03-18 11:59:02'),
-	(195, 'admuro', 'Creó el servidor Minecraft \'pruebanueva\'', '2026-03-18 12:10:09'),
-	(196, 'admuro', 'Reinició el servidor Minecraft \'asd\'', '2026-03-18 12:13:45'),
-	(197, 'admuro', 'Creó el servidor Minecraft \'pepe\'', '2026-03-18 12:24:57'),
-	(198, 'admuro', 'Detuvo el servidor Minecraft \'prueba\'', '2026-03-18 12:36:26'),
-	(199, 'admuro', 'Inició el servidor Minecraft \'prueba\'', '2026-03-18 12:36:31'),
-	(200, 'admuro', 'Reinició el servidor Minecraft \'prueba\'', '2026-03-18 12:36:46'),
-	(201, 'admuro', 'Reinició el servidor Minecraft \'prueba\'', '2026-03-18 12:36:57'),
-	(202, 'admuro', 'Eliminó el servidor Minecraft \'prueba\'', '2026-03-18 12:36:58'),
-	(203, 'admuro', 'Inició sesión', '2026-03-18 12:53:15'),
-	(204, 'admuro', 'Inició sesión', '2026-03-18 13:10:55'),
-	(205, 'admuro', 'Inició sesión', '2026-03-18 13:33:15'),
-	(206, 'admuro', 'Inició sesión', '2026-03-18 13:33:17'),
-	(207, 'admuro', 'Inició sesión', '2026-03-18 13:45:36'),
-	(208, 'admuro', 'Creó el servidor Minecraft \'prueba\'', '2026-03-18 13:45:54'),
-	(209, 'admuro', 'Detuvo el servidor Minecraft \'prueba\'', '2026-03-18 13:53:37'),
-	(210, 'admuro', 'Creó el servidor Minecraft \'otro\'', '2026-03-18 14:00:29'),
-	(211, 'admuro', 'Detuvo el servidor Minecraft \'otro\'', '2026-03-18 14:01:09'),
-	(212, 'admuro', 'Detuvo el servidor Minecraft \'otro\'', '2026-03-18 14:01:09'),
-	(213, 'admuro', 'Inició sesión', '2026-03-20 12:30:12'),
-	(214, 'admuro', 'Inició sesión', '2026-03-20 12:47:17'),
-	(215, 'admuro', 'Cerró sesión', '2026-03-20 12:47:34'),
-	(216, 'admuro', 'Inició sesión', '2026-03-20 12:47:36'),
-	(217, 'juanprueba', 'Inició sesión', '2026-03-20 12:49:14'),
-	(218, 'juanprueba', 'Inició sesión', '2026-03-20 12:49:42'),
-	(219, 'juanprueba', 'Cerró sesión', '2026-03-20 12:51:04'),
-	(220, 'admuro', 'Inició sesión', '2026-03-20 12:51:07'),
-	(221, 'admuro', 'Cerró sesión', '2026-03-20 12:51:33'),
-	(222, 'juanprueba', 'Inició sesión', '2026-03-20 12:51:43'),
-	(223, 'admuro', 'Inició sesión', '2026-03-20 13:05:14'),
-	(224, 'admuro', 'Inició sesión', '2026-03-20 14:33:11'),
-	(225, 'admuro', 'Inició sesión', '2026-03-20 14:33:12'),
-	(226, 'admuro', 'Inició el servidor Minecraft \'otro\'', '2026-03-20 14:34:09'),
-	(227, 'admuro', 'Detuvo el servidor Minecraft \'otro\'', '2026-03-20 14:40:49'),
-	(228, 'admuro', 'Inició el servidor Minecraft \'prueba\'', '2026-03-20 14:41:18'),
-	(229, 'admuro', 'Detuvo el servidor Minecraft \'prueba\'', '2026-03-20 14:44:53'),
-	(230, 'admuro', 'Inició sesión', '2026-03-20 14:48:18'),
-	(231, 'admuro', 'Inició sesión', '2026-03-23 07:29:50'),
-	(232, 'admuro', 'Inició sesión', '2026-03-23 07:32:55'),
-	(233, 'admuro', 'Inició sesión', '2026-03-23 07:34:36'),
-	(234, 'admuro', 'Detuvo el servidor Minecraft \'prueba\'', '2026-03-23 07:44:13'),
-	(235, 'admuro', 'Inició sesión', '2026-03-23 08:18:07'),
-	(236, 'admuro', 'Inició sesión', '2026-03-23 08:18:09'),
-	(237, 'admuro', 'Inició sesión', '2026-03-23 09:22:45'),
-	(238, 'admuro', 'Inició sesión', '2026-03-23 09:23:34'),
-	(239, 'admuro', 'Inició sesión', '2026-03-23 09:33:42'),
-	(240, 'admuro', 'Creó el servidor Unturned \'fhfghfghf\'', '2026-03-23 10:54:15'),
-	(241, 'admuro', 'Inició sesión', '2026-03-23 10:54:19'),
-	(242, 'admuro', 'Creó el servidor Unturned \'khhjkhjk\'', '2026-03-23 11:02:55'),
-	(243, 'admuro', 'Creó el servidor Unturned \'hfghfghfh\'', '2026-03-23 11:10:14'),
-	(244, 'admuro', 'Detuvo el servidor Unturned \'hfghfghfh\'', '2026-03-23 11:18:37'),
-	(245, 'admuro', 'Inició el servidor Unturned \'hfghfghfh\'', '2026-03-23 11:18:47'),
-	(246, 'admuro', 'Detuvo el servidor Unturned \'hfghfghfh\'', '2026-03-23 11:20:31'),
-	(247, 'admuro', 'Inició el servidor Unturned \'hfghfghfh\'', '2026-03-23 11:22:22'),
-	(248, 'admuro', 'Detuvo el servidor Unturned \'hfghfghfh\'', '2026-03-23 11:23:21'),
-	(249, 'admuro', 'Creó el servidor Unturned \'gdgdgfd\'', '2026-03-23 11:34:46'),
-	(250, 'admuro', 'Creó el servidor Unturned \'prueba\'', '2026-03-23 11:36:38'),
-	(251, 'admuro', 'Creó el servidor Unturned \'jfjgfjfgjgf\'', '2026-03-23 11:40:54'),
-	(252, 'admuro', 'Creó el servidor Unturned \'prueba1\'', '2026-03-23 11:44:22'),
-	(253, 'admuro', 'Eliminó el servidor Unturned \'prueba2\'', '2026-03-23 11:49:50'),
-	(254, 'admuro', 'Creó el servidor Unturned \'sdssadd\'', '2026-03-23 11:58:09'),
-	(255, 'admuro', 'Creó el servidor Unturned \'prueba\'', '2026-03-23 12:03:02'),
-	(256, 'admuro', 'Inició sesión', '2026-03-23 12:27:06'),
-	(257, 'admuro', 'Inició sesión', '2026-03-23 12:27:08'),
-	(258, 'admuro', 'Creó el servidor Unturned \'prueba-ultima\'', '2026-03-23 12:38:17'),
-	(259, 'admuro', 'Creó el servidor Unturned \'prueba-ultima\'', '2026-03-23 12:44:56'),
-	(260, 'admuro', 'Inició sesión', '2026-03-23 13:26:05'),
-	(261, 'admuro', 'Creó el servidor Unturned \'unonuevo\'', '2026-03-23 13:29:42'),
-	(262, 'admuro', 'Creó el servidor Unturned \'prueba\'', '2026-03-23 13:50:48'),
-	(263, 'admuro', 'Eliminó el servidor Unturned \'prueba\'', '2026-03-23 13:52:33'),
-	(264, 'admuro', 'Creó el servidor Unturned \'prueba\'', '2026-03-23 13:54:32'),
-	(265, 'admuro', 'Inició sesión', '2026-03-23 14:15:57'),
-	(266, 'admuro', 'Detuvo el servidor Unturned \'prueba\'', '2026-03-23 14:34:53'),
-	(267, 'admuro', 'Inició el servidor Unturned \'prueba\'', '2026-03-23 14:40:12'),
-	(268, 'admuro', 'Reinició el servidor Unturned \'prueba\'', '2026-03-23 14:41:37'),
-	(269, 'admuro', 'Inició sesión', '2026-03-23 14:42:37');
+	(170, 'admuro', 'Inició sesión', '2026-03-13 11:29:15');
 
 -- Volcando estructura para tabla tfg.minecraft
 CREATE TABLE IF NOT EXISTS `minecraft` (
@@ -323,26 +226,13 @@ CREATE TABLE IF NOT EXISTS `minecraft` (
   `version` varchar(50) NOT NULL,
   `tipo` varchar(20) NOT NULL,
   `puerto` int(11) NOT NULL,
-  `ram` int(11) DEFAULT 2048,
   PRIMARY KEY (`id`),
   CONSTRAINT `minecraft_ibfk_1` FOREIGN KEY (`id`) REFERENCES `contenedores` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla tfg.minecraft: ~0 rows (aproximadamente)
-
--- Volcando estructura para tabla tfg.unturned
-CREATE TABLE IF NOT EXISTS `unturned` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  `version` varchar(20) NOT NULL,
-  `tipo` varchar(20) NOT NULL,
-  `puerto` int(11) NOT NULL,
-  `ram` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Volcando datos para la tabla tfg.unturned: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla tfg.minecraft: ~1 rows (aproximadamente)
+INSERT INTO `minecraft` (`id`, `nombre`, `version`, `tipo`, `puerto`) VALUES
+	(57, 'survival01', '1.12', 'FORGE', 25565);
 
 -- Volcando estructura para tabla tfg.usuarios
 CREATE TABLE IF NOT EXISTS `usuarios` (
@@ -361,12 +251,11 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `usuario` (`usuario`),
   UNIQUE KEY `correo` (`correo`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla tfg.usuarios: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla tfg.usuarios: ~1 rows (aproximadamente)
 INSERT INTO `usuarios` (`id`, `usuario`, `password`, `correo`, `imagen`, `admin`, `verificado`, `token_verificacion`, `token_reset`, `token_expira`, `ultimo_reset`, `intentos_reset`) VALUES
-	(12, 'admuro', '$2y$10$wPrgyhua8h.ySakaLuRIberxrY9i/FO0J8VqrrDaXdIh3AC6AokSK', 'amuroj02@gmail.com', NULL, 1, 1, NULL, NULL, NULL, '2026-03-17 08:52:09', 1),
-	(13, 'juanprueba', '$2y$10$KEr3xrZBsWTJvFmeddMBA.ChIOT5D4H7WHlCPnIOwIiybNKW8FLTe', 'kakomov465@soco7.com', NULL, 0, 1, NULL, NULL, NULL, NULL, 0);
+	(12, 'admuro', '$2y$10$7RyLMT4FqhlkGYl.jMHWle2tASspMdjppuq/yFMB7uWHciSB91sMy', 'amuroj02@gmail.com', NULL, 1, 1, NULL, NULL, NULL, '2026-03-13 11:46:17', 2);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

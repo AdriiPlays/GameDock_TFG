@@ -8,9 +8,9 @@ header("Content-Type: application/json");
 require_once __DIR__ . "/../../../config.php";
 require_once __DIR__ . "/../../../Funciones/logs.php";
 
-/* ============================
-   LEER JSON
-   ============================ */
+
+   // LEER JSON
+ 
 
 $raw = file_get_contents("php://input");
 $data = json_decode($raw, true);
@@ -30,9 +30,9 @@ if (!$nombre || !$version || !$tipo || !$puerto) {
     exit;
 }
 
-/* ============================
-   INSERTAR EN TABLA contenedores
-   ============================ */
+
+   // INSERTAR EN TABLA contenedores
+   
 
 $stmt = $conn->prepare("
     INSERT INTO contenedores (nombre, iso, version, puerto)
@@ -48,11 +48,11 @@ if (!$stmt->execute()) {
 $idContenedor = $stmt->insert_id;
 $stmt->close();
 
-/* ============================
-   INSERTAR EN TABLA unturned
-   ============================ */
 
-$ramDefault = 2048; // RAM inicial por defecto
+   // INSERTAR EN TABLA unturned
+ 
+
+$ramDefault = 2048; // RAM por defecto
 
 $stmt2 = $conn->prepare("
     INSERT INTO unturned (id, nombre, version, tipo, puerto, ram)
@@ -69,9 +69,9 @@ $stmt2->close();
 
 
 
-/* ============================
-   CREAR CONTENEDOR DOCKER
-   ============================ */
+
+  // CREAR CONTENEDOR
+
 
 $cmd = sprintf(
     'docker run -d --name %s ' .
@@ -98,7 +98,7 @@ exec($cmd, $out, $ret);
 
 if ($ret !== 0) {
 
-    // Si falla Docker, borrar BD
+    // Si falla la creaccion, borrar BD
     $conn->query("DELETE FROM unturned WHERE id = $idContenedor");
     $conn->query("DELETE FROM contenedores WHERE id = $idContenedor");
 
@@ -111,9 +111,9 @@ if ($ret !== 0) {
     exit;
 }
 
-/* ============================
-   LOG Y RESPUESTA FINAL
-   ============================ */
+
+   // RESPUESTA JSON
+   
 
 registrarLog($conn, $_SESSION["usuario"], "Creó el servidor Unturned '{$nombre}'");
 

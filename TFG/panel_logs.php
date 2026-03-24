@@ -31,10 +31,10 @@ $buscar = $_GET["buscar"] ?? "";
 $filtroFecha = $_GET["fecha"] ?? "";
 $filtroUsuario = $_GET["usuario_filtro"] ?? "";
 
-// Construcción del WHERE
+
 $where = "WHERE 1=1";
 
-// Si NO es admin → solo ve sus logs
+// Condicion para que solo el admin vea todos los logs
 if ($esAdmin != 1) {
     $where .= " AND usuario = '$usuario'";
 }
@@ -88,7 +88,7 @@ $usuarios = $esAdmin == 1 ? $conn->query("SELECT DISTINCT usuario FROM logs") : 
 <main class="contenido">
 
 <div class="logs-wrapper">
-    <div class="logs-title">📜 Historial de Actividad</div>
+    <div class="logs-title"> Logs del Sistema</div>
 
     <form method="GET" class="filtros">
         <input type="text" name="buscar" placeholder="Buscar..." value="<?= $buscar ?>">

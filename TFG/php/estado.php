@@ -42,7 +42,7 @@ $tituloPagina = "Estado del Servidor";
 
 <main class="contenido">
 
-<h2>📊 Estado del Servidor</h2>
+<h2>Estado del Servidor</h2>
 
 
 <div class="tarjeta-sistema">
@@ -62,7 +62,7 @@ $tituloPagina = "Estado del Servidor";
     </div>
 </div>
 
-<!-- TARJETAS DE ESTADO DEBAJO -->
+<!-- DIV DE CUADRICULAS -->
 <div class="cuadricula-estado">
 
     <div class="tarjeta-estado">
@@ -145,6 +145,8 @@ let tempGpuChart = crearGrafica("tempGpuChart", "Temp GPU", "purple");
 let diskChart = crearGrafica("diskChart", "Disco %", "brown");
 let netChart = crearGrafica("netChart", "Red KB/s", "teal");
 
+
+ // Imagenes de los sistemas
 function detectarIconoSO(nombre) {
     nombre = nombre.toLowerCase();
 
@@ -161,7 +163,7 @@ function cargarInfoSistema() {
         .then(data => {
 
             
-            // Información del sistema operativo
+            // Información del sistema 
            
             document.getElementById("soNombre").innerText = data.sistema.so;
             document.getElementById("soKernel").innerText = data.sistema.kernel;
@@ -171,7 +173,7 @@ function cargarInfoSistema() {
             document.getElementById("soDisco").innerText = data.sistema.disco_total;
             document.getElementById("soIp").innerText = data.sistema.ip;
 
-            // Icono automático
+            // Colocar icono 
             document.getElementById("iconoSO").src = detectarIconoSO(data.sistema.so);
 
           
