@@ -132,6 +132,8 @@ document.getElementById("btnCrear").addEventListener("click", () => {
         alert("Rellena todos los campos.");
         return;
     }
+// MOSTRAR LOADER
+    mostrarLoader();
 
     fetch("api/create.php", {
         method: "POST",
@@ -140,19 +142,28 @@ document.getElementById("btnCrear").addEventListener("click", () => {
     })
     .then(r => r.json())
     .then(res => {
+
+        // OCULTAR LOADER
+        ocultarLoader();
+
         if (res.status === "success") {
-            alert("Servidor creado correctamente");
+            alert("Servidor de Unturned creado correctamente");
             location.href = "../../panel.php";
         } else {
             alert("Error: " + res.message + "\n\n" + (res.docker_output || ""));
         }
     })
     .catch(err => {
+
+        // OCULTAR LOADER
+        ocultarLoader();
+
         console.error(err);
         alert("No se pudo conectar con la API");
     });
 });
 </script>
 
+<?php include __DIR__ . "/../../Funciones/carga.php"; ?>
 </body>
 </html>
