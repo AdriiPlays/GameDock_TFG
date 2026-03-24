@@ -7,13 +7,13 @@ header("Content-Type: application/json");
 
 $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
 
-/* ============================
-   SISTEMA OPERATIVO
-   ============================ */
+
+   // SISTEMA OPERATIVO
+  
 
 if ($isWindows) {
 
-    // Nombre del SO
+    // Nombre del Sistema
     $soRaw = shell_exec("wmic os get Caption /value 2>NUL");
     $so = "Windows";
     if ($soRaw && str_contains($soRaw, "=")) {
@@ -26,7 +26,7 @@ if ($isWindows) {
     // Arquitectura
     $arq = php_uname("m");
 
-    // Uptime seguro
+    // Tiempo encendido
     $uptimeFmt = "00:00:00";
     $bootRaw = shell_exec("wmic os get LastBootUpTime /value 2>NUL");
     if ($bootRaw && str_contains($bootRaw, "=")) {
@@ -43,12 +43,12 @@ if ($isWindows) {
         $cpu = trim(explode("=", $cpuRaw)[1]);
     }
 
-    // RAM total
+    // RAM 
     $ramRaw = shell_exec("wmic computersystem get TotalPhysicalMemory /value 2>NUL");
     preg_match("/=(\d+)/", $ramRaw, $matchRam);
     $ramTotalSys = isset($matchRam[1]) ? round($matchRam[1] / 1024 / 1024 / 1024, 2) . " GB" : "0 GB";
 
-    // Disco total
+    // Disco 
     $discoTotalSys = round(disk_total_space("C:") / 1024 / 1024 / 1024, 2) . " GB";
 
     // IP
@@ -58,7 +58,7 @@ if ($isWindows) {
         $ip = trim($m[1]);
     }
 
-} else {
+} else { // Parametros en linux
 
     // SO
     $osRelease = @parse_ini_file("/etc/os-release");
@@ -70,7 +70,7 @@ if ($isWindows) {
     // Arquitectura
     $arq = php_uname("m");
 
-    // Uptime
+    // Tiempo encendido
     $uptimeFmt = "00:00:00";
     $uptime = @file_get_contents("/proc/uptime");
     if ($uptime) {
@@ -89,21 +89,21 @@ if ($isWindows) {
         }
     }
 
-    // RAM total
+    // RAM 
     $memInfo = @file_get_contents("/proc/meminfo");
     preg_match("/MemTotal:\s+(\d+)/", $memInfo, $m);
     $ramTotalSys = round(($m[1] ?? 0) / 1024 / 1024, 2) . " GB";
 
-    // Disco total
+    // Disco 
     $discoTotalSys = round(disk_total_space("/") / 1024 / 1024 / 1024, 2) . " GB";
 
     // IP
     $ip = trim(shell_exec("hostname -I 2>/dev/null"));
 }
 
-/* ============================
-   MÉTRICAS
-   ============================ */
+
+   // MÉTRICAS
+   
 
 if ($isWindows) {
 
@@ -120,7 +120,7 @@ if ($isWindows) {
     preg_match("/=(\d+)/", shell_exec("wmic cpu get LoadPercentage /value 2>NUL"), $c);
     $cpuPorcentaje = $c[1] ?? 0;
 
-    // GPU (si no existe → 0)
+    // GPU (si no hay es = 0)
     $gpuUso = 0;
     $gpuTemp = 0;
 
@@ -128,7 +128,7 @@ if ($isWindows) {
     $disk = disk_free_space("C:") / disk_total_space("C:");
     $diskPorcentaje = round((1 - $disk) * 100, 1);
 
-    // Red simulada
+    // Red simulada dado que windows no puede saber su uso
     $redTotal = rand(10, 200);
 
 } else {
@@ -148,7 +148,7 @@ if ($isWindows) {
     $cpuCores = trim(shell_exec("nproc 2>/dev/null")) ?: 1;
     $cpuPorcentaje = round(($cpuLoad / $cpuCores) * 100, 1);
 
-    // GPU (si no existe → 0)
+    // GPU (si no hay es = 0)
     $gpuUso = 0;
     $gpuTemp = 0;
 
@@ -156,7 +156,7 @@ if ($isWindows) {
     $disk = disk_free_space("/") / disk_total_space("/");
     $diskPorcentaje = round((1 - $disk) * 100, 1);
 
-    // Red (interfaz automática)
+      // Red simulada dado que linux no puede saber su uso
     $iface = trim(shell_exec("ls /sys/class/net | head -n 1"));
     $rx1 = @file_get_contents("/sys/class/net/$iface/statistics/rx_bytes");
     $tx1 = @file_get_contents("/sys/class/net/$iface/statistics/tx_bytes");
@@ -167,9 +167,9 @@ if ($isWindows) {
     $redTotal = round((($rx2 - $rx1) + ($tx2 - $tx1)) / 1024, 1);
 }
 
-/* ============================
-   RESPUESTA JSON
-   ============================ */
+
+   // RESPUESTA JSON
+ 
 
 echo json_encode([
     "sistema" => [

@@ -16,8 +16,8 @@ if (!$nombre || !$cmd) {
     exit;
 }
 
-// Prevenir Comandos peligrosos 
-$prohibidos = ["rm ", "docker", "shutdown", "reboot", "poweroff", "kill ", "pkill", "halt"];
+// Comandos prohibidos por seguridad
+$prohibidos = ["rm ", "docker", "shutdown", "reboot", "poweroff", "mkfs", "kill -9"];
 
 foreach ($prohibidos as $p) {
     if (stripos($cmd, $p) !== false) {
@@ -26,16 +26,13 @@ foreach ($prohibidos as $p) {
     }
 }
 
-// Ejecutar comandoS dentro del contenedor 
+// Ejecutar comando dentro del contenedor Python
 $fullCmd = "docker exec " . escapeshellcmd($nombre) . " bash -c " . escapeshellarg($cmd);
-
-$out = [];
-$ret = 0;
 
 exec($fullCmd . " 2>&1", $out, $ret);
 
-// Registrar log
-registrarLog($conn, $_SESSION["usuario"], "Ejecutó comando en Unturned '{$nombre}': $cmd");
+// Registrar en logs
+registrarLog($conn, $_SESSION["usuario"], "Ejecutó comando en '{$nombre}': $cmd");
 
 echo json_encode([
     "status" => $ret === 0 ? "success" : "error",

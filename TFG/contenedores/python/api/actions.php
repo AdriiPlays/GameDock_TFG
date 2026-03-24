@@ -25,7 +25,9 @@ if (!$tipo || !$nombre) {
 $out = [];
 $ret = 0;
 
-// Reiniciar contenedor
+/* ============================
+   RESTART
+   ============================ */
 
 if ($tipo === "restart") {
 
@@ -34,22 +36,24 @@ if ($tipo === "restart") {
     if ($ret !== 0) {
         echo json_encode([
             "status" => "error",
-            "message" => "No se pudo reiniciar el servidor Unturned",
+            "message" => "No se pudo reiniciar el contenedor Python",
             "docker_output" => $out
         ]);
         exit;
     }
 
-    registrarLog($conn, $_SESSION["usuario"], "Reinició el servidor Unturned '{$nombre}'");
+    registrarLog($conn, $_SESSION["usuario"], "Reinició el contenedor Python '{$nombre}'");
 
     echo json_encode([
         "status" => "success",
-        "message" => "Servidor reiniciado correctamente"
+        "message" => "Contenedor reiniciado correctamente"
     ]);
     exit;
 }
 
- // SWITCH DE ACCIONES
+/* ============================
+   ACCIONES START / STOP / DELETE
+   ============================ */
 
 switch ($tipo) {
 
@@ -59,15 +63,15 @@ switch ($tipo) {
         if ($ret !== 0) {
             echo json_encode([
                 "status" => "error",
-                "message" => "No se pudo iniciar el servidor Unturned",
+                "message" => "No se pudo iniciar el contenedor Python",
                 "docker_output" => $out
             ]);
             exit;
         }
 
-        registrarLog($conn, $_SESSION["usuario"], "Inició el servidor Unturned '{$nombre}'");
+        registrarLog($conn, $_SESSION["usuario"], "Inició el contenedor Python '{$nombre}'");
 
-        echo json_encode(["status" => "success", "message" => "Servidor iniciado"]);
+        echo json_encode(["status" => "success", "message" => "Contenedor iniciado"]);
         break;
 
 
@@ -77,21 +81,21 @@ switch ($tipo) {
         if ($ret !== 0) {
             echo json_encode([
                 "status" => "error",
-                "message" => "No se pudo detener el servidor Unturned",
+                "message" => "No se pudo detener el contenedor Python",
                 "docker_output" => $out
             ]);
             exit;
         }
 
-        registrarLog($conn, $_SESSION["usuario"], "Detuvo el servidor Unturned '{$nombre}'");
+        registrarLog($conn, $_SESSION["usuario"], "Detuvo el contenedor Python '{$nombre}'");
 
-        echo json_encode(["status" => "success", "message" => "Servidor detenido"]);
+        echo json_encode(["status" => "success", "message" => "Contenedor detenido"]);
         break;
 
 
     case "delete":
 
-        // Eliminar contenedor 
+        // Eliminar contenedor Docker
         exec("docker rm -f " . escapeshellcmd($nombre) . " 2>&1", $out, $ret);
 
         if ($ret !== 0) {
@@ -103,14 +107,14 @@ switch ($tipo) {
             exit;
         }
 
-        // Eliminar volumen  
-        $volumen = "unturned_" . $nombre;
+        // Eliminar volumen Docker 
+        $volumen = "python_" . $nombre;
         exec("docker volume rm " . escapeshellcmd($volumen) . " 2>&1", $outVol, $retVol);
 
         $volumenEliminado = ($retVol === 0);
 
-        // Eliminar de la tabla unturned
-        $stmt = $conn->prepare("DELETE FROM unturned WHERE id = (SELECT id FROM contenedores WHERE nombre = ?)");
+        // Eliminar de la tabla python
+        $stmt = $conn->prepare("DELETE FROM python WHERE id = (SELECT id FROM contenedores WHERE nombre = ?)");
         $stmt->bind_param("s", $nombre);
         $stmt->execute();
         $stmt->close();
@@ -122,59 +126,15 @@ switch ($tipo) {
         $stmt2->close();
 
         // Registrar log
-        registrarLog($conn, $_SESSION["usuario"], "Eliminó el servidor Unturned '{$nombre}'");
+        registrarLog($conn, $_SESSION["usuario"], "Eliminó el contenedor Python '{$nombre}'");
 
         echo json_encode([
             "status" => "success",
-            "message" => "Servidor eliminado completamente",
+            "message" => "Contenedor eliminado completamente",
             "volumen_eliminado" => $volumenEliminado
         ]);
         break;
 
-
-   case "update":
-
-    // Preparamos el JSON que update.php necesita
-    $json = json_encode(["nombre" => $nombre]);
-
-    // Ejecutamos update.php como script independiente
-    $cmd = "php " . __DIR__ . "/update.php";
-
-    $descriptors = [
-        0 => ["pipe", "r"], 
-        1 => ["pipe", "w"], 
-        2 => ["pipe", "w"]  
-    ];
-
-    $proc = proc_open($cmd, $descriptors, $pipes);
-
-    // Enviar JSON a update.php
-    fwrite($pipes[0], $json);
-    fclose($pipes[0]);
-
-    // Leer salida
-    $output = stream_get_contents($pipes[1]);
-    fclose($pipes[1]);
-
-    // Leer errores
-    $error = stream_get_contents($pipes[2]);
-    fclose($pipes[2]);
-
-    proc_close($proc);
-
-    // Si update.php devolvió HTML → error
-    if (str_starts_with(trim($output), "<")) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error interno en update.php",
-            "debug" => $output
-        ]);
-        exit;
-    }
-
-    // Devolver JSON
-    echo $output;
-    exit;
 
     default:
         echo json_encode(["status" => "error", "message" => "Acción no válida"]);

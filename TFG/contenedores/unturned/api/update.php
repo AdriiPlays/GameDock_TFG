@@ -30,7 +30,7 @@ if (!$puerto) {
 exec("docker stop " . escapeshellarg($nombre));
 exec("docker rm " . escapeshellarg($nombre));
 
-// Recrear (esto actualiza)
+// Recrear contenedor
 $cmd = sprintf(
     'docker run -d --name %s ' .
     '-p %d:27015/udp -p %d:27015/tcp ' .

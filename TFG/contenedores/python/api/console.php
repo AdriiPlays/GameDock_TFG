@@ -17,7 +17,7 @@ if (!$nombre) {
 $out = [];
 $ret = 0;
 
-// Mostrar logs del contenedor
+// Obtener logs del contenedor Python
 exec("docker logs --tail 200 " . escapeshellcmd($nombre) . " 2>&1", $out, $ret);
 
 echo json_encode([

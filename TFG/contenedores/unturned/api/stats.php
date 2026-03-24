@@ -17,10 +17,7 @@ if (empty($out)) {
     exit;
 }
 
-/*
-    Ejemplo de salida:
-    "512MiB / 2GiB"
-*/
+
 if (!str_contains($out[0], "/")) {
     echo json_encode(["status" => "error", "message" => "Formato inválido en stats"]);
     exit;

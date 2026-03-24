@@ -43,7 +43,7 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
             <?php while ($c = $contenedores->fetch_assoc()): ?>
 
                 <?php
-                // Estado real del contenedor
+                // Estado del contenedor
                 $out = [];
                 $ret = 0;
                 exec('docker inspect --format="{{json .State}}" "' . $c['nombre'] . '" 2>&1', $out, $ret);
@@ -81,7 +81,7 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
         </div>
     </div>
 
-    <!-- MODAL CREAR -->
+    <!-- MODAL -->
     <div id="modalCrear" class="modal">
         <div class="modal-content">
             <h2>Crear nuevo servidor</h2>
@@ -90,7 +90,7 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
             <select id="tipoServidor" class="input-edit">
                 <option value="minecraft">Minecraft</option>
                 <option value="unturned">Unturned</option>
-                <option value="debian">Debian</option>
+                <option value="Python">Python</option>
                 <option value="alpine">Alpine</option>
             </select>
 
@@ -110,7 +110,7 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
 <script src="JS/panel.js"></script>
 
 <script>
-// JS (crear contenedor + eliminar)
+// crear contenedor + eliminar
 const modal = document.getElementById("modalCrear");
 document.getElementById("btnCrearContenedor").onclick = () => modal.classList.add("show");
 document.getElementById("btnCerrar").onclick = () => modal.classList.remove("show");

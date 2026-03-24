@@ -202,7 +202,7 @@ body {
 
 .btn-save {
     padding: 12px 25px;
-    background: #10b981;
+    background: #3b82f6;
     color: white;
     border: none;
     border-radius: 8px;
@@ -332,8 +332,8 @@ body {
 
 
 .card-contenedor {
-    width: 240px;
-    height: 160px;
+    width: 360px;        /* MÁS ANCHA */
+    height: 180px;       /* Un poco más alta */
     background: #ffffff;
     border-radius: 18px;
     padding: 18px;
@@ -344,6 +344,7 @@ body {
     border: 1px solid #e5e7eb;
     transition: transform .25s ease, box-shadow .25s ease;
 }
+
 
 
 .card-contenedor:hover {
@@ -370,16 +371,20 @@ body {
 .card-version {
     color: #ffffff;
     font-weight: 900;
-    text-shadow: 0 0 8px rgba(0,0,0,0.6);
+    text-shadow: 0 0 10px rgba(0,0,0,0.9), 
+                 0 0 4px rgba(0,0,0,0.8);
 }
 
 .card-header h3 {
-    color: #ffffff;                 
-    font-weight: 900;               
-    font-size: 22px;                
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 22px;
     margin: 0;
-    text-shadow: 0 0 8px rgba(0,0,0,0.7); 
+    text-shadow: 0 0 10px rgba(0,0,0,0.9),
+                 0 0 4px rgba(0,0,0,0.8);
 }
+
+
 
 /* ESTO CAMBIA EL COLOR BLANCO FEO DEL TEXTO */
 
@@ -435,7 +440,7 @@ body {
 
 .iso-mariadb { background: linear-gradient(135deg, #1E88E5, #0D47A1); color: white; }
 
-/*.iso-minecraft { background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; } */
+
 .iso-minecraft {
     background-image: url("/TFG/img/mc.jpg"); 
     background-size: cover;        
@@ -447,6 +452,14 @@ body {
 
 .iso-unturned {
     background-image: url("/TFG/img/unturned.jpg"); 
+    background-size: cover;        
+    background-position: center;   
+    background-repeat: no-repeat;  
+    color: white;
+}
+
+.iso-python {
+    background-image: url("/TFG/img/py.png"); 
     background-size: cover;        
     background-position: center;   
     background-repeat: no-repeat;  

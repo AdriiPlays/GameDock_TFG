@@ -13,7 +13,7 @@ if (!isset($_GET["nombre"])) {
 
 $nombre = $_GET["nombre"];
 
-// Obtener datos del contenedor general
+// Obtener datos del contenedor 
 $stmt = $conn->prepare("SELECT * FROM contenedores WHERE nombre = ?");
 $stmt->bind_param("s", $nombre);
 $stmt->execute();
@@ -24,7 +24,7 @@ if (!$cont) {
     die("Servidor no encontrado.");
 }
 
-// Obtener datos específicos de unturned
+// Obtener datos de unturned
 $stmt2 = $conn->prepare("SELECT * FROM unturned WHERE id = ?");
 $stmt2->bind_param("i", $cont["id"]);
 $stmt2->execute();
@@ -35,7 +35,7 @@ if (!$mc) {
     die("Datos de unturned no encontrados.");
 }
 
-// Estado real del contenedor
+// Estado del contenedor
 $out = [];
 $ret = 0;
 exec('docker inspect --format="{{json .State}}" "' . $nombre . '" 2>&1', $out, $ret);
@@ -72,7 +72,7 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
 
 <main class="contenido">
 
-    <!-- NAV DE SECCIONES -->
+
     <div class="tabs">
         <button class="tab-btn active" onclick="openTab('editar')">⚙️ Información</button>
         <button class="tab-btn" onclick="openTab('control')">🖥️ Control</button>
@@ -81,7 +81,7 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
         <button class="tab-btn" onclick="openTab('ftp')">📁 FTP</button>
     </div>
 
-    <!-- SECCIÓN EDITAR -->
+
     <div id="editar" class="tab-content active">
 
         <h2>Configuración del servidor</h2>
@@ -101,14 +101,14 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
         <button class="btn-save" onclick="guardarCambios()">Guardar cambios</button>
     </div>
 
-    <!-- SECCIÓN ESTADO -->
+
 <div id="estado" class="tab-content">
 
     <h2>Estado del servidor</h2>
 
     <div class="estado-box">
 
-        <!-- USO DE RAM -->
+      
         <div class="estado-item">
             <h3>Uso de RAM</h3>
             <p id="ramUso">Cargando...</p>
@@ -118,7 +118,7 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
             </div>
         </div>
 
-        <!-- ASIGNAR RAM -->
+       
         <div class="estado-item">
             <h3>Asignar RAM</h3>
 
@@ -133,7 +133,7 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
 </div>
 
 
-    <!-- SECCIÓN CONTROL -->
+
     <div id="control" class="tab-content">
 
         <h2>Control del servidor</h2>
@@ -150,7 +150,7 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
         <button class="btn-delete" onclick="accion('delete')">Eliminar servidor</button>
     </div>
 
-    <!-- SECCIÓN AVANZADO -->
+  
     <div id="avanzado" class="tab-content">
 
         <h2>Configuración avanzada</h2>
@@ -169,7 +169,7 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
     
     </div>
 
-    <!-- SECCIÓN FTP -->
+  
     <div id="ftp" class="tab-content">
 
         <h2>Gestor de archivos</h2>
@@ -190,7 +190,7 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
 <script src="/TFG/JS/panel.js"></script>
 
 <script>
-// CAMBIO DE TABS
+
 function openTab(tab) {
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
     document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
@@ -217,7 +217,7 @@ function accion(tipo) {
     });
 }
 
-// GUARDAR CAMBIOS
+
 function guardarCambios() {
     fetch("api/edit.php", {
         method: "POST",
@@ -241,7 +241,7 @@ function guardarCambios() {
     });
 }
 
-// CONSOLA
+
 let consolaInterval = null;
 
 function abrirConsola() {
@@ -301,9 +301,7 @@ function enviarComando() {
     document.getElementById("cmdInput").value = "";
 }
 
-// ===============================
-// RAM EN TIEMPO REAL
-// ===============================
+
 function actualizarRAM() {
     fetch(`/TFG/contenedores/unturned/api/stats.php?nombre=<?= $nombre ?>`)
         .then(r => r.json())
@@ -313,7 +311,7 @@ function actualizarRAM() {
             let used = data.used.replace("MiB", "").replace("GiB", "");
             let total = data.total.replace("MiB", "").replace("GiB", "");
 
-            // Convertir a MB
+            
             if (data.used.includes("GiB")) used = used * 1024;
             if (data.total.includes("GiB")) total = total * 1024;
 
@@ -329,16 +327,12 @@ function actualizarRAM() {
 setInterval(actualizarRAM, 2000);
 actualizarRAM();
 
-// ===============================
-// SLIDER RAM
-// ===============================
+
 document.getElementById("ramSlider").addEventListener("input", e => {
     document.getElementById("ramValor").innerText = e.target.value;
 });
 
-// ===============================
-// GUARDAR RAM
-// ===============================
+
 function guardarRAM() {
     let ram = document.getElementById("ramSlider").value;
 
