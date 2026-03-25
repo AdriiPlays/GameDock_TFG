@@ -1,11 +1,6 @@
 <?php
-session_start();
-require_once "config.php";
+require_once "Funciones/Sesion.php";
 
-if (!isset($_SESSION["usuario"])) {
-    header("Location: Index.php");
-    exit;
-}
 
 $tituloPagina = "Logs del Sistema";
 
@@ -71,7 +66,7 @@ $usuarios = $esAdmin == 1 ? $conn->query("SELECT DISTINCT usuario FROM logs") : 
 <head>
     <meta charset="UTF-8">
     <title><?= $tituloPagina ?></title>
-    <link rel="stylesheet" href="css/panel.css">
+  <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
     <link rel="stylesheet" href="css/logs.css">
 </head>
 <body>

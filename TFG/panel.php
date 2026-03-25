@@ -15,6 +15,8 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
     <meta charset="UTF-8">
     <title><?= $tituloPagina ?></title>
     <link rel="stylesheet" href="css/panel.css">
+    <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
+
 </head>
 <body>
 
@@ -58,7 +60,8 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
 
                 <div class="card-contenedor iso-<?= strtolower($c['iso']) ?>"
      data-nombre="<?= $c['nombre'] ?>"
-     onclick="location.href='contenedores/<?= strtolower($c['iso']) ?>/editar.php?nombre=<?= $c['nombre'] ?>'">
+     onclick="location.href='<?= strtolower($c['iso']) ?>/<?= $c['nombre'] ?>'">
+
 
 
                     <div class="card-header">

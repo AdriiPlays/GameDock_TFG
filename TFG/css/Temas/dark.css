@@ -1,0 +1,488 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #0d1117;
+    display: flex;
+    height: 100vh;
+}
+
+
+.sidebar {
+    width: 240px;
+    background: #1c2333;
+    color: #c9d1d9;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: -260px; 
+    transition: left 0.35s ease; 
+    box-shadow: 4px 0 10px rgba(0,0,0,0.5);
+}
+
+.sidebar-open {
+    left: 0; 
+}
+
+
+.sidebar-menu {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.user-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #2d3748;
+}
+
+.avatar-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #3fb950;
+}
+
+.menu-item {
+    padding: 15px 20px;
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.menu-item:hover {
+    background: #2d3748;
+}
+
+.logout {
+    margin-top: auto;
+    background: #6e1a1a;
+}
+
+.logout:hover {
+    background: #4a0e0e;
+}
+
+
+.main-content {
+    flex: 1;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+
+.header {
+    background: linear-gradient(90deg, #0d2818, #1a5c30);
+    padding: 20px;
+    color: #c9d1d9;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.menu-btn {
+    font-size: 28px;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 12px;
+    background: rgba(63,185,80,0.15);
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.menu-btn:hover {
+    background: rgba(63,185,80,0.3);
+}
+
+
+.contenido {
+    padding: 40px;
+    flex-grow: 1;
+}
+
+
+.footer {
+    background: #161b22;
+    color: #8b949e;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    margin-top: auto;
+    border-top: 1px solid #21262d;
+}
+
+
+.edit-user-container {
+    display: flex;
+    gap: 40px;
+    background: #161b22;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    border: 1px solid #21262d;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+.edit-user-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.edit-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #238636;
+}
+
+.btn-change-img {
+    padding: 10px 20px;
+    background: #238636;
+    color: #c9d1d9;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-change-img:hover {
+    background: #2ea043;
+}
+
+
+.edit-user-right {
+    flex: 1;
+}
+
+.edit-username {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #3fb950;
+}
+
+
+.edit-block {
+    margin-bottom: 30px;
+}
+
+.edit-block h3,
+.edit-block h2 {
+    margin-bottom: 10px;
+    color: #c9d1d9;
+}
+
+.input-edit {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #21262d;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 15px;
+    transition: 0.3s;
+    background: #0d1117;
+    color: #c9d1d9;
+}
+
+.input-edit:focus {
+    border-color: #238636;
+    outline: none;
+}
+
+
+.btn-save {
+    padding: 12px 25px;
+    background: #238636;
+    color: #c9d1d9;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.btn-save:hover {
+    background: #2ea043;
+}
+
+.edit-avatar {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #238636;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+        
+.edit-username {
+    font-size: 40px;
+    font-weight: bold;
+    color: #3fb950;
+    margin-bottom: 20px;
+}
+
+.contenedores-wrapper {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.contenedor {
+    width: 220px;
+    height: 180px;
+    background: #161b22;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.crear-contenedor {
+    background: #0d1117;
+    border: 3px dashed #3fb950;
+}
+
+.crear-contenedor:hover {
+    background: #161b22;
+}
+
+.mas {
+    font-size: 80px;
+    font-weight: bold;
+    color: #3fb950;
+}
+
+.contenedor-item {
+    background: linear-gradient(135deg, #1a5c30, #0d2818);
+    color: #c9d1d9;
+    padding: 15px;
+    border-radius: 15px;
+    width: 220px;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.contenedor-nombre {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.contenedor-botones button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-start { background: #238636; color: #c9d1d9; }
+.btn-stop  { background: #6e1a1a; color: #c9d1d9; }
+.btn-edit  { background: #9e6a03; color: #c9d1d9; }
+
+.log-login {
+    background: #0d2818;
+    color: #3fb950;
+    font-weight: bold;
+}
+
+.log-logout {
+    background: #1a0a0a;
+    color: #f85149;
+    font-weight: bold;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: #161b22;
+    border: 1px solid #21262d;
+    color: #c9d1d9;
+    padding: 25px;
+    border-radius: 12px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.card-contenedor {
+    width: 360px;        /* MÁS ANCHA */
+    height: 180px;       /* Un poco más alta */
+    background: #161b22;
+    border-radius: 18px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    border: 1px solid #21262d;
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+
+
+.card-contenedor:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+}
+
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.card-contenedor h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #c9d1d9;
+}
+
+/* ESTO CAMBIA EL COLOR BLANCO FEO DEL TEXTO */
+.card-version {
+    color: #c9d1d9;
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(0,0,0,0.9), 
+                 0 0 4px rgba(0,0,0,0.8);
+}
+
+.card-header h3 {
+    color: #c9d1d9;
+    font-weight: 900;
+    font-size: 22px;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(0,0,0,0.9),
+                 0 0 4px rgba(0,0,0,0.8);
+}
+
+
+
+/* ESTO CAMBIA EL COLOR BLANCO FEO DEL TEXTO */
+
+.contenedores-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+
+
+/* COLORES DE LOS BOTONES */
+
+
+
+.estado {
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #c9d1d9;
+}
+
+.estado.online {
+    background: #238636;
+}
+
+.estado.offline {
+    background: #6e1a1a;
+}
+
+
+.btn-delete {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: #6e1a1a;
+    color: #c9d1d9;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-delete:hover {
+    background: #4a0e0e;
+}
+
+
+
+
+/* FONDO DE LOS CONTENEDORES */
+
+.iso-mariadb { background: linear-gradient(135deg, #0a3d62, #051c2e); color: #c9d1d9; }
+
+
+.iso-minecraft {
+    background-image: url("/TFG/img/mc.jpg"); 
+    background-size: cover;        
+    background-position: center;   
+    background-repeat: no-repeat;  
+    color: #c9d1d9;
+}
+
+
+.iso-unturned {
+    background-image: url("/TFG/img/unturned.jpg"); 
+    background-size: cover;        
+    background-position: center;   
+    background-repeat: no-repeat;  
+    color: #c9d1d9;
+}
+
+.iso-python {
+    background-image: url("/TFG/img/py.png"); 
+    background-size: cover;        
+    background-position: center;   
+    background-repeat: no-repeat;  
+    color: #c9d1d9;
+}
+
+.btn-update {
+    background-color: #9e6a03;
+    color: #c9d1d9;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn-update:hover {
+    background-color: #bb8009;
+}

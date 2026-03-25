@@ -1,0 +1,26 @@
+RewriteEngine On
+RewriteBase /TFG/
+
+# --- Minecraft ---
+RewriteRule ^minecraft/([^/]+)/?$ contenedores/minecraft/editar.php?nombre=$1 [L,QSA]
+
+# ---Unturned ---
+RewriteRule ^unturned/([^/]+)/?$ contenedores/unturned/editar.php?nombre=$1 [L,QSA]
+
+# --- Python ---
+RewriteRule ^python/([^/]+)/?$ contenedores/python/editar.php?nombre=$1 [L,QSA]
+
+
+
+# --- Panel ---
+RewriteRule ^panel/?$ panel.php [L,QSA]
+
+
+# --- login ---
+RewriteRule ^login/?$ index.php [L,QSA]
+
+# --- logout ---
+RewriteRule ^logout/?$ logout.php [L,QSA]
+
+# --- registro (si lo tienes) ---
+RewriteRule ^register/?$ crear_usuario.php [L,QSA]

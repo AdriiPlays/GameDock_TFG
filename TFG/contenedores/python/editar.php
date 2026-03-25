@@ -1,11 +1,5 @@
 <?php
-require_once __DIR__ . "/../../config.php";
-session_start();
-
-if (!isset($_SESSION["usuario"])) {
-    header("Location: ../../../login.php");
-    exit;
-}
+require_once "../../Funciones/Sesion.php";
 
 if (!isset($_GET["nombre"])) {
     die("No se especificó el servidor.");
@@ -55,7 +49,7 @@ $tituloPagina = "Editar Servidor python: " . htmlspecialchars($nombre);
     <meta charset="UTF-8">
     <title><?= $tituloPagina ?></title>
 
-    <link rel="stylesheet" href="/TFG/css/panel.css">
+  <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
     <link rel="stylesheet" href="/TFG/css/minecraft.css">
     <link rel="stylesheet" href="/TFG/css/mc.css">
 </head>
@@ -193,6 +187,26 @@ $tituloPagina = "Editar Servidor python: " . htmlspecialchars($nombre);
     const servidorNombre = "<?= $nombre ?>";
     const servidorId = <?= $cont['id'] ?>;
     const puertoActual = <?= $mc['puerto'] ?>;
+</script>
+
+<script>
+function openTab(tabName) {
+   
+    document.querySelectorAll(".tab-content").forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+   
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+
+    document.getElementById(tabName).classList.add("active");
+
+   
+    event.target.classList.add("active");
+}
 </script>
 
 <?php include __DIR__ . "/../../Funciones/carga.php"; ?>

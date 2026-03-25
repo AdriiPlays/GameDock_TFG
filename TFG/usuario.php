@@ -1,14 +1,5 @@
 <?php
-session_start();
-require_once "config.php";
-
-if (!isset($_SESSION["usuario"])) {
-    header("Location: login.php");
-    exit;
-}
-
-$usuario = $_SESSION["usuario"];
-
+require_once "Funciones/Sesion.php";
 
 $stmt = $conn->prepare("SELECT correo, imagen FROM usuarios WHERE usuario = ?");
 $stmt->bind_param("s", $usuario);
@@ -17,7 +8,6 @@ $stmt->bind_result($correoActual, $imagenActual);
 $stmt->fetch();
 $stmt->close();
 
-
 $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.png";
 ?>
 <!DOCTYPE html>
@@ -25,10 +15,10 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
 <head>
     <meta charset="UTF-8">
     <title>Editar Usuario</title>
-    <link rel="stylesheet" href="css/panel.css">
+    <link rel="stylesheet" href="css/temas/<?= $temaUsuario ?>.css">
+    <link rel="stylesheet" href="css/Temas.css">
 </head>
 <body>
-
 
 <?php include "php/menu.php"; ?>
 
@@ -39,13 +29,11 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
     <h1>Editar Usuario</h1>
 </header>
 
-
 <main class="contenido">
 
 <form action="Funciones/cambioUsuario.php" method="POST" enctype="multipart/form-data">
     <div class="edit-user-container">
 
-       
         <div class="edit-user-left">
             <img src="<?= $imagenPerfil ?>" class="edit-avatar" alt="Foto de perfil">
 
@@ -55,7 +43,6 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
             </label>
         </div>
 
-       
         <div class="edit-user-right">
             <h1 class="edit-username"><?= htmlspecialchars($usuario) ?></h1>
 
@@ -83,6 +70,31 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
     </div>
 </form>
 
+<!-- ============================
+     SELECTOR DE TEMA BONITO
+============================= -->
+<div class="tema-selector">
+    <h3>Seleccionar tema</h3>
+
+    <div class="tema-opciones">
+        <div class="tema-card <?= $temaUsuario === 'light' ? 'tema-activo' : '' ?>" data-tema="light" style="--color:#f3f4f6;">
+            Claro
+        </div>
+
+        <div class="tema-card <?= $temaUsuario === 'dark' ? 'tema-activo' : '' ?>" data-tema="dark" style="--color:#1e293b;">
+            Oscuro
+        </div>
+
+        <div class="tema-card <?= $temaUsuario === 'blue' ? 'tema-activo' : '' ?>" data-tema="blue" style="--color:#3b82f6;">
+            Azul
+        </div>
+
+        <div class="tema-card <?= $temaUsuario === 'red' ? 'tema-activo' : '' ?>" data-tema="red" style="--color:#dc2626;">
+            Rojo
+        </div>
+    </div>
+</div>
+
 </main>
 
 <footer class="footer">
@@ -90,19 +102,35 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
 </footer>
 
 </div>
+
 <script src="JS/panel.js"></script>
+
 <script>
+// Menú lateral
 const menuBtn = document.getElementById("menu-btn");
 const sidebar = document.getElementById("sidebar");
 
-menuBtn.onclick = () => {
-    sidebar.classList.toggle("sidebar-open");
-};
+menuBtn.onclick = () => sidebar.classList.toggle("sidebar-open");
 
 document.addEventListener("click", (e) => {
     if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
         sidebar.classList.remove("sidebar-open");
     }
+});
+
+// Cambio de tema
+document.querySelectorAll(".tema-card").forEach(card => {
+    card.addEventListener("click", () => {
+        const tema = card.dataset.tema;
+
+        fetch("api/tema.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tema })
+        })
+        .then(r => r.json())
+        .then(() => location.reload());
+    });
 });
 </script>
 

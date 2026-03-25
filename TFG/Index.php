@@ -3,7 +3,6 @@ session_start();
 require_once "config.php"; 
 require_once "Funciones/logs.php";
 
-// Si no hay usuarios crear el primero
 $check = $conn->query("SELECT COUNT(*) AS total FROM usuarios")->fetch_assoc();
 if ($check["total"] == 0) {
     header("Location: crear_usuario.php?primer_usuario=1");
@@ -18,27 +17,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($usuario !== "" && $password !== "") {
 
-        $stmt = $conn->prepare("SELECT id, password, imagen, admin, verificado FROM usuarios WHERE usuario = ?");
+        $stmt = $conn->prepare("SELECT id, password, imagen, admin, verificado, tema FROM usuarios WHERE usuario = ?");
         $stmt->bind_param("s", $usuario);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows === 1) {
 
-            
-            $stmt->bind_result($idBD, $hashBD, $imagenBD, $adminBD, $verificadoBD);
+            $stmt->bind_result($idBD, $hashBD, $imagenBD, $adminBD, $verificadoBD, $temaBD);
             $stmt->fetch();
 
-            // Bloquear si no está verificado
             if ($verificadoBD == 0) {
                 $error = "Debes verificar tu correo antes de iniciar sesión.";
-            } 
-            // Si está verificado, comprobar contraseña
-            elseif (password_verify($password, $hashBD)) {
+            } elseif (password_verify($password, $hashBD)) {
 
                 $_SESSION["usuario"] = $usuario;
                 $_SESSION["imagen"] = $imagenBD;
                 $_SESSION["admin"] = $adminBD;
+                $_SESSION["tema"] = $temaBD;
 
                 registrarLog($conn, $usuario, "Inició sesión");
 
@@ -59,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $error = "Rellena todos los campos";
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="es">

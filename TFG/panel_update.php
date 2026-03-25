@@ -1,11 +1,6 @@
 <?php
-session_start();
-require_once "config.php";
+require_once "Funciones/Sesion.php";
 
-if (!isset($_SESSION["usuario"])) {
-    header("Location: login.php");
-    exit;
-}
 
 $tituloPagina = "Actualizar Panel";
 $versionLocal = trim(file_get_contents("version.txt"));
@@ -15,7 +10,7 @@ $versionLocal = trim(file_get_contents("version.txt"));
 <head>
 <meta charset="UTF-8">
 <title><?= $tituloPagina ?></title>
-<link rel="stylesheet" href="css/panel.css">
+  <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
 <link rel="stylesheet" href="css/update.css">
 </head>
 <body>
