@@ -8,13 +8,7 @@ https://www.kernel.org/doc/html/latest/filesystems/proc.html
 https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmic
 
 */
-session_start();
-require_once "../config.php";
-
-if (!isset($_SESSION["usuario"])) {
-    header("Location: ../Index.php");
-    exit;
-}
+require_once "../Funciones/Sesion.php";
 
 $tituloPagina = "Estado del Servidor";
 ?>
@@ -24,7 +18,7 @@ $tituloPagina = "Estado del Servidor";
     <meta charset="UTF-8">
     <title><?= $tituloPagina ?></title>
 
-    <link rel="stylesheet" href="../css/panel.css">
+      <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
     <link rel="stylesheet" href="../css/estado.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

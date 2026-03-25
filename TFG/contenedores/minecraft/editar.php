@@ -1,11 +1,5 @@
 <?php
-require_once __DIR__ . "/../../config.php";
-session_start();
-
-if (!isset($_SESSION["usuario"])) {
-    header("Location: ../../../login.php");
-    exit;
-}
+require_once "../../Funciones/Sesion.php";
 
 if (!isset($_GET["nombre"])) {
     die("No se especificó el servidor.");
@@ -55,7 +49,7 @@ $tituloPagina = "Editar Servidor Minecraft: " . htmlspecialchars($nombre);
     <meta charset="UTF-8">
     <title><?= $tituloPagina ?></title>
 
-    <link rel="stylesheet" href="/TFG/css/panel.css">
+  <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
     <link rel="stylesheet" href="/TFG/css/minecraft.css">
     <link rel="stylesheet" href="/TFG/css/mc.css">
 </head>

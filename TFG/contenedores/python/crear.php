@@ -1,9 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION["usuario"])) {
-    header("Location: ../../login.php");
-    exit;
-}
+require_once "../../Funciones/Sesion.php";
 
 $imagenPerfil = !empty($_SESSION["imagen"])
     ? "../../uploads/" . $_SESSION["imagen"]
@@ -15,9 +11,9 @@ $tituloPagina = "Crear Contenedor Python";
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title><?= $tituloPagina ?></title>
-    <link rel="stylesheet" href="/TFG/css/panel.css">
-    <link rel="stylesheet" href="/TFG/css/minecraft.css"> 
+     <title>Crear Servidor Python</title>
+  <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
+    <link rel="stylesheet" href="/TFG/css/minecraft.css">
 </head>
 
 <body>

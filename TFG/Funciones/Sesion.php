@@ -40,3 +40,5 @@ $stmt->close();
 $imagenPerfil = $imagenActual
     ? "/TFG/uploads/" . $imagenActual
     : "/TFG/uploads/default.png";
+
+$temaUsuario = $_SESSION["tema"] ?? "light";

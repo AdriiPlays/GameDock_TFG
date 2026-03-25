@@ -1,9 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION["usuario"])) {
-    header("Location: ../../login.php");
-    exit;
-}
+require_once "../../Funciones/Sesion.php";
+
 
 $imagenPerfil = !empty($_SESSION["imagen"])
     ? "../../uploads/" . $_SESSION["imagen"]
@@ -41,7 +38,7 @@ $imagenPerfil = !empty($_SESSION["imagen"])
 <head>
     <meta charset="UTF-8">
     <title>Crear Servidor Minecraft</title>
-    <link rel="stylesheet" href="/TFG/css/panel.css">
+  <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
     <link rel="stylesheet" href="/TFG/css/minecraft.css">
   
 </head>

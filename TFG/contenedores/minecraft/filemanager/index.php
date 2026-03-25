@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once "../../../Funciones/Sesion.php";
 
 $servidor = $_GET["nombre"] ?? null;
 $ruta = $_GET["ruta"] ?? "/data";
@@ -16,7 +16,7 @@ $tituloPagina = "Gestor de archivos - " . htmlspecialchars($servidor);
 <meta charset="UTF-8">
 <title><?= $tituloPagina ?></title>
 
-<link rel="stylesheet" href="/TFG/css/panel.css">
+  <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
 <link rel="stylesheet" href="/TFG/css/minecraft.css">
 
 </head>
