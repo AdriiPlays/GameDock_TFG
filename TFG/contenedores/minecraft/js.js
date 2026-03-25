@@ -1,3 +1,14 @@
+// ===============================
+//   VARIABLES INYECTADAS DESDE PHP
+// ===============================
+const servidorNombre = NOMBRE_SERVIDOR;
+const servidorId = ID_CONTENEDOR;
+const puertoActual = PUERTO_ACTUAL;
+
+
+// ===============================
+//   CAMBIO DE PESTAÑAS
+// ===============================
 function openTab(tab) {
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
     document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
@@ -6,11 +17,15 @@ function openTab(tab) {
     document.getElementById(tab).classList.add("active");
 }
 
+
+// ===============================
+//   ACCIONES DEL SERVIDOR
+// ===============================
 function accion(tipo) {
 
     mostrarLoader();
 
-    fetch("/TFG/contenedores/python/api/actions.php", {
+    fetch("/TFG/contenedores/minecraft/api/actions.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tipo, nombre: servidorNombre })
@@ -38,7 +53,13 @@ function accion(tipo) {
 }
 
 
+// ===============================
+//   GUARDAR CAMBIOS
+// ===============================
 function guardarCambios() {
+
+    mostrarLoader();
+
     fetch("api/edit.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -46,14 +67,16 @@ function guardarCambios() {
             id: servidorId,
             nombreActual: servidorNombre,
             nuevoNombre: document.getElementById("nuevoNombre").value,
-            nuevaVersion: document.getElementById("nuevaVersion")?.value || "",
-            nuevoTipo: document.getElementById("nuevoTipo")?.value || "",
+            nuevaVersion: document.getElementById("nuevaVersion").value,
+            nuevoTipo: document.getElementById("nuevoTipo").value,
             nuevoPuerto: document.getElementById("nuevoPuerto").value,
             puertoActual: puertoActual
         })
     })
     .then(r => r.json())
     .then(res => {
+
+        ocultarLoader();
 
         if (res.status === "success") {
             mostrarAlertaOK(res.message, () => {
@@ -62,10 +85,17 @@ function guardarCambios() {
         } else {
             mostrarAlertaError(res.message);
         }
-
+    })
+    .catch(err => {
+        ocultarLoader();
+        mostrarAlertaError("Error al conectar con la API");
     });
 }
 
+
+// ===============================
+//   CONSOLA
+// ===============================
 let consolaInterval = null;
 
 function abrirConsola() {
@@ -80,7 +110,7 @@ function abrirConsola() {
     if (consolaInterval) clearInterval(consolaInterval);
 
     consolaInterval = setInterval(() => {
-        fetch("/TFG/contenedores/python/api/console.php?nombre=" + servidorNombre)
+        fetch(`/TFG/contenedores/minecraft/api/console.php?nombre=${servidorNombre}`)
             .then(r => r.json())
             .then(res => {
                 if (res.status === "success") {
@@ -104,11 +134,15 @@ function cerrarConsola() {
     }
 }
 
+
+// ===============================
+//   ENVIAR COMANDO
+// ===============================
 function enviarComando() {
     const cmd = document.getElementById("cmdInput").value.trim();
     if (!cmd) return;
 
-    fetch("/TFG/contenedores/python/api/command.php", {
+    fetch("/TFG/contenedores/minecraft/api/command.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -125,23 +159,80 @@ function enviarComando() {
 }
 
 
+// ===============================
+//   RAM
+// ===============================
+function actualizarRAM() {
+    fetch(`/TFG/contenedores/minecraft/api/stats.php?nombre=${servidorNombre}`)
+        .then(r => r.json())
+        .then(data => {
+            if (data.status !== "success") return;
+
+            let used = data.used.replace("MiB", "").replace("GiB", "");
+            let total = data.total.replace("MiB", "").replace("GiB", "");
+
+            if (data.used.includes("GiB")) used = used * 1024;
+            if (data.total.includes("GiB")) total = total * 1024;
+
+            let porcentaje = (used / total) * 100;
+
+            document.getElementById("ramUso").innerText =
+                `${Math.round(used)} MB / ${Math.round(total)} MB`;
+
+            document.getElementById("ramBar").style.width = porcentaje + "%";
+        });
+}
+
+setInterval(actualizarRAM, 2000);
+actualizarRAM();
 
 
-function instalarDependencias() {
-    const deps = document.getElementById("nuevasDependencias").value;
+// ===============================
+//   SLIDER RAM
+// ===============================
+document.getElementById("ramSlider").addEventListener("input", e => {
+    document.getElementById("ramValor").innerText = e.target.value;
+});
 
-    fetch("api/instalar_dependencias.php", {
+
+// ===============================
+//   GUARDAR RAM
+// ===============================
+function guardarRAM() {
+
+    mostrarLoader();
+
+    let ram = document.getElementById("ramSlider").value;
+
+    fetch("api/edit.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            nombre: servidorNombre,
-            dependencias: deps
+            id: servidorId,
+            nombreActual: servidorNombre,
+            nuevoNombre: document.getElementById("nuevoNombre").value,
+            nuevaVersion: document.getElementById("nuevaVersion").value,
+            nuevoTipo: document.getElementById("nuevoTipo").value,
+            nuevoPuerto: document.getElementById("nuevoPuerto").value,
+            puertoActual: puertoActual,
+            nuevaRAM: ram
         })
     })
     .then(r => r.json())
-    .then(d => {
-        mostrarAlerta(d.message, "Aviso", () => {
-            cargarDependencias();
-        });
+    .then(res => {
+
+        ocultarLoader();
+
+        if (res.status === "success") {
+            mostrarAlertaOK(res.message, () => {
+                location.reload();
+            });
+        } else {
+            mostrarAlertaError(res.message);
+        }
+    })
+    .catch(err => {
+        ocultarLoader();
+        mostrarAlertaError("Error al conectar con la API");
     });
 }

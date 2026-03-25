@@ -195,7 +195,8 @@ $tituloPagina = "Editar Servidor python: " . htmlspecialchars($nombre);
     const puertoActual = <?= $mc['puerto'] ?>;
 </script>
 
-
+<?php include __DIR__ . "/../../Funciones/carga.php"; ?>
+<?php include __DIR__ . "/../../Funciones/alerta.php"; ?>
 <script src="js.js"></script>
 
 

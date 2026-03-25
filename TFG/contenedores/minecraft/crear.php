@@ -146,12 +146,18 @@ document.getElementById("btnCrear").addEventListener("click", () => {
         // OCULTAR LOADER
         ocultarLoader();
 
-        if (res.status === "success") {
-            alert("Servidor de Unturned creado correctamente");
-            location.href = "../../panel.php";
-        } else {
-            alert("Error: " + res.message + "\n\n" + (res.docker_output || ""));
-        }
+      if (res.status === "success") {
+
+    mostrarAlertaOK("Servidor de Minecraft creado correctamente", () => {
+        location.href = "../../panel.php";
+    });
+
+} else {
+
+    mostrarAlertaError("Error: " + res.message + "\n\n" + (res.docker_output || ""));
+
+}
+
     })
     .catch(err => {
 
@@ -159,11 +165,12 @@ document.getElementById("btnCrear").addEventListener("click", () => {
         ocultarLoader();
 
         console.error(err);
-        alert("No se pudo conectar con la API");
+        mostrarAlertaError("No se pudo conectar con la API");
+
     });
 });
 </script>
-
+<?php include __DIR__ . "/../../Funciones/alerta.php"; ?>
 <?php include __DIR__ . "/../../Funciones/carga.php"; ?>
 </body>
 </html>

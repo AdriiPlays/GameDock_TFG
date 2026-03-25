@@ -103,12 +103,18 @@ document.getElementById("btnCrear").addEventListener("click", () => {
         // OCULTAR LOADER
         ocultarLoader();
 
-        if (res.status === "success") {
-            alert("Contenedor Python creado correctamente");
-            location.href = "../../panel.php";
-        } else {
-            alert("Error: " + res.message + "\n\n" + (res.docker_output || ""));
-        }
+       if (res.status === "success") {
+
+    mostrarAlertaOK("Servidor de Python creado correctamente", () => {
+        location.href = "../../panel.php";
+    });
+
+} else {
+
+    mostrarAlertaError("Error: " + res.message + "\n\n" + (res.docker_output || ""));
+
+}
+
     })
     .catch(err => {
 
@@ -116,12 +122,14 @@ document.getElementById("btnCrear").addEventListener("click", () => {
         ocultarLoader();
 
         console.error(err);
-        alert("No se pudo conectar con la API");
+        mostrarAlertaError("No se pudo conectar con la API");
+
     });
 });
 </script>
 
 
 <?php include __DIR__ . "/../../Funciones/carga.php"; ?>
+<?php include __DIR__ . "/../../Funciones/alerta.php"; ?>
 </body>
 </html>
