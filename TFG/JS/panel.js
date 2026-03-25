@@ -1,3 +1,4 @@
+
 // SIDEBAR
 document.addEventListener("DOMContentLoaded", () => {
     const menuBtn = document.getElementById("menu-btn");

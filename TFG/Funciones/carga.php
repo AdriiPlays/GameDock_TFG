@@ -18,7 +18,7 @@
 
     <!-- TEXTO + PUNTITOS -->
     <div style="margin-top: 20px; font-size: 22px;">
-        Creando servidor<span class="dots"></span>
+        Cargando<span class="dots"></span>
     </div>
 
 </div>

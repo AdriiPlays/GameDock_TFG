@@ -57,7 +57,9 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
                 ?>
 
                 <div class="card-contenedor iso-<?= strtolower($c['iso']) ?>"
-                     onclick="location.href='contenedores/<?= strtolower($c['iso']) ?>/editar.php?nombre=<?= $c['nombre'] ?>'">
+     data-nombre="<?= $c['nombre'] ?>"
+     onclick="location.href='contenedores/<?= strtolower($c['iso']) ?>/editar.php?nombre=<?= $c['nombre'] ?>'">
+
 
                     <div class="card-header">
                         <h3><?= $c["nombre"] ?></h3>
@@ -121,24 +123,45 @@ document.getElementById("btnIrCrear").onclick = () => {
 };
 
 function eliminarContenedor(nombre, iso) {
-    if (!confirm("¿Seguro que quieres eliminar el contenedor " + nombre + "?")) return;
 
-    fetch("contenedores/" + iso + "/api/delete.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre })
-    })
-    .then(r => r.json())
-    .then(res => {
-        if (res.status === "success") {
-            alert("Contenedor eliminado correctamente");
-            location.reload();
-        } else {
-            alert("Error: " + res.message);
+    mostrarConfirmacion(
+        "¿Seguro que quieres eliminar el contenedor " + nombre + "?",
+        () => {
+
+            mostrarLoader();
+
+            fetch("contenedores/" + iso + "/api/delete.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nombre })
+            })
+            .then(r => r.json())
+            .then(res => {
+
+                ocultarLoader();
+
+                if (res.status === "success") {
+
+                    
+                    const card = document.querySelector(`[data-nombre='${nombre}']`);
+                    if (card) card.remove();
+
+                    mostrarAlertaOK("Contenedor eliminado correctamente");
+
+                } 
+            })
+            .catch(err => {
+                ocultarLoader();
+                mostrarAlertaError("No se pudo conectar con la API");
+            });
         }
-    });
+    );
 }
+
+
 </script>
+<?php include __DIR__ . "/Funciones/alerta.php"; ?>
+<?php include __DIR__ . "/Funciones/carga.php"; ?>
 
 </body>
 </html>
