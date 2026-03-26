@@ -17,6 +17,7 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
     <title>Editar Usuario</title>
     <link rel="stylesheet" href="css/temas/<?= $temaUsuario ?>.css">
     <link rel="stylesheet" href="css/Temas.css">
+       <link rel="icon" type="image/png" href="img/iconogrande.png">
 </head>
 <body>
 
@@ -71,7 +72,7 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
 </form>
 
 <!-- ============================
-     SELECTOR DE TEMA BONITO
+     SELECTOR DE colores
 ============================= -->
 <div class="tema-selector">
     <h3>Seleccionar tema</h3>
@@ -85,13 +86,7 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
             Oscuro
         </div>
 
-        <div class="tema-card <?= $temaUsuario === 'blue' ? 'tema-activo' : '' ?>" data-tema="blue" style="--color:#3b82f6;">
-            Azul
-        </div>
-
-        <div class="tema-card <?= $temaUsuario === 'red' ? 'tema-activo' : '' ?>" data-tema="red" style="--color:#dc2626;">
-            Rojo
-        </div>
+        
     </div>
 </div>
 

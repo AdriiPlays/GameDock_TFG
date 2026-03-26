@@ -50,8 +50,7 @@ $tituloPagina = "Editar Servidor python: " . htmlspecialchars($nombre);
     <title><?= $tituloPagina ?></title>
 
   <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
-    <link rel="stylesheet" href="/TFG/css/minecraft.css">
-    <link rel="stylesheet" href="/TFG/css/mc.css">
+ 
 </head>
 <body>
 

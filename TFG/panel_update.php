@@ -12,6 +12,7 @@ $versionLocal = trim(file_get_contents("version.txt"));
 <title><?= $tituloPagina ?></title>
   <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
 <link rel="stylesheet" href="css/update.css">
+   <link rel="icon" type="image/png" href="img/iconogrande.png">
 </head>
 <body>
 

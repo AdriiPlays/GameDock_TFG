@@ -67,6 +67,7 @@ $imagenPerfil = isset($_SESSION["imagen"]) && $_SESSION["imagen"] !== ""
     <meta charset="UTF-8">
     <title>Editar Contenedor</title>
   <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
+     <link rel="icon" type="image/png" href="img/iconogrande.png">
     <style>
         .btn-start { background: #22c55e; color: white; padding: 10px; border: none; cursor: pointer; }
         .btn-stop  { background: #ef4444; color: white; padding: 10px; border: none; cursor: pointer; }
