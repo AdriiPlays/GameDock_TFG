@@ -19,9 +19,10 @@ $tituloPagina = "Estado del Servidor";
     <title><?= $tituloPagina ?></title>
 
       <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
-    <link rel="stylesheet" href="../css/estado.css">
+
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+       <link rel="icon" type="image/png" href="img/iconogrande.png">
 </head>
 <body>
 

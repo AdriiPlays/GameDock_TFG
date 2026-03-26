@@ -13,7 +13,7 @@ $tituloPagina = "Crear Contenedor Python";
     <meta charset="UTF-8">
      <title>Crear Servidor Python</title>
   <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
-    <link rel="stylesheet" href="/TFG/css/minecraft.css">
+
 </head>
 
 <body>

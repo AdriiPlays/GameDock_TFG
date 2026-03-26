@@ -101,6 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <title>Crear Usuario</title>
     <link rel="stylesheet" href="css/crear_usuario.css">
+    <link rel="icon" type="image/png" href="img/iconogrande.png">
 </head>
 <body>
 

@@ -51,8 +51,7 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
 
 
   <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
-    <link rel="stylesheet" href="/TFG/css/minecraft.css">
-    <link rel="stylesheet" href="/TFG/css/mc.css">
+
 </head>
 <body>
 

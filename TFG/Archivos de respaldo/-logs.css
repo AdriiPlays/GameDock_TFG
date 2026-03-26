@@ -1,0 +1,107 @@
+
+        
+        
+        .logs-wrapper {
+            width: 90%;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+
+        .logs-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+            text-align: center;
+        }
+
+        .logs-filtros {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .logs-filtros input,
+        .logs-filtros select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+        }
+
+        .tabla-logs {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .tabla-logs th {
+            background: #1e40af;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .tabla-logs td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .tabla-logs tr:hover {
+            background: #f1f5f9;
+        }
+
+      
+        .log-create {  background: #ede9fe; color: #5b21b6; font-weight: bold;  }
+        .log-delete { background:#fee2e2; color:#991b1b; font-weight:bold; }
+        .log-edit   { background:#fef9c3; color:#854d0e; font-weight:bold; }
+        .log-info   { color:#334155; }
+        .log-login  { background:#d1fae5; color:#065f46; font-weight:bold; }
+        .log-logout { background:#fee2e2; color:#991b1b; font-weight:bold; }
+        .log-restart { background:#fffcc7; color:#d57712; font-weight:bold; }
+
+        .paginacion {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .paginacion button {
+            padding: 8px 14px;
+            margin: 0 5px;
+            border: none;
+            background: #1e40af;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .paginacion button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .btn-pag {
+    background: #4a90e2;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+    border: none;
+}
+
+.btn-pag:hover {
+    background: #357ABD;
+}
+
+.btn-pag:disabled,
+.btn-pag[disabled] {
+    background: #999;
+    cursor: not-allowed;
+}

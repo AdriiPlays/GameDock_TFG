@@ -21,8 +21,7 @@ $listaVersiones = [
     <meta charset="UTF-8">
     <title>Crear Servidor Unturned</title>
      <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
-    <link rel="stylesheet" href="/TFG/css/minecraft.css">
-    <link rel="stylesheet" href="/TFG/css/mc.css">
+
 </head>
 
 <body>
