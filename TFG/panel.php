@@ -166,7 +166,11 @@ function eliminarContenedor(nombre, iso) {
                         card.style.animation = "fadeOut 0.3s ease";
                         setTimeout(() => card.remove(), 300);
                     }
-                    mostrarAlertaOK("✅ Servidor eliminado correctamente");
+
+                mostrarAlertaCerrar("✅ Servidor eliminado correctamente");
+
+
+
                 } else {
                     mostrarAlertaError("❌ Error: " + (res.message || "No se pudo eliminar"));
                 }
@@ -178,6 +182,7 @@ function eliminarContenedor(nombre, iso) {
         }
     );
 }
+
 </script>
 
 <?php include __DIR__ . "/Funciones/alerta.php"; ?>

@@ -139,4 +139,36 @@ function mostrarConfirmacion(mensaje, callbackAceptar, callbackCancelar = null) 
     };
 }
 
+
+function mostrarAlertaCerrar(mensaje) {
+    alertaCallback = null; // No ejecutar nada al cerrar
+
+    document.getElementById("alerta-mensaje").innerText = mensaje;
+    document.getElementById("alerta-titulo").innerText = "Aviso";
+
+    const alerta = document.getElementById("alerta");
+    const box = document.getElementById("alerta-box");
+
+    // Restaurar el HTML original del botón Aceptar
+    box.innerHTML = `
+        <h3 id="alerta-titulo">Aviso</h3>
+        <p id="alerta-mensaje">${mensaje}</p>
+        <button onclick="cerrarAlerta()" style="
+            padding: 8px 20px;
+            background: #4da3ff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        ">Cerrar</button>
+    `;
+
+    alerta.style.display = "flex";
+
+    setTimeout(() => {
+        box.style.opacity = "1";
+        box.style.transform = "scale(1)";
+    }, 10);
+}
+
 </script>

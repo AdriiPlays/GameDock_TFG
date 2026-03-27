@@ -78,5 +78,5 @@ if ($nuevaImagen && $nuevaImagen["size"] > 0) {
     }
 }
 
-header("Location: ../usuario.php?ok=1");
+header("Location: ../php/usuario.php?ok=1");
 exit;

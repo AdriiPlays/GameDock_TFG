@@ -47,11 +47,9 @@ $tituloPagina = "Editar Servidor: " . htmlspecialchars($nombre);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $tituloPagina ?></title>
     <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
-   <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>/editar-<?= $temaUsuario ?>.css">
-    <link rel="icon" type="image/png" href="/TFG/img/iconogrande.png">
 </head>
 <body>
 
@@ -61,34 +59,34 @@ $tituloPagina = "Editar Servidor: " . htmlspecialchars($nombre);
 
     <header class="header">
         <button id="menu-btn" class="menu-btn">☰</button>
-        <h1>Gestión: <?= htmlspecialchars($nombre) ?></h1>
+        <h1>Gestión de Servidor: <?= htmlspecialchars($nombre) ?></h1>
     </header>
 
     <main class="contenido">
 
         <!-- NAV DE TABS -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="openTab(event, 'editar')">Información</button>
-            <button class="tab-btn" onclick="openTab(event, 'estado')">Estado</button>
-            <button class="tab-btn" onclick="openTab(event, 'control')">Control</button>
-            <button class="tab-btn" onclick="openTab(event, 'avanzado')">Avanzado</button>
-            <button class="tab-btn" onclick="openTab(event, 'ftp')">Archivos</button>
+            <button class="tab-btn active" onclick="openTab('editar')">Información</button>
+            <button class="tab-btn" onclick="openTab('estado')">Estado</button>
+            <button class="tab-btn" onclick="openTab('control')">Control</button>
+            <button class="tab-btn" onclick="openTab('avanzado')">Avanzado</button>
+            <button class="tab-btn" onclick="openTab('ftp')">Archivos</button>
         </div>
 
         <!-- SECCIÓN INFORMACIÓN -->
         <div id="editar" class="tab-content active">
             <h2>Configuración del Servidor</h2>
 
-            <label for="nuevoNombre">Nombre del Servidor</label>
+            <label>Nombre del Servidor</label>
             <input type="text" id="nuevoNombre" class="input-edit" value="<?= htmlspecialchars($cont['nombre']) ?>" placeholder="Nombre del servidor">
 
-            <label for="nuevaVersion">Versión</label>
+            <label>Versión</label>
             <input type="text" id="nuevaVersion" class="input-edit" value="<?= htmlspecialchars($mc['version']) ?>" readonly>
 
-            <label for="nuevoTipo">Tipo de Servidor</label>
+            <label>Tipo de Servidor</label>
             <input type="text" id="nuevoTipo" class="input-edit" value="<?= htmlspecialchars($mc['tipo']) ?>" readonly>
 
-            <label for="nuevoPuerto">Puerto</label>
+            <label>Puerto</label>
             <input type="number" id="nuevoPuerto" class="input-edit" value="<?= htmlspecialchars($mc['puerto']) ?>" placeholder="25565">
 
             <button class="btn-save" onclick="guardarCambios()">Guardar Cambios</button>
@@ -124,7 +122,7 @@ $tituloPagina = "Editar Servidor: " . htmlspecialchars($nombre);
         <div id="control" class="tab-content">
             <h2>Control del Servidor</h2>
 
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                 <?php if ($estado === "online"): ?>
                     <button class="btn-stop" onclick="accion('stop')">Detener Servidor</button>
                     <button class="btn-start" onclick="accion('restart')">Reiniciar Servidor</button>
@@ -135,12 +133,12 @@ $tituloPagina = "Editar Servidor: " . htmlspecialchars($nombre);
                 <button class="btn-delete" onclick="accion('delete')" style="margin-left: auto;">Eliminar Servidor</button>
             </div>
 
-            <div style="padding: 20px; border-radius: 12px; border: 2px solid #21262d;">
-                <h3 style="margin-top: 0;">Estado Actual</h3>
+            <div style="margin-top: 30px; padding: 20px; background: #161b22; border-radius: 8px; border: 1px solid #21262d;">
+                <h3 style="color: #ffffff; margin-top: 0;">Estado Actual</h3>
                 <p style="font-size: 16px; margin: 10px 0;">
                     Estado: 
                     <span style="font-weight: 700; <?= $estado === 'online' ? 'color: #56d364;' : 'color: #ff7b72;' ?>">
-                        <?= $estado === 'online' ? 'Online' : 'Offline' ?>
+                        <?= $estado === 'online' ? '🟢 Online' : '🔴 Offline' ?>
                     </span>
                 </p>
             </div>
@@ -171,7 +169,7 @@ $tituloPagina = "Editar Servidor: " . htmlspecialchars($nombre);
         <div id="ftp" class="tab-content">
             <h2>Gestor de Archivos</h2>
 
-            <p style="margin-bottom: 20px; opacity: 0.8;">
+            <p style="color: #8b949e; margin-bottom: 20px;">
                 Accede al gestor de archivos para administrar los datos del servidor
             </p>
 
@@ -196,7 +194,7 @@ const ID_CONTENEDOR = <?= $cont['id'] ?>;
 const PUERTO_ACTUAL = <?= $mc['puerto'] ?>;
 
 // Función para cambiar tabs
-function openTab(event, tabName) {
+function openTab(tabName) {
     // Ocultar todos los tabs
     const tabs = document.getElementsByClassName("tab-content");
     for (let i = 0; i < tabs.length; i++) {

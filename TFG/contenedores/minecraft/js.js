@@ -9,12 +9,22 @@ const puertoActual = PUERTO_ACTUAL;
 // ===============================
 //   CAMBIO DE PESTAÑAS
 // ===============================
-function openTab(tab) {
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+function openTab(event, tabName) {
+
+    // Ocultar todos los contenidos
     document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
 
-    document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add("active");
-    document.getElementById(tab).classList.add("active");
+    // Desactivar todos los botones
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+
+    // Activar el contenido correcto
+    const tab = document.getElementById(tabName);
+    if (tab) tab.classList.add("active");
+
+    // Activar el botón correcto
+    if (event && event.target) {
+        event.target.classList.add("active");
+    }
 }
 
 
