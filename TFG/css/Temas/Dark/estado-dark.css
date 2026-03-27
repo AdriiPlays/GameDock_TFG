@@ -1,5 +1,6 @@
+
 /* ============================
-   ESTILOS GENERALES ESTADO 
+   ESTILOS GENERALES ESTADO
 ============================ */
 * {
     box-sizing: border-box;
@@ -35,20 +36,22 @@ body {
 
 .barra-fill {
     height: 12px;
-    background: #3b82f6;
+    background: #4caf50;
     border-radius: 6px;
 }
 
-
+/* ============================
+   TARJETA DEL SISTEMA (arriba)
+============================ */
 .tarjeta-sistema {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto 25px auto;
-    background: linear-gradient(135deg, #ffffff, #f0f4f8);
+    background: linear-gradient(135deg, #161b22, #1c2333);
     padding: 25px;
     border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
-    border: 2px solid #dbeafe;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border: 1px solid #21262d;
     animation: fadeIn 0.4s ease;
     box-sizing: border-box;
     overflow: hidden;
@@ -65,14 +68,13 @@ body {
     width: 60px;
     height: 60px;
     border-radius: 8px;
-    border: 3px solid #3b82f6;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+    border: 2px solid #238636;
 }
 
 .sistema-header h3 {
     font-size: 22px;
     margin: 0;
-    color: #1e3a8a;
+    color: #3fb950;
     font-weight: 700;
 }
 
@@ -86,15 +88,17 @@ body {
 .sistema-info p {
     margin: 0;
     font-size: 15px;
-    color: #334155;
+    color: #c9d1d9;
 }
 
 .sistema-info strong {
-    color: #1e40af;
+    color: #3fb950;
     font-weight: 600;
 }
 
-
+/* ============================
+   TARJETAS DE ESTADO (cuadrícula)
+============================ */
 .cuadricula-estado {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -109,11 +113,11 @@ body {
 }
 
 .tarjeta-estado {
-    background: #ffffff;
+    background: #161b22;
     padding: 18px;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
-    border: 2px solid #dbeafe;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border: 1px solid #21262d;
     transition: all 0.3s ease;
     box-sizing: border-box;
     overflow: hidden;
@@ -121,15 +125,15 @@ body {
 
 .tarjeta-estado:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
-    border-color: #3b82f6;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    border-color: #238636;
 }
 
 .tarjeta-estado h3 {
     margin: 0 0 12px 0;
     font-size: 16px;
     font-weight: 700;
-    color: #1e293b;
+    color: #c9d1d9;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -138,8 +142,8 @@ body {
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 12px;
-    color: #3b82f6;
-    text-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+    color: #3fb950;
+    text-shadow: 0 0 10px rgba(63, 185, 80, 0.3);
 }
 
 .tarjeta-estado canvas {
@@ -158,13 +162,14 @@ body {
     }
 }
 
-
+/* ============================
+   RESPONSIVE - TABLET (1024px)
+============================ */
 @media (max-width: 1024px) {
     .tarjeta-sistema {
         padding: 20px;
         margin-bottom: 20px;
         max-width: 100%;
-        border: 2px solid #dbeafe;
     }
 
     .cuadricula-estado {
@@ -201,7 +206,6 @@ body {
 
     .tarjeta-estado {
         padding: 15px;
-        border: 2px solid #dbeafe;
     }
 
     .tarjeta-estado h3 {
@@ -219,12 +223,14 @@ body {
     }
 }
 
+/* ============================
+   RESPONSIVE - TABLET PEQUEÑA (768px)
+============================ */
 @media (max-width: 768px) {
     .tarjeta-sistema {
         padding: 18px;
         margin-bottom: 18px;
         max-width: 100%;
-        border: 2px solid #dbeafe;
     }
 
     .cuadricula-estado {
@@ -264,7 +270,6 @@ body {
 
     .tarjeta-estado {
         padding: 12px;
-        border: 2px solid #dbeafe;
     }
 
     .tarjeta-estado h3 {
@@ -282,14 +287,15 @@ body {
     }
 }
 
-
+/* ============================
+   RESPONSIVE - MÓVIL HORIZONTAL (600px)
+============================ */
 @media (max-width: 600px) {
     .tarjeta-sistema {
         padding: 15px;
         margin-bottom: 15px;
         border-radius: 12px;
         max-width: 100%;
-        border: 2px solid #dbeafe;
     }
 
     .cuadricula-estado {
@@ -329,7 +335,6 @@ body {
     .tarjeta-estado {
         padding: 12px;
         border-radius: 10px;
-        border: 2px solid #dbeafe;
     }
 
     .tarjeta-estado h3 {
@@ -347,7 +352,9 @@ body {
     }
 }
 
-
+/* ============================
+   RESPONSIVE - MÓVIL PEQUEÑO (480px)
+============================ */
 @media (max-width: 480px) {
     .contenido {
         padding: 15px 12px !important;
@@ -359,7 +366,6 @@ body {
         margin-bottom: 12px;
         border-radius: 10px;
         max-width: 100%;
-        border: 2px solid #dbeafe;
     }
 
     .cuadricula-estado {
@@ -377,7 +383,6 @@ body {
         width: 35px;
         height: 35px;
         border-radius: 6px;
-        border-width: 2px;
     }
 
     .sistema-header h3 {
@@ -408,7 +413,6 @@ body {
     .tarjeta-estado {
         padding: 10px;
         border-radius: 8px;
-        border: 2px solid #dbeafe;
     }
 
     .tarjeta-estado h3 {
@@ -426,7 +430,9 @@ body {
     }
 }
 
-
+/* ============================
+   RESPONSIVE - MÓVIL MUY PEQUEÑO (360px)
+============================ */
 @media (max-width: 360px) {
     .contenido {
         padding: 12px 8px !important;
@@ -437,7 +443,6 @@ body {
         padding: 10px;
         margin-bottom: 10px;
         max-width: 100%;
-        border: 2px solid #dbeafe;
     }
 
     .cuadricula-estado {
@@ -458,7 +463,6 @@ body {
 
     .tarjeta-estado {
         padding: 8px;
-        border: 2px solid #dbeafe;
     }
 
     .tarjeta-estado h3 {
@@ -475,7 +479,9 @@ body {
     }
 }
 
-
+/* ============================
+   ANIMACIONES
+============================ */
 @keyframes slideUp {
     from {
         opacity: 0;

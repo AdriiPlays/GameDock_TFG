@@ -51,6 +51,7 @@ $tituloPagina = "Editar Servidor unturned: " . htmlspecialchars($nombre);
 
 
   <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
+  <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>/editar-<?= $temaUsuario ?>.css">
 
 </head>
 <body>

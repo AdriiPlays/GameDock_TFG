@@ -1,0 +1,397 @@
+/* ============================
+   CREAR SERVIDOR - TEMA OSCURO
+============================ */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================
+   CONTENEDOR PRINCIPAL
+============================ */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.contenido {
+    flex-grow: 1;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ============================
+   FORMULARIO
+============================ */
+.form-box {
+    background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    border: 1px solid #21262d;
+    max-width: 600px;
+    margin: 0 auto;
+    animation: slideUp 0.5s ease-out;
+}
+
+.form-box h2 {
+    font-size: 32px;
+    color: #3fb950;
+    margin: 0 0 30px 0;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.form-box label {
+    display: block;
+    color: #c9d1d9;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-box label:first-of-type {
+    margin-top: 0;
+}
+
+.input-edit {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #21262d;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: #0d1117;
+    color: #c9d1d9;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.input-edit::placeholder {
+    color: #8b949e;
+}
+
+.input-edit:focus {
+    border-color: #238636;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(35, 134, 54, 0.15);
+    background: #0d1117;
+}
+
+.input-edit:hover {
+    border-color: #30363d;
+}
+
+/* ============================
+   BOTONES
+============================ */
+.btn-save,
+.btn-cancel {
+    padding: 14px 32px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-right: 12px;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #238636 0%, #1e7e34 100%);
+    color: white;
+    width: 100%;
+}
+
+.btn-save:hover {
+    background: linear-gradient(135deg, #2ea043 0%, #2d9e5f 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(35, 134, 54, 0.3);
+}
+
+.btn-save:active {
+    transform: translateY(0);
+}
+
+.btn-cancel {
+    background: #30363d;
+    color: #c9d1d9;
+    width: 100%;
+    margin-right: 0;
+    margin-top: 10px;
+}
+
+.btn-cancel:hover {
+    background: #424a52;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(48, 54, 61, 0.3);
+}
+
+.btn-cancel:active {
+    transform: translateY(0);
+}
+
+/* ============================
+   ANIMACIONES
+============================ */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(35, 134, 54, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(35, 134, 54, 0);
+    }
+}
+
+.form-box {
+    animation: slideUp 0.5s ease-out;
+}
+
+/* ============================
+   RESPONSIVE - TABLET (1024px)
+============================ */
+@media (max-width: 1024px) {
+    .contenido {
+        padding: 30px 20px;
+    }
+
+    .form-box {
+        padding: 35px;
+        max-width: 100%;
+    }
+
+    .form-box h2 {
+        font-size: 28px;
+        margin-bottom: 25px;
+    }
+
+    .input-edit {
+        padding: 12px 14px;
+        font-size: 14px;
+        margin-bottom: 18px;
+    }
+
+    .btn-save,
+    .btn-cancel {
+        padding: 12px 28px;
+        font-size: 14px;
+    }
+}
+
+/* ============================
+   RESPONSIVE - TABLET PEQUEÑA (768px)
+============================ */
+@media (max-width: 768px) {
+    .contenido {
+        padding: 25px 15px;
+    }
+
+    .form-box {
+        padding: 30px;
+        border-radius: 14px;
+        max-width: 100%;
+    }
+
+    .form-box h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .form-box label {
+        font-size: 13px;
+        margin-top: 18px;
+        margin-bottom: 7px;
+    }
+
+    .input-edit {
+        padding: 11px 13px;
+        font-size: 13px;
+        margin-bottom: 16px;
+        border-radius: 8px;
+    }
+
+    .btn-save,
+    .btn-cancel {
+        padding: 11px 24px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+
+    .btn-save {
+        margin-right: 0;
+    }
+
+    .btn-cancel {
+        margin-top: 10px;
+    }
+}
+
+/* ============================
+   RESPONSIVE - MÓVIL HORIZONTAL (600px)
+============================ */
+@media (max-width: 600px) {
+    .contenido {
+        padding: 20px 12px;
+    }
+
+    .form-box {
+        padding: 25px;
+        border-radius: 12px;
+        max-width: 100%;
+    }
+
+    .form-box h2 {
+        font-size: 22px;
+        margin-bottom: 18px;
+    }
+
+    .form-box label {
+        font-size: 12px;
+        margin-top: 16px;
+        margin-bottom: 6px;
+    }
+
+    .input-edit {
+        padding: 10px 12px;
+        font-size: 12px;
+        margin-bottom: 14px;
+        border-radius: 8px;
+    }
+
+    .btn-save,
+    .btn-cancel {
+        padding: 10px 20px;
+        font-size: 12px;
+        border-radius: 8px;
+        margin-right: 8px;
+    }
+
+    .btn-cancel {
+        margin-right: 0;
+        margin-top: 8px;
+    }
+}
+
+/* ============================
+   RESPONSIVE - MÓVIL PEQUEÑO (480px)
+============================ */
+@media (max-width: 480px) {
+    .contenido {
+        padding: 18px 10px;
+        overflow: auto;
+    }
+
+    .form-box {
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .form-box h2 {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+
+    .form-box label {
+        font-size: 11px;
+        margin-top: 14px;
+        margin-bottom: 5px;
+    }
+
+    .input-edit {
+        padding: 9px 11px;
+        font-size: 11px;
+        margin-bottom: 12px;
+        border-radius: 6px;
+        border-width: 1px;
+    }
+
+    .input-edit:focus {
+        box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.1);
+    }
+
+    .btn-save,
+    .btn-cancel {
+        padding: 10px 16px;
+        font-size: 11px;
+        border-radius: 6px;
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .btn-cancel {
+        margin-top: 8px;
+    }
+}
+
+/* ============================
+   RESPONSIVE - MÓVIL MUY PEQUEÑO (360px)
+============================ */
+@media (max-width: 360px) {
+    .contenido {
+        padding: 15px 8px;
+    }
+
+    .form-box {
+        padding: 18px;
+        border-radius: 8px;
+    }
+
+    .form-box h2 {
+        font-size: 18px;
+        margin-bottom: 14px;
+    }
+
+    .form-box label {
+        font-size: 10px;
+        margin-top: 12px;
+        margin-bottom: 4px;
+    }
+
+    .input-edit {
+        padding: 8px 10px;
+        font-size: 10px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+    }
+
+    .btn-save,
+    .btn-cancel {
+        padding: 9px 12px;
+        font-size: 10px;
+        border-radius: 6px;
+        width: 100%;
+    }
+
+    .btn-cancel {
+        margin-top: 6px;
+    }
+}
