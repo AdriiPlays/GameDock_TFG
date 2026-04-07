@@ -132,49 +132,12 @@ switch ($tipo) {
         break;
 
 
-   case "update":
-
-    // Preparamos el JSON que update.php necesita
-    $json = json_encode(["nombre" => $nombre]);
-
-    // Ejecutamos update.php como script independiente
-    $cmd = "php " . __DIR__ . "/update.php";
-
-    $descriptors = [
-        0 => ["pipe", "r"], 
-        1 => ["pipe", "w"], 
-        2 => ["pipe", "w"]  
-    ];
-
-    $proc = proc_open($cmd, $descriptors, $pipes);
-
-    // Enviar JSON a update.php
-    fwrite($pipes[0], $json);
-    fclose($pipes[0]);
-
-    // Leer salida
-    $output = stream_get_contents($pipes[1]);
-    fclose($pipes[1]);
-
-    // Leer errores
-    $error = stream_get_contents($pipes[2]);
-    fclose($pipes[2]);
-
-    proc_close($proc);
-
-    // Si update.php devolvió HTML → error
-    if (str_starts_with(trim($output), "<")) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error interno en update.php",
-            "debug" => $output
-        ]);
-        exit;
-    }
-
-    // Devolver JSON
-    echo $output;
+  case "update":
+    // Pasamos los datos a update.php
+    $_POST = $data;
+    require __DIR__ . "/update.php";
     exit;
+
 
     default:
         echo json_encode(["status" => "error", "message" => "Acción no válida"]);

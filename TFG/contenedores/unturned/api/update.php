@@ -26,20 +26,46 @@ if (!$puerto) {
     exit;
 }
 
-// Parar y borrar
+/* ============================================================
+   1. RECONSTRUIR LA IMAGEN PERSONALIZADA DE UNTURNED
+   ============================================================ */
+
+// ⚠️ CAMBIA ESTE NOMBRE POR EL DE TU IMAGEN PERSONALIZADA
+$imagen = "admuro/unturned:latest";
+
+$buildCmd = "docker build -t $imagen /ruta/a/tu/dockerfile 2>&1";
+exec($buildCmd, $buildOut, $buildCode);
+
+if ($buildCode !== 0) {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Error al reconstruir la imagen de Unturned",
+        "docker_output" => $buildOut
+    ]);
+    exit;
+}
+
+/* ============================================================
+   2. PARAR Y BORRAR EL CONTENEDOR ANTIGUO
+   ============================================================ */
+
 exec("docker stop " . escapeshellarg($nombre));
 exec("docker rm " . escapeshellarg($nombre));
 
-// Recrear contenedor
+/* ============================================================
+   3. RECREAR EL CONTENEDOR CON LA IMAGEN ACTUALIZADA
+   ============================================================ */
+
 $cmd = sprintf(
     'docker run -d --name %s ' .
     '-p %d:27015/udp -p %d:27015/tcp ' .
     '-v unturned_%s:/home/steam/unturned ' .
-    'admuro/unturned:latest 2>&1',
+    '%s 2>&1',
     escapeshellcmd($nombre),
     $puerto,
     $puerto,
-    escapeshellcmd($nombre)
+    escapeshellcmd($nombre),
+    $imagen
 );
 
 exec($cmd, $out, $code);

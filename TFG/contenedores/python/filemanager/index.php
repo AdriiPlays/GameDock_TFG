@@ -17,7 +17,9 @@ $tituloPagina = "Gestor de archivos - " . htmlspecialchars($servidor);
 <meta charset="UTF-8">
 <title><?= $tituloPagina ?></title>
 
-  <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
+<link rel="stylesheet" href="/TFG/css/Temas/<?= ucfirst($temaUsuario) ?>.css">
+<link rel="stylesheet" href="/TFG/css/Temas/<?= ucfirst($temaUsuario) ?>/filemanager-<?= strtolower($temaUsuario) ?>.css">
+
 
 
 </head>
