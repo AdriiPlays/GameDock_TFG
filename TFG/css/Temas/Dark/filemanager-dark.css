@@ -1,0 +1,517 @@
+/* ============================
+   GESTOR DE ARCHIVOS - TEMA OSCURO
+============================ */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================
+   CONTENEDOR PRINCIPAL
+============================ */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.contenido {
+    flex-grow: 1;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    overflow-y: auto;
+}
+
+/* ============================
+   BOTÓN VOLVER
+============================ */
+.btn-volver {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #30363d 0%, #1c2128 100%);
+    color: #c9d1d9;
+    border: 1px solid #21262d;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 25px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-volver:hover {
+    background: linear-gradient(135deg, #424a52 0%, #30363d 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    border-color: #30363d;
+}
+
+.btn-volver:active {
+    transform: translateY(0);
+}
+
+/* ============================
+   TÍTULOS
+============================ */
+.contenido h3 {
+    color: #8b949e;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 25px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 16px;
+    background: #161b22;
+    border-left: 4px solid #238636;
+    border-radius: 6px;
+}
+
+/* ============================
+   FORMULARIO SUBIR ARCHIVOS
+============================ */
+#formSubir {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 20px;
+    background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+    border-radius: 12px;
+    border: 1px solid #21262d;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+#formSubir input[type="file"] {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 14px;
+    background: #0d1117;
+    border: 2px solid #21262d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+#formSubir input[type="file"]::file-selector-button {
+    padding: 8px 16px;
+    background: #238636;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+#formSubir input[type="file"]::file-selector-button:hover {
+    background: #3fb950;
+}
+
+#formSubir button {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #238636 0%, #1e7e34 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+#formSubir button:hover {
+    background: linear-gradient(135deg, #2ea043 0%, #2d9e5f 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(35, 134, 54, 0.3);
+}
+
+#formSubir button:active {
+    transform: translateY(0);
+}
+
+/* ============================
+   CONTENEDOR DE ARCHIVOS
+============================ */
+#contenedor {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    animation: fadeIn 0.4s ease;
+}
+
+.archivo {
+    background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+    border: 1px solid #21262d;
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.archivo:hover {
+    border-color: #238636;
+    box-shadow: 0 8px 24px rgba(35, 134, 54, 0.2);
+    transform: translateY(-4px);
+}
+
+.archivo span {
+    flex: 1;
+    color: #c9d1d9;
+    font-size: 14px;
+    font-weight: 500;
+    word-break: break-word;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 10px;
+}
+
+.archivo.carpeta span {
+    color: #3fb950;
+    font-weight: 600;
+}
+
+.archivo button {
+    padding: 8px 12px;
+    background: #30363d;
+    color: #8b949e;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    margin-left: 6px;
+    flex-shrink: 0;
+}
+
+.archivo button:hover {
+    background: #238636;
+    color: white;
+    border-color: #238636;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(35, 134, 54, 0.2);
+}
+
+.archivo button:active {
+    transform: translateY(0);
+}
+
+/* ============================
+   CARGANDO
+============================ */
+#contenedor:has(+ script) {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ============================
+   ANIMACIONES
+============================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ============================
+   RESPONSIVE - TABLET (1024px)
+============================ */
+@media (max-width: 1024px) {
+    .contenido {
+        padding: 30px 15px;
+    }
+
+    #contenedor {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 14px;
+    }
+
+    #formSubir {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #formSubir input[type="file"],
+    #formSubir button {
+        width: 100%;
+    }
+
+    .archivo {
+        padding: 14px;
+    }
+
+    .archivo span {
+        font-size: 13px;
+    }
+
+    .archivo button {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+}
+
+/* ============================
+   RESPONSIVE - TABLET PEQUEÑA (768px)
+============================ */
+@media (max-width: 768px) {
+    .contenido {
+        padding: 25px 12px;
+    }
+
+    .contenido h3 {
+        font-size: 12px;
+        margin-bottom: 20px;
+        padding: 10px 14px;
+    }
+
+    .btn-volver {
+        padding: 10px 18px;
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+
+    #contenedor {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+    }
+
+    #formSubir {
+        padding: 15px;
+        gap: 10px;
+    }
+
+    #formSubir input[type="file"],
+    #formSubir button {
+        width: 100%;
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    #formSubir button {
+        padding: 10px 16px;
+    }
+
+    .archivo {
+        padding: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .archivo span {
+        font-size: 12px;
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .archivo button {
+        margin-left: 0;
+        margin-right: 6px;
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+}
+
+/* ============================
+   RESPONSIVE - MÓVIL HORIZONTAL (600px)
+============================ */
+@media (max-width: 600px) {
+    .contenido {
+        padding: 20px 10px;
+    }
+
+    .contenido h3 {
+        font-size: 11px;
+        margin-bottom: 15px;
+        padding: 8px 12px;
+    }
+
+    .btn-volver {
+        padding: 9px 14px;
+        font-size: 11px;
+        margin-bottom: 15px;
+    }
+
+    #contenedor {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    #formSubir {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    #formSubir input[type="file"],
+    #formSubir button {
+        width: 100%;
+        padding: 9px 11px;
+        font-size: 11px;
+    }
+
+    #formSubir button {
+        padding: 9px 14px;
+    }
+
+    .archivo {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .archivo span {
+        font-size: 12px;
+    }
+
+    .archivo button {
+        padding: 6px 9px;
+        font-size: 10px;
+    }
+}
+
+/* ============================
+   RESPONSIVE - MÓVIL PEQUEÑO (480px)
+============================ */
+@media (max-width: 480px) {
+    .contenido {
+        padding: 18px 8px;
+    }
+
+    .contenido h3 {
+        font-size: 10px;
+        margin-bottom: 12px;
+        padding: 8px 10px;
+        border-left-width: 3px;
+    }
+
+    .btn-volver {
+        padding: 8px 12px;
+        font-size: 10px;
+        margin-bottom: 12px;
+    }
+
+    #contenedor {
+        gap: 8px;
+    }
+
+    #formSubir {
+        padding: 10px;
+        gap: 6px;
+        border-radius: 10px;
+    }
+
+    #formSubir input[type="file"],
+    #formSubir button {
+        padding: 8px 10px;
+        font-size: 10px;
+        border-radius: 6px;
+    }
+
+    #formSubir button {
+        padding: 8px 12px;
+    }
+
+    .archivo {
+        padding: 10px;
+        gap: 6px;
+        border-radius: 10px;
+    }
+
+    .archivo span {
+        font-size: 11px;
+        gap: 6px;
+    }
+
+    .archivo button {
+        padding: 5px 8px;
+        font-size: 9px;
+        margin-left: 4px;
+        border-radius: 4px;
+    }
+}
+
+/* ============================
+   RESPONSIVE - MÓVIL MUY PEQUEÑO (360px)
+============================ */
+@media (max-width: 360px) {
+    .contenido {
+        padding: 15px 6px;
+    }
+
+    .contenido h3 {
+        font-size: 9px;
+        padding: 6px 8px;
+        margin-bottom: 10px;
+    }
+
+    .btn-volver {
+        padding: 7px 10px;
+        font-size: 9px;
+        margin-bottom: 10px;
+    }
+
+    #contenedor {
+        gap: 6px;
+    }
+
+    #formSubir {
+        padding: 8px;
+        gap: 5px;
+    }
+
+    #formSubir input[type="file"],
+    #formSubir button {
+        padding: 7px 9px;
+        font-size: 9px;
+    }
+
+    .archivo {
+        padding: 8px;
+        gap: 6px;
+    }
+
+    .archivo span {
+        font-size: 10px;
+    }
+
+    .archivo button {
+        padding: 4px 7px;
+        font-size: 8px;
+        margin-left: 3px;
+    }
+}

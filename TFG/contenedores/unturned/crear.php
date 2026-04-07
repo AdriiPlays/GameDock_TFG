@@ -8,12 +8,8 @@ $imagenPerfil = !empty($_SESSION["imagen"])
 // VERSIONES UNTURNED
 
 
-$listaVersiones = [
-    "3.24.0.0", "3.23.11.0", "3.23.10.0", "3.23.9.0", "3.23.8.0",
-    "3.23.7.0", "3.23.6.0", "3.23.5.0", "3.23.4.0", "3.23.3.0",
-    "3.23.2.0", "3.23.1.0", "3.23.0.0",
-    "3.22.0.0", "3.21.0.0", "3.20.0.0"
-];
+$listaVersiones = ["Latest"];
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
