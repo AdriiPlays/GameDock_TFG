@@ -101,7 +101,7 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
             <option value="minecraft">Minecraft</option>
             <option value="unturned">Unturned</option>
             <option value="python">Python</option>
-            <option value="alpine">Alpine</option>
+            <option value="plex">Plex</option>
         </select>
 
         <button id="btnIrCrear" class="btn-save">Continuar</button>

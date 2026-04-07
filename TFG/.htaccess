@@ -10,6 +10,9 @@ RewriteRule ^unturned/([^/]+)/?$ contenedores/unturned/editar.php?nombre=$1 [L,Q
 # --- Python ---
 RewriteRule ^python/([^/]+)/?$ contenedores/python/editar.php?nombre=$1 [L,QSA]
 
+# --- Plex ---
+RewriteRule ^plex/([^/]+)/?$ contenedores/plex/editar.php?nombre=$1 [L,QSA]
+
 
 
 # --- Panel ---
