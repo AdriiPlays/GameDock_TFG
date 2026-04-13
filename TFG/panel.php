@@ -43,7 +43,8 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
                 // Estado real del contenedor
                 $out = [];
                 $ret = 0;
-                exec('docker inspect --format="{{json .State}}" "' . escapeshellarg($c['nombre']) . '" 2>&1', $out, $ret);
+                exec('docker inspect --format="{{json .State}}" ' . escapeshellarg("plex_" . $c['nombre']) . ' 2>&1', $out, $ret);
+
 
                 if ($ret !== 0 || empty($out)) {
                     $estado = "offline";
