@@ -1,5 +1,5 @@
 // ===============================
-//   VARIABLES INYECTADAS DESDE PHP
+//   VARIABLES DESDE PHP
 // ===============================
 const servidorNombre = NOMBRE_SERVIDOR;
 const servidorId = ID_CONTENEDOR;

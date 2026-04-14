@@ -74,9 +74,7 @@ $imagenPerfil = $imagenActual
     </div>
 </form>
 
-<!-- ============================
-     SELECTOR DE TEMAS
-============================= -->
+<!-- SELECTOR DE TEMAS -->
 <div class="tema-selector">
     <h3>Seleccionar tema</h3>
 

@@ -14,7 +14,7 @@ $osInfo = php_uname();
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= $tituloPagina ?></title>
 <link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>.css">
-<link rel="stylesheet" href="css/update.css">
+<link rel="stylesheet" href="/TFG/css/temas/<?= $temaUsuario ?>/update-<?= strtolower($temaUsuario) ?>.css">
 <link rel="icon" type="image/png" href="img/iconogrande.png">
 </head>
 <body>
@@ -47,31 +47,9 @@ $osInfo = php_uname();
                 </button>
             </div>
         </div>
-
-        <!-- TARJETA DE INFORMACIÓN DEL SISTEMA -->
-        <div class="card system-info">
-            <div class="card-title">
-                <span class="icon">💻</span>
-                Información del Sistema
-            </div>
-            <div class="info-item">
-                <span class="info-label">PHP</span>
-                <span class="info-value"><?= $phpVersion ?></span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Sistema Operativo</span>
-                <span class="info-value"><?= substr($osInfo, 0, 30) ?>...</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Memoria Disponible</span>
-                <span class="info-value"><?= function_exists('memory_get_usage') ? round(memory_get_usage(true) / 1024 / 1024, 2) . ' MB' : 'N/A' ?></span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Espacio Disponible</span>
-                <span class="info-value"><?= round(disk_free_space(__DIR__) / 1024 / 1024 / 1024, 2) ?> GB</span>
-            </div>
-        </div>
-
+            <!-- SECCIÓN DE RESULTADO -->
+    <div id="resultado" class="resultado"></div>
+<br>
         <!-- TARJETA DE CARACTERÍSTICAS -->
         <div class="card">
             <div class="card-title">
@@ -79,10 +57,7 @@ $osInfo = php_uname();
                 Características
             </div>
             <div class="features-grid">
-                <div class="feature-item">
-                    <span class="check">✓</span>
-                    <span>Actualizaciones automáticas</span>
-                </div>
+               
                 <div class="feature-item">
                     <span class="check">✓</span>
                     <span>Respaldos automáticos</span>
@@ -100,10 +75,9 @@ $osInfo = php_uname();
 
     </main>
 
-    <!-- SECCIÓN DE RESULTADO -->
-    <div id="resultado" class="resultado"></div>
 
-    <!-- CHANGELOG -->
+
+    
     <div class="changelog">
         <div class="card-title" style="margin-bottom: 20px;">
             <span class="icon">📋</span>

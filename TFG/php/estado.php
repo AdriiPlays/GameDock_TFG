@@ -45,7 +45,7 @@ $tituloPagina = "Estado del Servidor";
 
 <main class="contenido" style="max-width: 1400px; margin: 0 auto; padding: 30px 20px; overflow-x: hidden;">
 
-<h2 style="color: #c9d1d9; margin-bottom: 20px; font-size: clamp(20px, 5vw, 28px); max-width: 1400px; margin-left: auto; margin-right: auto;">Estado del Servidor</h2>
+
 
 <!-- TARJETA DE INFORMACIÓN DEL SISTEMA -->
 <div class="tarjeta-sistema">
@@ -86,7 +86,7 @@ $tituloPagina = "Estado del Servidor";
     </div>
 </div>
 
-<!-- CUADRÍCULA DE TARJETAS DE ESTADO -->
+<!-- TARJETAS DE ESTADO -->
 <div class="cuadricula-estado">
 
     <div class="tarjeta-estado">
@@ -138,11 +138,11 @@ $tituloPagina = "Estado del Servidor";
 </div>
 
 <script>
-// Configuración global de Chart.js para mejor responsive
+// Configuración global de Chart.js 
 Chart.defaults.font.family = "'Segoe UI', sans-serif";
 Chart.defaults.color = '#8b949e';
 
-// Función para crear gráficas con opciones responsive
+// Función para crear gráficas 
 function crearGrafica(id, etiqueta, color) {
     const ctx = document.getElementById(id);
     return new Chart(ctx, {
@@ -254,7 +254,7 @@ function cargarInfoSistema() {
                 chart.data.labels.push("");
                 chart.data.datasets[0].data.push(valor);
 
-                // Mantener solo los últimos 20 puntos para mejor rendimiento
+                
                 if (chart.data.labels.length > 20) {
                     chart.data.labels.shift();
                     chart.data.datasets[0].data.shift();
