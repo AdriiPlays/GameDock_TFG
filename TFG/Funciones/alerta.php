@@ -39,7 +39,7 @@
 <script>
 let alertaCallback = null;
 
-// Mostrar alerta con callback opcional
+// Mostrar alerta 
 function mostrarAlerta(mensaje, titulo = "Aviso", callback = null) {
     alertaCallback = callback;
 
@@ -97,7 +97,7 @@ function mostrarConfirmacion(mensaje, callbackAceptar, callbackCancelar = null) 
     const alerta = document.getElementById("alerta");
     const box = document.getElementById("alerta-box");
 
-    // Cambiar botón
+    // botón
     box.innerHTML = `
         <h3 id="alerta-titulo">Confirmar acción</h3>
         <p id="alerta-mensaje">${mensaje}</p>
@@ -149,7 +149,7 @@ function mostrarAlertaCerrar(mensaje) {
     const alerta = document.getElementById("alerta");
     const box = document.getElementById("alerta-box");
 
-    // Restaurar el HTML original del botón Aceptar
+    
     box.innerHTML = `
         <h3 id="alerta-titulo">Aviso</h3>
         <p id="alerta-mensaje">${mensaje}</p>

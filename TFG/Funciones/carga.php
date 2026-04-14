@@ -1,4 +1,4 @@
-<!-- LOADER GLOBAL -->
+<!-- CARGA GLOBAL -->
 <div id="loader" style="
     position: fixed;
     top: 0; left: 0;
@@ -24,7 +24,7 @@
 </div>
 
 <style>
-/* Spinner azul animado */
+/* CSS DEL SPINNER */
 .spinner {
     width: 70px;
     height: 70px;
@@ -55,7 +55,7 @@
 </style>
 
 <script>
-// Funciones globales para mostrar/ocultar loader
+// Funciones para mostrar/ocultar loader
 function mostrarLoader() {
     document.getElementById("loader").style.display = "flex";
 }
