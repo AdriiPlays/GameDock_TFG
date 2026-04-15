@@ -43,7 +43,10 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
                 // Estado real del contenedor
                 $out = [];
                 $ret = 0;
-                exec('docker inspect --format="{{json .State}}" ' . escapeshellarg("plex_" . $c['nombre']) . ' 2>&1', $out, $ret);
+              $nombreContenedor = strtolower($c['iso']) . "_" . $c['nombre'];
+exec('docker inspect --format="{{json .State}}" ' . escapeshellarg($nombreContenedor) . ' 2>&1', $out, $ret);
+
+
 
 
                 if ($ret !== 0 || empty($out)) {
@@ -102,6 +105,7 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
             <option value="minecraft">Minecraft</option>
             <option value="unturned">Unturned</option>
             <option value="python">Python</option>
+            <option value="ubuntu">Ubuntu</option>
             <option value="plex">Plex</option>
         </select>
 

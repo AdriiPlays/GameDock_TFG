@@ -18,6 +18,8 @@ $osInfo = php_uname();
 <link rel="icon" type="image/png" href="img/iconogrande.png">
 </head>
 <body>
+    <?php include __DIR__ . "/php/menu.php"; ?>
+
 
 <div class="main-content">
 

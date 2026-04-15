@@ -388,6 +388,13 @@ body {
     background-repeat: no-repeat;
 }
 
+.iso-ubuntu {
+    background-image: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("/TFG/img/ubuntu.jpg"); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 
 /* Modal */
 .modal {

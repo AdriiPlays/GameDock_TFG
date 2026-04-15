@@ -13,6 +13,9 @@ RewriteRule ^python/([^/]+)/?$ contenedores/python/editar.php?nombre=$1 [L,QSA]
 # --- Plex ---
 RewriteRule ^plex/([^/]+)/?$ contenedores/plex/editar.php?nombre=$1 [L,QSA]
 
+# --- Ubuntu ---
+RewriteRule ^ubuntu/([^/]+)/?$ contenedores/ubuntu/editar.php?nombre=$1 [L,QSA]
+
 
 
 # --- Panel ---
