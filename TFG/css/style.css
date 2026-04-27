@@ -1,18 +1,24 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
     font-family: "Segoe UI", sans-serif;
     background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
 .login-container {
     background: #ffffff;
     padding: 35px;
-    width: 350px;
+    width: 100%;
+    max-width: 400px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     animation: fadeIn 0.6s ease;
@@ -25,8 +31,9 @@ body {
 
 h2 {
     text-align: center;
-    margin-bottom: 25px;
+    margin: 0 0 25px 0;
     color: #1e3a8a;
+    font-size: 28px;
 }
 
 .input-group {
@@ -37,21 +44,23 @@ h2 {
     display: block;
     font-weight: bold;
     color: #1e293b;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-size: 14px;
 }
 
 .input-group input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 2px solid #cbd5e1;
     border-radius: 8px;
     font-size: 15px;
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
 .input-group input:focus {
     border-color: #3b82f6;
     outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .btn {
@@ -62,20 +71,152 @@ h2 {
     border-radius: 8px;
     color: white;
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.3s ease;
+    margin-bottom: 15px;
 }
 
 .btn:hover {
     background: #1e40af;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(30, 64, 175, 0.3);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.link {
+    display: block;
+    text-align: center;
+    color: #3b82f6;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+.link:hover {
+    color: #1e40af;
+    text-decoration: underline;
 }
 
 .error {
     background: #fee2e2;
     color: #b91c1c;
-    padding: 10px;
+    padding: 12px;
     border-radius: 6px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     text-align: center;
     font-size: 14px;
+    border-left: 4px solid #b91c1c;
+}
+
+
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    .login-container {
+        padding: 30px;
+        max-width: 380px;
+    }
+
+    h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .input-group input {
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px;
+    }
+
+    .login-container {
+        padding: 40px 30px;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    h2 {
+        font-size: 32px;
+        margin-bottom: 30px;
+        font-weight: 700;
+    }
+
+    .input-group {
+        margin-bottom: 22px;
+    }
+
+    .input-group label {
+        font-size: 16px;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .input-group input {
+        padding: 16px;
+        font-size: 18px;
+        border-radius: 8px;
+        border: 2px solid #cbd5e1;
+    }
+
+    .btn {
+        padding: 16px;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 18px;
+        margin-top: 10px;
+    }
+
+    .link {
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .error {
+        padding: 15px;
+        font-size: 16px;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+}
+
+
+@media (max-height: 600px) and (orientation: landscape) {
+    body {
+        min-height: auto;
+        padding: 10px;
+    }
+
+    .login-container {
+        padding: 20px;
+        max-width: 350px;
+    }
+
+    h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .input-group {
+        margin-bottom: 12px;
+    }
+
+    .input-group input {
+        padding: 10px;
+    }
+
+    .btn {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
 }

@@ -108,13 +108,14 @@ if ($isWindows) {
 if ($isWindows) {
 
     // RAM
-    preg_match("/=(\d+)/", shell_exec("wmic computersystem get TotalPhysicalMemory /value 2>NUL"), $t);
-    preg_match("/=(\d+)/", shell_exec("wmic os get FreePhysicalMemory /value 2>NUL"), $f);
+// RAM
+preg_match("/=(\d+)/", shell_exec("wmic computersystem get TotalPhysicalMemory /value 2>NUL"), $t);
+preg_match("/=(\d+)/", shell_exec("wmic os get FreePhysicalMemory /value 2>NUL"), $f);
 
-    $ramTotal = isset($t[1]) ? $t[1] / 1024 / 1024 / 1024 : 0;
-    $ramLibre = isset($f[1]) ? $f[1] / 1024 / 1024 : 0;  // FreePhysicalMemory está en KB, no en bytes
-    $ramUsada = $ramTotal - $ramLibre;
-    $ramPorcentaje = $ramTotal > 0 ? round(($ramUsada / $ramTotal) * 100, 1) : 0;
+$ramTotal = isset($t[1]) ? $t[1] / 1024 / 1024 / 1024 : 0;
+$ramLibre = isset($f[1]) ? $f[1] / 1024 / 1024 / 1024 : 0;
+$ramUsada = $ramTotal - $ramLibre;
+$ramPorcentaje = $ramTotal > 0 ? round(($ramUsada / $ramTotal) * 100, 1) : 0;
 
     // CPU
     preg_match("/=(\d+)/", shell_exec("wmic cpu get LoadPercentage /value 2>NUL"), $c);

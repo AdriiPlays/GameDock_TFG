@@ -173,6 +173,7 @@ function eliminarContenedor(nombre, iso) {
                     }
 
                 mostrarAlertaCerrar("✅ Servidor eliminado correctamente");
+                
 
 
 

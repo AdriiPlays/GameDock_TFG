@@ -1,6 +1,9 @@
 <?php
 header("Content-Type: application/json");
+session_start(); 
+
 require_once __DIR__ . "/../../../config.php";
+require_once __DIR__ . "/../../../Funciones/logs.php";
 
 // Leer JSON
 $raw = file_get_contents("php://input");
@@ -32,7 +35,7 @@ if (!$res) {
 
 $id = $res["id"];
 
-// NOMBRE REAL DEL CONTENEDOR UBUNTU
+// NOMBRE DEL CONTENEDOR UBUNTU
 $containerName = "ubuntu_" . $nombre;
 
 // ELIMINAR CONTENEDOR DOCKER
@@ -64,6 +67,9 @@ $stmt3 = $conn->prepare("DELETE FROM contenedores WHERE id = ?");
 $stmt3->bind_param("i", $id);
 $stmt3->execute();
 $stmt3->close();
+
+//REGISTRAR LOG
+registrarLog($conn, $_SESSION["usuario"], "Eliminó el servidor Ubuntu '{$nombre}'");
 
 // RESPUESTA JSON
 echo json_encode([

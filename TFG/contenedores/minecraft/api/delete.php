@@ -1,6 +1,9 @@
 <?php
 header("Content-Type: application/json");
+session_start();
+
 require_once __DIR__ . "/../../../config.php";
+require_once __DIR__ . "/../../../Funciones/logs.php";
 
 // Leer JSON
 $raw = file_get_contents("php://input");
@@ -18,11 +21,8 @@ if (!$nombre) {
     exit;
 }
 
-
 // OBTENER ID DEL CONTENEDOR
-
 $stmt = $conn->prepare("SELECT id FROM contenedores WHERE nombre = ?");
-
 $stmt->bind_param("s", $nombre);
 $stmt->execute();
 $res = $stmt->get_result()->fetch_assoc();
@@ -35,20 +35,14 @@ if (!$res) {
 
 $id = $res["id"];
 
-
 // ELIMINAR CONTENEDOR DOCKER
-
 $out = [];
 $ret = 0;
 
 exec("docker rm -f " . escapeshellcmd($nombre) . " 2>&1", $out, $ret);
-
-
 $dockerDeleteInfo = $out;
 
-
 // ELIMINAR VOLUMEN mc_nombre
-
 $outVol = [];
 $retVol = 0;
 
@@ -56,26 +50,22 @@ $volName = "mc_" . $nombre;
 
 exec("docker volume rm " . escapeshellcmd($volName) . " 2>&1", $outVol, $retVol);
 
-
-
 // ELIMINAR BD: minecraft
-
 $stmt2 = $conn->prepare("DELETE FROM minecraft WHERE id = ?");
 $stmt2->bind_param("i", $id);
 $stmt2->execute();
 $stmt2->close();
 
-
 // ELIMINAR BD: contenedores
-
 $stmt3 = $conn->prepare("DELETE FROM contenedores WHERE id = ?");
 $stmt3->bind_param("i", $id);
 $stmt3->execute();
 $stmt3->close();
 
+//REGISTRAR LOG
+registrarLog($conn, $_SESSION["usuario"], "Eliminó el servidor Minecraft '{$nombre}'");
 
 // RESPUESTA FINAL
-
 echo json_encode([
     "status" => "success",
     "message" => "Servidor Minecraft eliminado correctamente",

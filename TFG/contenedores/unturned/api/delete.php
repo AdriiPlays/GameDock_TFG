@@ -1,6 +1,9 @@
 <?php
 header("Content-Type: application/json");
+session_start(); 
+
 require_once __DIR__ . "/../../../config.php";
+require_once __DIR__ . "/../../../Funciones/logs.php";
 
 // Leer JSON
 $raw = file_get_contents("php://input");
@@ -19,7 +22,6 @@ if (!$nombre) {
 }
 
 // Obtener id del contenedor
-
 $stmt = $conn->prepare("SELECT id FROM contenedores WHERE nombre = ? AND iso = 'unturned'");
 $stmt->bind_param("s", $nombre);
 $stmt->execute();
@@ -33,18 +35,14 @@ if (!$res) {
 
 $id = $res["id"];
 
-// Eliminar contenedor
-
+// Eliminar contenedor Docker
 $out = [];
 $ret = 0;
 
 exec("docker rm -f " . escapeshellcmd($nombre) . " 2>&1", $out, $ret);
 $dockerDeleteInfo = $out;
 
-
-// Eliminar Volumen
-  
-
+// Eliminar volumen
 $outVol = [];
 $retVol = 0;
 
@@ -52,24 +50,22 @@ $volName = "unturned_" . $nombre;
 
 exec("docker volume rm " . escapeshellcmd($volName) . " 2>&1", $outVol, $retVol);
 
-
-  // Eliminar tabla unturned 
-   
-
+// Eliminar tabla unturned
 $stmt2 = $conn->prepare("DELETE FROM unturned WHERE id = ?");
 $stmt2->bind_param("i", $id);
 $stmt2->execute();
 $stmt2->close();
 
 // Eliminar tabla contenedores
-
 $stmt3 = $conn->prepare("DELETE FROM contenedores WHERE id = ?");
 $stmt3->bind_param("i", $id);
 $stmt3->execute();
 $stmt3->close();
 
-// Respuesta JSON
+//Registrar log
+registrarLog($conn, $_SESSION["usuario"], "Eliminó el servidor Unturned '{$nombre}'");
 
+// Respuesta JSON
 echo json_encode([
     "status" => "success",
     "message" => "Servidor Unturned eliminado correctamente",

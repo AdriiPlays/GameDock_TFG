@@ -18,7 +18,7 @@ if (!$nombre || !$password || !$puerto) {
 
 $nombreContenedor = "ubuntu_" . $nombre;
 
-// Comando Docker en UNA sola línea (Windows compatible)
+// Comando Docker 
 $cmd = 'docker run -d --name ' . escapeshellarg($nombreContenedor) .
        ' -p ' . intval($puerto) . ':22 ' .
        'ubuntu:22.04 bash -c "apt update && apt install -y openssh-server && mkdir -p /run/sshd && echo root:' . $password .
