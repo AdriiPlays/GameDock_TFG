@@ -221,7 +221,7 @@ function openTab(event, tabName) {
     }
 }
 
-// Inicializar slider cuando el DOM esté listo
+
 document.addEventListener("DOMContentLoaded", function() {
     const ramSlider = document.getElementById("ramSlider");
     if (ramSlider) {

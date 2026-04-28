@@ -8,6 +8,10 @@ https://www.kernel.org/doc/html/latest/filesystems/proc.html
 https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmic
 
 */
+
+
+/* PARA ESTE ARCHIVO PHP SE UTILIZO BASTANTE AYUDA DE LA IA */
+
 require_once "../Funciones/Sesion.php";
 
 $tituloPagina = "Estado del Servidor";

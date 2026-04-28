@@ -71,9 +71,7 @@ $imagenPerfil = $imagenActual ? "uploads/" . $imagenActual : "uploads/default.pn
     </div>
 </form>
 
-<!-- ============================
-     SELECTOR DE colores
-============================= -->
+<!-- Elegir tema -->
 <div class="tema-selector">
     <h3>Seleccionar tema</h3>
 

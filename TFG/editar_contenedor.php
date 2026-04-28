@@ -28,7 +28,7 @@ if (!$cont) {
 
 $esMinecraft = ($cont["iso"] === "minecraft");
 
-// Estado real
+// Estado del contenedor
 $out = [];
 $ret = 0;
 exec('docker inspect --format="{{json .State}}" "' . $nombre . '" 2>&1', $out, $ret);

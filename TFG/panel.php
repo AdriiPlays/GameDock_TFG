@@ -40,14 +40,22 @@ $contenedores = $conn->query("SELECT * FROM contenedores ORDER BY fecha_creado D
             <!-- LISTA DE CONTENEDORES -->
             <?php while ($c = $contenedores->fetch_assoc()): ?>
                 <?php
-                // Estado real del contenedor
+                // Obtener lista de todos los contenedores
+                $allContainers = [];
+                exec('docker ps -a --format "{{.Names}}"', $allContainers);
+
+                // Buscar contenedor con iso_nombre
+                $nombreContenedor = strtolower($c['iso']) . "_" . $c['nombre'];
+
+                // Si no existe, busca por el nombre directo
+                if (!in_array($nombreContenedor, $allContainers)) {
+                    $nombreContenedor = $c['nombre'];
+                }
+
+                // Estado del contenedor
                 $out = [];
                 $ret = 0;
-              $nombreContenedor = strtolower($c['iso']) . "_" . $c['nombre'];
-exec('docker inspect --format="{{json .State}}" ' . escapeshellarg($nombreContenedor) . ' 2>&1', $out, $ret);
-
-
-
+                exec('docker inspect --format="{{json .State}}" ' . escapeshellarg($nombreContenedor) . ' 2>&1', $out, $ret);
 
                 if ($ret !== 0 || empty($out)) {
                     $estado = "offline";

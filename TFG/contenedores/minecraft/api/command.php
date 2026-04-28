@@ -31,7 +31,7 @@ $fullCmd = "docker exec " . escapeshellcmd($nombre) . " bash -c " . escapeshella
 
 exec($fullCmd . " 2>&1", $out, $ret);
 
-registrarLog($conn, $_SESSION["usuario"], "Ejecutó comando en '{$nombre}': $cmd");
+// registrarLog($conn, $_SESSION["usuario"], "Ejecutó comando en '{$nombre}': $cmd");
 
 echo json_encode([
     "status" => $ret === 0 ? "success" : "error",
