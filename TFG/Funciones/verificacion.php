@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/../init.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 

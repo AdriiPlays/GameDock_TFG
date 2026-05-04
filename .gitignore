@@ -1,0 +1,13 @@
+# Archivos sensibles
+.env
+
+# Configs locales
+*.log
+*.cache
+
+# Docker
+docker-compose.override.yml
+
+# PHPStorm / VSCode
+.idea/
+.vscode/
